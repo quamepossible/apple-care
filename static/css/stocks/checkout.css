@@ -1,0 +1,169 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Allerta Stencil', sans-serif;
+}
+
+#check-main{
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.89), rgba(0, 0, 0, 0.89)), url('/imgs/categ/out.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    overflow-x: auto;
+}
+
+#check-container{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    /* background-color: blue; */
+    margin: auto;
+}
+
+.center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.span-ico{
+    width: 40px;
+    display: inline-block;
+    background-color: black;
+    border: 4px solid white;
+    padding: 20px;
+    position: relative;
+    top: 5px;
+    z-index: 10;
+}
+
+.arr-ico{
+    color: white;
+    font-size: 30px;
+}
+
+.header{
+    width: 100%;
+    height: 80px;
+    background-color: rgb(36, 36, 36);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.head-items{
+    width: 470px;
+    /* background-color: yellow; */
+}
+.hol-items{
+    width: 400px;
+    left: 55%;
+    /* background-color: red; */
+}
+
+
+.add-btn{
+    padding: 10px 20px;
+}
+
+.check-cont-body{
+    width: 95%;
+    height: 100%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.hol-img{
+    /* background-color: red; */
+    width: 350px;
+    height: 350px;
+    background-size: cover;
+    background-position: center;
+    border: 5px solid rgba(255, 255, 255, 0.744);
+    border-radius: 20px;
+    /* box-shadow: 0 0 20px rgb(0, 177, 160); */
+}
+
+.span-right{
+    width: 100%;
+    height: 100%;
+    /* padding-top: 50px; */
+    /* background-color: rgba(0, 128, 0, 0.308); */
+    position: relative;
+    overflow: auto;
+}
+
+.hol-table{
+    width: 100%;
+    height: auto;
+    padding-bottom: 30px;
+    /* background-color: blue; */
+}
+
+table{
+    width: 100%;
+    margin: auto;
+}
+
+tr{
+    text-align: center;
+}
+
+th{
+    color: white;
+    border: 1px solid rgb(165, 165, 165);
+}
+
+td, th{
+    /* border: 1px solid rgb(165, 165, 165); */
+    padding: 5px 10px;
+}
+
+td:nth-of-type(even){
+    /* padding: 10px; */
+    background-color: rgb(0, 86, 136);
+    color: white;
+}
+
+td:nth-of-type(odd){
+    background-color: black;
+    color: white;
+}
+
+.hol-btns{
+    display: block;
+    width: 210px;
+    background-color: red;
+}
+
+td button{
+    display: inline-block;
+    padding: 5px;
+    width: 100px;
+}
+
+.modal{
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content{
+    background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('/imgs/categ/nine.jpg');
+    background-position: center;
+    background-size: cover;
+    color: white;
+}
+
+.modal-content input{
+    background: rgb(0, 0, 0);
+    color: white;
+}
+
+

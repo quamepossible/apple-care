@@ -1,0 +1,217 @@
+<div id="add-product-overlay">
+    <div class="overlay-content center">
+        <div class="hol-cont-spans row">
+            <div class="hol-spans-main">
+                <div class="span-prods center" style="background-image: url('/imgs/categ/nine.png')">
+                    <div class="over-img">
+                        <span class="categ-phones center" data-target="phones">PHONES</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hol-spans-main">
+                <div class="span-prods center" style="background-image: url('/imgs/categ/ipad.png')">
+                    <div class="over-img">
+                        <span class="categ-phones center" data-target="ipad">iPADs</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hol-spans-main">
+                <div class="span-prods center" style="background-image: url('/imgs/categ/laptop.jpg')">
+                    <div class="over-img">
+                        <span class="categ-phones center" data-target="macbook">MacBOOKS</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hol-spans-main">
+                <div class="span-prods center" style="background-image: url('/imgs/categ/fourteen.png')">
+                    <div class="over-img">
+                        <span class="categ-phones center" data-target="series">SERIES</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hol-spans-main">
+                <div class="span-prods center" style="background-image: url('/imgs/categ/airpod.png')">
+                    <div class="over-img">
+                        <span class="categ-phones center" data-target="airpod">AIR PODS</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hol-spans-main">
+                <div class="span-prods center" style="background-image: url('/imgs/categ/twelve.png')">
+                    <div class="over-img">
+                        <span class="categ-phones center" data-target="homepod">HOME PODS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- INSERT PRODUCT DATA OVERLAY -->
+    <div class="data-content center">
+        <div class="hol-form-cont">
+            <div class="add-head">
+                <span class="center">ADD <span class="prd-name" style="color: green;font-weight: bold;"></span></span>
+            </div>
+            <form action="" method="POST" class="add-form">
+                <div class="add-form-row form-row"></div>
+
+                <div class="add-form-footer">
+                    <button class="btn btn-danger" data-action="back">Back</button>
+                    <button class="btn btn-success" data-action="add">Add product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<!-- INSERT PRODUCT DATA OVERLAY -->
+
+    <div class="cont-close center">
+        <span class="ico-in center">
+            <ion-icon class="ico-x center" name="close-outline"></ion-icon>
+        </span>
+    </div>
+</div>
+
+<style>
+/* ADD PRODUCT OVERLAY */
+    #add-product-overlay{
+        background-color: rgba(0, 0, 0, 0.9);
+        width: 100%;
+        height: 100vh;
+        z-index: 20;
+        position: absolute;
+        display: none;
+    }
+
+
+    .overlay-content{
+        width: 650px;
+        height: 410px;
+        background-color: rgb(0, 0, 0);
+        border: 4px solid white;
+        border-radius: 15px;
+    }
+
+    .hol-cont-spans{
+        width: 100%;
+        height: 100%;
+        margin: auto;
+    }
+
+    .hol-spans-main{
+        /* margin: auto; */
+        width: 33.33%;
+        height: 200px;
+        /* background-color: blue; */
+        position: relative;
+    }
+
+    .span-prods{
+        /* background-color: red; */
+        width: 90%;
+        height: 90%;
+        border-radius: 10px;
+        background-size: cover;
+        background-position: center;
+        border: 2px dashed white;
+        cursor: pointer;
+    }
+
+    .span-prods:hover{
+        border: 2px solid blue;
+
+    }
+
+    .over-img{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0.65);
+    }
+
+    .categ-phones{
+        width: 90%;
+        text-align: center;
+        font-size: 22px;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.644);
+        /* border: 3px solid white; */
+        padding: 10px 30px;
+        border-radius: 30px;
+    }
+
+    .cont-close{
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        top: 85%;
+        border: 2px dashed red;
+        cursor: pointer;
+    }
+
+    .cont-close:hover{
+        border: 2px solid red;
+    }
+
+    .ico-in{
+        background-color: red;
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    .ico-x{
+        padding: 10px;
+        font-size: 50px;
+        color: white;
+        /* font-weight: bold;2 */
+    }
+
+    /* ADD PRODUCT OVERLAY */
+
+
+    /* INSERT PRODUCT DATA OVERLAY */
+    .data-content{
+        background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('/imgs/categ/nine.jpg');
+        background-position: center;
+        background-size: cover;
+        color: white;
+        width: 800px;
+        height: auto;
+        display: none;
+        border: 1px solid black;
+        z-index: 20;
+    }
+
+    .hol-form-cont{
+        width: 90%;
+        height: 100%;
+        /* background-color: red; */
+        margin: 20px auto;
+    }
+
+    .add-head{
+        width: 100%;
+        height: 50px;
+        background-color: rgba(45, 46, 45, 0.747);
+        position: relative;
+        margin-bottom: 20px;
+        border-radius: 40px;
+        border: 2px dashed white;
+    }
+
+    .add-form-footer{
+        position: relative;
+        width: 100%;
+        height: auto;
+        margin-top: 20px;
+        /* background-color: white; */
+        text-align: center;
+    }
+
+    .add-form-footer button{
+        margin: 5px;
+    }
+/* INSERT PRODUCT DATA OVERLAY */
+</style>

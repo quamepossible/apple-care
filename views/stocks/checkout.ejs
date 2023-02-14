@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../includes/head') %>
+    <link rel="stylesheet" type="text/css" href="/resources/DataTables/datatables.css">
+    <link rel="stylesheet" href="/css/stocks/checkout.css">
+    <script defer src="/resources/bootstrap.min.js"></script>
+    <script type="text/javascript" defer charset="utf8" src="/resources/DataTables/datatables.js"></script>
+    <script type="text/javascript" defer charset="utf8" src="/resources/DataTables/pdfmake-0.1.36/pdfmake.js"></script>
+    <script src="/js/checkout.js" type="module" defer></script>
+    <title>CHECKOUT</title>
+</head>
+<body>
+    <!-- EDIT MODAL -->
+    <div class="modal fade" id="editModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Edit Device Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="edit-form" action="/edit?_method=PATCH" method="POST">
+                        <div class="form-row edit-cont"></div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- EDIT MODAL -->
+
+    <!-- ADD PRODUCT OVERLAY -->
+    <%- include('../includes/add-overlay') %>
+    <!-- ADD PRODUCT OVERLAY -->
+
+    <section id="check-main">
+        <div id="check-container" class="row">
+            <div class="header">
+                <div class="head-items center">
+                    <a href="javascript:void(0)" class="span-ico">
+                        <ion-icon class="arr-ico center" name="arrow-back-outline"></ion-icon>
+                    </a>
+                    <div class="hol-items center">
+                        <button class="btn btn-success add-btn add-prd">Add Product</button>
+                        <button class="btn btn-primary add-btn">In Stock</button>
+                        <button class="btn btn-danger add-btn">Out of Stock</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="check-cont-body row">
+                <div class="span-right">
+                    <div class="hol-table">
+                        <table id="table_id">
+                            <thead>
+                                <tr>
+                                    <% 
+                                        const cols = devices.find(d => d.model.length > 0) 
+                                        const colNames = new Map(Object.entries(cols))
+                                        const headCols = [];
+                                        colNames.forEach((v, k) => {
+                                            if(k !== 'img') {
+                                                headCols.push(k);
+                                            }
+                                        })
+                                    %>
+                                    <th class="acts">ACTIONS</th>
+                                    <th>#</th>
+                                    <% let id;
+                                    headCols.forEach((key, i) => {%>
+                                        <% if(key === 'imei' || key === 'serial') {
+                                            id = i;
+                                        }
+                                        %> 
+                                        <th><%= key.toUpperCase() %> </th>
+                                    <%}) %> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% var count = 0 %> 
+                                <% devices.forEach(device => {%>
+                                    <% 
+                                    const bodyVal = new Map(Object.entries(device));
+                                    const body = [];
+                                    bodyVal.forEach((v, k) => {
+                                        if(k !== 'img') body.push(v)
+                                    });
+                                    %> 
+                                <tr>
+                                    <td class="hol-btns">
+                                        <button class="btn btn-warning btn-edit" data-toggle="modal" data-val="<%= body[id] %> " data-target="#editModal">Edit</button>
+                                        <button class="btn btn-success btn-out">Checkout</button>
+                                    </td>
+                                    <td><%= ++count %> </td>
+                                    <% body.forEach(item => {%>
+                                        <td><%= item = (item.length === 0) ? '-' : item.toUpperCase() %></td>
+                                    <%}) %>
+                                </tr>
+                                <%}) %> 
+                            </tbody>
+                        </table> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <%- include('../includes/footer') %> 
+</body>
+</html>

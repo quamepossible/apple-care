@@ -1,0 +1,149 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Allerta Stencil', sans-serif;
+    background-color: black;
+    height: 100vh;
+    overflow: auto;
+}
+
+#prod-main{
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('/imgs/categ/phones/six.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow: auto;
+}
+
+#prod-container{
+    width: 80%;
+    height: auto;
+    margin: 0 auto;
+    /* background-color: yellow; */
+    /* overflow: auto; */
+}
+
+.center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.span-ico{
+    width: 40px;
+    display: inline-block;
+    background-color: black;
+    border: 4px solid white;
+    padding: 20px;
+    position: relative;
+    top: 5px;
+    z-index: 5;
+}
+
+.arr-ico{
+    color: white;
+    font-size: 30px;
+}
+
+.header{
+    width: 100%;
+    height: 80px;
+    background-color: rgb(36, 36, 36);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    /* background-color: pink; */
+}
+
+.head-items{
+    width: 470px;
+    /* background-color: yellow; */
+}
+
+.hol-items{
+    width: 400px;
+    left: 55%;
+    /* background-color: red; */
+}
+
+.add-btn{
+    padding: 10px 20px;
+}
+
+.hol-items form{
+    display: inline-block;
+    margin-left: 40px;
+    /* background-color: red; */
+}
+
+.hol-items form input{
+    width: 400px;
+    padding: 10px;
+    border-radius: 40px;
+    outline: none !important;
+    border: 5px solid white;
+    transition: 0.3s;
+}
+
+.hol-items form input:focus{
+    border: 5px solid red;
+}
+
+.cont-body{
+    width: 90%;
+    height: auto;
+    margin:auto;
+    margin-top: 50px;
+    /* background-color: rgb(255, 0, 0); */
+}
+
+.hol-cir-spans{
+    width: 33.33%;
+    height: 300px;
+    margin-bottom: 35px;
+    /* overflow: hidden; */
+    /* background-color: blue; */
+}
+
+.circ-spans{
+    display: block;
+    width: 300px;
+    height: 300px;
+    border-radius: 30px;
+    margin: auto;
+    background-color: rgba(44, 44, 44, 0.904);
+    background-position: center;
+    /* background-size: cover; */
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+    overflow: hidden;
+
+}
+
+.circ-spans:hover{
+    border: 3px solid white;
+}
+
+.cir-cont{
+    width: 100%;
+    height: 80px;
+    top: 87%;
+    background-color: rgba(44, 44, 44, 0.75);
+    text-align: center;
+    border-top: 3px solid gray;
+}
+
+.cir-cont span{
+    color: white;
+}
+

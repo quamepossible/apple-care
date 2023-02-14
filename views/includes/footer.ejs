@@ -1,0 +1,67 @@
+<script type="module">
+    import {doValidation} from '/js/validation.js';
+
+    document.querySelector('.span-ico').addEventListener('click', ()=>{
+        window.history.back();
+    })
+
+    document.querySelector(".add-prd").addEventListener('click', () => {
+        document.querySelector("#add-product-overlay").style.display = 'block';
+    })
+
+    document.querySelector('.cont-close').addEventListener('click', () => {
+        document.querySelector("#add-product-overlay").style.display = 'none';
+    })
+
+    
+    document.addEventListener('click', (e) => {
+        if(!e.target.closest('.hol-spans-main')) return;
+        const spanPar = e.target.closest('.hol-spans-main');
+        const target = spanPar.querySelector('.categ-phones').dataset.target;
+        document.querySelector('.overlay-content').style.display = 'none';
+        document.querySelector('.data-content').style.display = 'block';
+        document.querySelector('.cont-close').style.visibility = 'hidden';
+        document.querySelector('.prd-name').innerHTML = target.toUpperCase();
+        const addFormContainer = document.querySelector('.add-form-row');
+        const fetchFormCol = async () => {
+            const fetchCol = await fetch(`http://localhost:3000/sections/${target}`);
+            const theCols = await fetchCol.json();
+            theCols.forEach(col => {
+                const inpField = `
+                                <div class="form-group col-md-6">
+                                    <label for="">${col.toUpperCase()}</label>
+                                    <input type="text" class="form-control" id="" name="${col}">
+                                </div>`;
+                addFormContainer.insertAdjacentHTML('beforeend', inpField)
+            })
+            // console.log(theCols);
+        }
+        fetchFormCol(); 
+    })
+
+
+    document.querySelector('.add-form').addEventListener('click', (e) => {
+        e.preventDefault();
+        if(!e.target.closest('.btn')) return;
+        const clickAction = e.target.closest('.btn').dataset;
+        if(clickAction.action === 'back'){
+            document.querySelector('.add-form-row').innerHTML = '';
+            document.querySelector('.overlay-content').style.display = 'block';
+            document.querySelector('.data-content').style.display = 'none';
+            document.querySelector('.cont-close').style.visibility = 'visible';     
+        }
+
+        if(clickAction.action === 'add'){
+            let target = document.querySelector('.prd-name').innerHTML.toLowerCase();
+            target = target.trim();
+            doValidation('.add-form-row', '.add-form', `http://localhost:3000/insert/${target}`, 'POST');
+            // console.log(JSON.stringify(Object.fromEntries(formData))); 
+        }
+    })
+
+
+
+
+
+
+</script>

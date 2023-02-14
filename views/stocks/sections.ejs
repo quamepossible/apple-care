@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../includes/head') %>
+    <link rel="stylesheet" href="/css/stocks/sections.css">
+    <link rel="stylesheet" href="/css/stocks/media.css">
+    <title>SECTIONS</title>
+</head>
+<body>
+    <section id="sec-main">
+        <button class="nav"><ion-icon name="apps-outline"></ion-icon></button>
+        <div id="sec-container" class="row">
+            <div class="hol-1-of-3">
+                <div class="span-1-of-3">
+                    <a href="javascript:void(0)" class="span-ico">
+                        <ion-icon class="arr-ico" name="arrow-back-outline"></ion-icon>
+                    </a>
+                    <div class="hol-sub-secs center">
+                        <a href="/" class="sub-secs">
+                            <span class="center"><span class="ico"><ion-icon name="home-outline"></ion-icon></span> HOME</span>
+                        </a>
+                        <a href="#" class="sub-secs">
+                            <span class="center"><span class="ico"><ion-icon name="bar-chart-outline"></ion-icon></span> SALES</span>
+                        </a>
+                        <a href="#" class="sub-secs">
+                            <span class="center"><span class="ico"><ion-icon name="search-outline"></ion-icon></span> SEARCH</span>
+                        </a>
+                        <a href="#" class="sub-secs">
+                            <span class="center"><span class="ico"><ion-icon name="settings-outline"></ion-icon></span> SETTINGS</span>
+                        </a>
+    
+                    </div>
+                </div>
+            </div>
+            <div class="span-2-of-3">
+                <div class="span-body row center">
+                    <div class="hol-2-of-2">
+                        <a href="/products/phones" class="span-2-of-2" style="background-image: url('/imgs/categ/nine.png');">
+                            <div class="over-img">
+                                <span class="categ-phones center">PHONES</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="hol-2-of-2">
+                        <a href="/devices/ipad" class="span-2-of-2" style="background-image: url('/imgs/categ/ipad.png');">
+                            <div class="over-img">
+                                <span class="categ-phones center">iPADs</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="hol-2-of-2">
+                        <a href="/devices/macbook" class="span-2-of-2" style="background-image: url('/imgs/categ/laptop.jpg');">
+                            <div class="over-img">
+                                <span class="categ-phones center">MacBOOKS</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="hol-2-of-2">
+                        <a href="/devices/series" class="span-2-of-2" style="background-image: url('/imgs/categ/fourteen.png');">
+                            <div class="over-img">
+                                <span class="categ-phones center">SERIES</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="hol-2-of-2">
+                        <a href="/devices/airpod" class="span-2-of-2" style="background-image: url('/imgs/categ/airpod.png');">
+                            <div class="over-img">
+                                <span class="categ-phones center">AIR PODS</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="hol-2-of-2">
+                        <a href="/devices/homepod" class="span-2-of-2" style="background-image: url('/imgs/categ/twelve.png');">
+                            <div class="over-img">
+                                <span class="categ-phones center">HOME PODS</span>
+                            </div>
+                        </a>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.querySelector('.nav').addEventListener('click', () => {
+            document.querySelector('.hol-1-of-3').classList.toggle('show');
+        })
+        document.querySelector('.span-ico').addEventListener('click', ()=>{
+            window.history.back();
+        })
+    </script>
+</body>
+</html>

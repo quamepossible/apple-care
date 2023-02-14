@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../includes/head') %>
+    <link rel="stylesheet" href="/css/stocks/devices.css">
+    <link rel="stylesheet" href="/css/stocks/media.css">
+    <title>DEVICES</title>
+</head>
+<body>
+    <!-- ADD PRODUCT OVERLAY -->
+    <%- include('../includes/add-overlay') %>
+    <!-- ADD PRODUCT OVERLAY -->
+    <section id="dev-main">
+        <div id="dev-container" class="row">
+            <div class="header">
+                <div class="head-items center">
+                    <a href="javascript:void(0)" class="span-ico">
+                        <ion-icon class="arr-ico center" name="arrow-back-outline"></ion-icon>
+                    </a>
+                    <div class="hol-items center">
+                        <button class="btn btn-success add-btn add-prd">Add Product</button>
+                        <button class="btn btn-primary add-btn">In Stock</button>
+                        <button class="btn btn-danger add-btn">Out of Stock</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dev-cont-body row">
+                <% eachVersion.forEach(dev => { %>
+                    <div class="dev-hol-1-of-3">
+                        <% let hrefLink = "/product/" + type + "?model=" + dev %> 
+                        <a href="<%= hrefLink %> " class="span-1-of-3">
+                            <% let url %> 
+                            <% if(type.length <= 2){
+                                url = "/imgs/categ/phones/" + type + "/" + type + dev + ".png";
+                            } 
+                            else {
+                                url = "/imgs/categ/" + type + "/" + type + dev + ".png";
+                            } %> 
+                            <div class="span-top" style="background-image: url('<%=url%>');"></div>
+                            <div class="span-bottom">
+                                <%
+                                    let device;
+                                    if(type.length <= 2){
+                                        device = type;
+                                    }
+                                    else{
+                                        device = type.split('');
+                                        device[0] = device[0].toUpperCase();
+                                        device = device.join('');
+                                        device += ' ';
+                                    }
+                                %> 
+                                <span class="center"><%= device.toUpperCase() %><%= dev.toUpperCase() %></span>
+                            </div>
+                        </a>
+                    </div>
+                <%})%>
+            </div>
+        </div>
+    </section>
+    <%- include('../includes/footer') %> 
+</body>
+</html>

@@ -1,0 +1,208 @@
+@media(max-width: 1500px){
+    .span-body{
+        width: 100%;
+    }
+}
+@media(max-width: 1350px){
+    .dev-cont-body{
+        width: 100%;
+    }
+}
+@media(max-width: 1300px){
+    .span-body{
+        width: 80%;
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: translate(0, 0);
+    }
+    .span-body .hol-2-of-2{
+        width: 50%;
+    }
+    .cont-body{
+        width: 100%;
+    }
+}
+
+@media(max-width: 1160px){
+    .cont-body{
+        width: 80%;
+    }
+    .hol-cir-spans{
+        width: 50%;
+    }
+}
+
+@media(max-width: 1100px){
+    .span-body{
+        width: 100%;
+    }
+}
+
+@media(max-width: 1080px){
+    #dev-container{
+        width: 100%;
+    }
+}
+
+@media(max-width: 1000px){
+    .cont-body{
+        width: 100%;
+    }
+    .hol-cir-spans{
+        width: 50%;
+    }
+}
+
+
+@media(max-width: 900px){
+    .hol-1-of-3, .span-2-of-3 {
+        width: 50%;
+    }
+    .span-body{
+        width: 100%;
+    }
+    .span-body .hol-2-of-2{
+        width: 100%;
+    }
+}
+
+@media(max-width: 850px){
+    .dev-cont-body{
+        width: 80%;
+    }
+    .dev-hol-1-of-3{
+        width: 50%;
+        margin-bottom: 20px;
+
+    }
+}
+
+@media(max-width: 800px){
+    .cont-body{
+        width: 80%;
+    }
+    .hol-cir-spans{
+        width: 100%;
+    }
+}
+@media(max-width: 730px){
+    .dev-cont-body{
+        width: 90%;
+    }
+}
+
+@media(max-width: 650px){
+    .hol-1-of-3, .span-2-of-3 {
+        width: 100%;
+    }
+    .span-body{
+        width: 100%;
+    }
+    .span-body .hol-2-of-2{
+        width: 50%;
+        margin-bottom: 15px;
+
+    }
+    .hol-1-of-3{
+        height: 0;
+        overflow: hidden;
+        position: sticky;
+        top: 0;
+
+    }
+    .show{
+        height: 100vh;
+    }
+    .nav{
+        visibility: visible;
+    }
+    .dev-cont-body{
+        width: 100%;
+    }
+}
+@media(max-width: 610px){
+    .span-body .hol-2-of-2{
+        width: 100%;
+    }
+
+    .span-2-of-3{
+        background: linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)), url('/imgs/inventory.jpg');
+        background-position: center;
+        background-size: cover;
+    }
+
+
+}
+@media(max-width: 600px){
+    #main{
+        height: auto;
+    }
+
+    #container{
+        width: 100%;
+        height: auto;
+        margin: auto;
+        border-radius: 0;
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: translate(0, 0);
+    }
+
+    .span-circ{
+        margin: 30px auto;
+    }
+
+    #prod-container{
+        width: 100%;
+    }
+
+}
+
+@media(max-width: 570px){
+    .dev-cont-body{
+        margin-top: 30px;
+    }
+    .dev-hol-1-of-3{
+        width: 100%;
+    }
+}
+
+@media(max-width: 480px){
+    .header{
+        overflow: hidden;
+    }
+    .add-btn{
+        padding: 10px;
+    }
+    .head-items{
+        width: 410px;
+    }
+    .hol-items{
+        width: 340px;
+        left: 57%;
+    }
+}
+
+@media(max-width: 410px){
+    .header{
+        overflow: auto;
+    }
+    .add-btn{
+        padding: 5px;
+    }
+    .head-items{
+        width: 370px;
+    }
+    .hol-items{
+        width: 310px;
+        left: 57%;
+    }
+}
+
+@media(max-width: 380px){
+    .cont-body{
+        width: 100%;
+    }
+}
