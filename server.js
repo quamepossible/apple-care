@@ -1,7 +1,8 @@
 const express = require('express');
 const methodOverride = require('method-override');
 const path = require('path');
-const data = require('./data.json')
+const data = require('./db/data.json')
+const accessoryData = require('./db/accessory.json')
 const app = express();
 
 // set views
@@ -62,7 +63,6 @@ app.post('/insert/:target', (req, res) => {
     const validData = req.body;
     const getSize = new Map(Object.entries(validData));
     const err = [];
-    // getSize.set('version', '').set('price', '');
     getSize.forEach((v, k) => {
         if(k !== 'version') v.length === 0 && err.push(k)
     });
@@ -136,6 +136,13 @@ app.get('/sales', (req, res) => {
 
 app.get('/analytics', (req, res) => {
     res.render('sales/analytics')
+})
+
+app.post('/checkout', (req, res) => {
+    const accessData = req.body;
+    const mapData = new Map(Object.entries(accessData));
+    mapData.forEach((v, k) => accessoryData[k].push(v));
+    res.send(accessoryData);
 })
 
 // SALES SECTION

@@ -1,30 +1,33 @@
+var myChart = echarts.init(document.getElementById('stock-chart'));
 
-const ctx = document.getElementById('myChart');
-const data = {
-    labels: [
-      'Red',
-      'Blue',
-      'Yellow'
-    ],
-    datasets: [{
-      label: 'My First Dataset',
-      data: [300, 50, 100],
-      backgroundColor: [
-        'rgb(255, 99, 132)',
-        'rgb(54, 162, 235)',
-        'rgb(255, 205, 86)'
+var option = {
+  tooltip: {
+    trigger: 'item'
+  },
+  series: [
+    {
+      name: 'Access From',
+      type: 'pie',
+      radius: '50%',
+      data: [
+        { value: 1048, name: 'Phones' },
+        { value: 735, name: 'Chargers' },
+        { value: 580, name: 'Protectors' },
       ],
-      hoverOffset: 4
-    }]
-  };
-
-const chart = new Chart(ctx, {
-    type: 'pie',
-    data: data,
-    options: {
-      
+      emphasis: {
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      }
     }
-});
+  ],
+  color : [
+      'rgb(0, 92, 197)',
+      'rgb(0, 171, 214)',
+      'rgb(228, 228, 228)'
+  ]
+};
+myChart.setOption(option);
 
-  
-  

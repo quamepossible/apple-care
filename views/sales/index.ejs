@@ -9,15 +9,15 @@
     <script src="/resources/jquery.min.js" defer></script>
     <script type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
-    <script src="/js/sales/index.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+    <script src="/js/sales/index.js" type="module" defer></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SALES</title>
 </head>
 <body>
-    <section id="main">
+    <section id="main-cont">
         <div class="hol-secs row">
             <div class="left-nav">
                 <div class="left-container center">
@@ -105,21 +105,21 @@
                     </div>
 
                     <div class="hol-bcumps row">
-                        <div class="card text-white bg-primary mb-3 span-1-of-3" style="max-width: 18rem;">
+                        <div class="card text-white bg-primary mb-4 span-1-of-3" style="max-width: 18rem;">
                             <div class="card-header"><span>TODAY</span></div>
                             <div class="card-body">
                                 <span class="total-amt">$5,000</span>
                             </div>
                         </div>
-                        <div class="card text-white bg-danger mb-3 span-1-of-3" style="max-width: 18rem;">
+                        <div class="card text-white bg-danger mb-4 span-1-of-3" style="max-width: 18rem;">
                             <div class="card-header"><span>STOCK</span></div>
                             <div class="card-body">
                                 <div class="hol-chart center">
-                                    <canvas id="myChart"></canvas>
+                                    <div id="stock-chart" style="width:300px;height:300px;"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card text-white bg-dark mb-3 span-1-of-3" style="max-width: 18rem;">
+                        <div class="card text-white bg-dark mb-4 span-1-of-3" style="max-width: 18rem;">
                             <div class="card-header"><span>REVENUE</span></div>
                             <div class="card-body">
                               
