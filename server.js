@@ -3,6 +3,7 @@ const methodOverride = require('method-override');
 const path = require('path');
 const data = require('./db/data.json')
 const accessoryData = require('./db/accessory.json')
+const checkOutData = require('./db/checkout.json')
 const app = express();
 
 // set views
@@ -81,17 +82,23 @@ app.post('/insert/:target', (req, res) => {
     res.send('saved')
 })
 
-app.get('/data/:id', (req, res) => {
-    const {id} = req.params;
-    const dataProp = new Map(Object.entries(data));
+const getSingleDevice = (id) => {
     // put data properties into Map
+    const dataProp = new Map(Object.entries(data));
     const dataPropNames = [];
     dataProp.forEach((_, k) => dataPropNames.push(k));
-    console.log(dataPropNames);
     for(const i of dataPropNames){
         const getItem = data[i].find(dev => (dev?.imei === id || dev?.serial === id));
-        if(getItem) res.send(getItem);
+        if(getItem) {
+            // getItem.whatdevice = i;
+            return [getItem, i];
+        }
     }
+}
+
+app.get('/data/:id', (req, res) => {
+    const {id} = req.params;
+    res.send(getSingleDevice(id)[0]);
 })
 
 app.get('/sections/:type', (req, res) => {
@@ -121,8 +128,11 @@ app.patch('/edit', (req, res) => {
             const removeData = data[i].filter(dev => dev[serOrime] !== id);
             data[i] = removeData;
             data[i].push(updatedData);
-            console.log(data[i]);
+            // console.log(data[i]);
             res.send('edited')
+        }
+        else{
+            // res.send('Device not found')
         }
     }
 })
@@ -145,10 +155,18 @@ app.post('/checkout', (req, res) => {
     res.send(accessoryData);
 })
 
+app.post('/sell', (req, res)=>{
+    const {cname, cident, cdate, ctime, cnote} = req.body;
+    const fullDate = [cdate, ctime];
+    const fdate = fullDate.join('T');
+    const devData = getSingleDevice(cident)
+    const devOriginalData = devData[0];
+    const newCheckOutData = Object.assign({}, devOriginalData, {cname, fdate, cnote, whatdevice:devData[1]});
+    checkOutData['devices'].push(newCheckOutData)
+    console.log(checkOutData);
+})
+
 // SALES SECTION
-
-
-
 
 
 

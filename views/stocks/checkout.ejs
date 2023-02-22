@@ -35,6 +35,48 @@
     </div>
     <!-- EDIT MODAL -->
 
+    <!-- CHECKOUT MODAL -->
+    <div class="modal fade" id="checkoutModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Checkout</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="checkout-form" action="" method="POST">
+                        <div class="form-row checkout-cont">
+                            <div class="form-group col-md-6">
+                                <label for="">Customer Name</label>
+                                <input type="text" class="form-control" id="" name="cname">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="">Date</label>
+                                <input type="date" class="form-control" id="" name="cdate">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="">Time</label>
+                                <input type="time" class="form-control" id="" name="ctime">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="">Add Note (optional)</label>
+                                <input type="text" class="form-control" id="" name="cnote">
+                            </div>
+                            <input type="text" id="cident" name="cident" value="" style="display: none;">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Checkout</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- CHECKOUT MODAL -->
+
     <!-- ADD PRODUCT OVERLAY -->
     <%- include('../includes/add-overlay') %>
     <!-- ADD PRODUCT OVERLAY -->
@@ -94,8 +136,8 @@
                                     %> 
                                 <tr>
                                     <td class="hol-btns">
-                                        <button class="btn btn-warning btn-edit" data-toggle="modal" data-val="<%= body[id] %> " data-target="#editModal">Edit</button>
-                                        <button class="btn btn-success btn-out">Checkout</button>
+                                        <button class="btn btn-warning btn-edit" data-toggle="modal" data-val="<%= body[id] %>" data-target="#editModal">Edit</button>
+                                        <button class="btn btn-success btn-out" data-toggle="modal" data-val="<%= body[id] %>" data-target="#checkoutModal">Checkout</button>
                                     </td>
                                     <td><%= ++count %> </td>
                                     <% body.forEach(item => {%>
