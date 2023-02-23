@@ -56,8 +56,7 @@
         if(clickAction.action === 'add'){
             let target = document.querySelector('.prd-name').innerHTML.toLowerCase();
             target = target.trim();
-            doValidation('.add-form-row', '.add-form', `http://localhost:3000/insert/${target}`, 'POST');
-            // console.log(JSON.stringify(Object.fromEntries(formData))); 
+            doValidation('.add-form', `http://localhost:3000/insert/${target}`, 'POST');
         }
     })
 

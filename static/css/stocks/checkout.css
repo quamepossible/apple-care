@@ -145,8 +145,13 @@ td:nth-of-type(odd){
     color: white;
 }
 
+.acts{
+    width: 50px;
+    /* background-color: green; */
+}
+
 .hol-btns{
-    /* display: block; */
+    display: block;
     width: 210px;
     background-color: red;
 }

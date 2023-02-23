@@ -104,6 +104,14 @@ app.get('/sections/:type', (req, res) => {
 
 app.patch('/edit', (req, res) => {
     const updatedData = req.body;
+    console.log(updatedData);
+    const mapGetData = new Map(Object.entries(updatedData));
+    const err = [];
+    mapGetData.forEach((v, k) => (k !== 'version') && (v.length === 0) && err.push(k))
+    if(mapGetData.size === 0 || err.length > 0){
+        res.send('Empty Data')
+        return;
+    }
     const id = (updatedData?.imei) ? updatedData.imei : updatedData.serial;
     const serOrime = (updatedData?.imei) ? 'imei' : 'serial';
     console.log(`${serOrime} : ${id}`);

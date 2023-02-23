@@ -22,9 +22,11 @@ const modalFunction = () => {
                     const mapData = new Map(Object.entries(data));
                     mapData.forEach((v, k) => {
                         if(k === 'img') return;
+                        const vers = k.toUpperCase();
+                        const spanVer = (vers === 'VERSION') ? '' : '<span>*</span>';
                         const inps = `
                                     <div class="form-group col-md-6">
-                                        <label for="">${k.toUpperCase()}</label>
+                                        <label for="">${k.toUpperCase()} ${spanVer}</label>
                                         <input type="text" class="form-control" id="" name="${k}" value="${v}">
                                     </div>`;
                         formContainer.insertAdjacentHTML('beforeend', inps);
@@ -48,7 +50,7 @@ const modalFunction = () => {
 const editDataFunc = () => {
     document.querySelector('.edit-form').addEventListener('submit', function(e){
         e.preventDefault();
-        doValidation('.edit-cont', '.edit-form', 'http://localhost:3000/edit', 'PATCH');
+        doValidation('.edit-form', 'http://localhost:3000/edit', 'PATCH');
     })
 }
 

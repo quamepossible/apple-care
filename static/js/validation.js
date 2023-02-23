@@ -1,4 +1,4 @@
-export const doValidation = (formClass, whichForm, url, theMethod) => {
+export const doValidation = (whichForm, url, theMethod) => {
     const holErr = [];
     const mainForm = document.querySelector(whichForm);
     const formData = new FormData(mainForm);
