@@ -19,6 +19,13 @@ body{
     overflow-x: auto;
 }
 
+.empty-data{
+    color: white;
+    width: 300px;
+    font-size: 45px;
+    /* background-color: red; */
+}
+
 #check-container{
     width: 100%;
     height: 100%;
@@ -139,7 +146,7 @@ td:nth-of-type(odd){
 }
 
 .hol-btns{
-    display: block;
+    /* display: block; */
     width: 210px;
     background-color: red;
 }
@@ -165,5 +172,3 @@ td button{
     background: rgb(0, 0, 0);
     color: white;
 }
-
-

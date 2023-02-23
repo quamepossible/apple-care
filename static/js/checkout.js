@@ -57,12 +57,16 @@ const checkoutForm = () => {
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(this));
         const mapData = new Map(Object.entries(formData));
-        console.log(mapData);
+        // console.log(mapData);
         const err = [];
         mapData.forEach((v,k)=>(k !== 'cnote') && (v.length === 0) && err.push(k))
         if(err.length > 0){
             // there's error
-            console.log('Empty fields on form');
+            Swal.fire({
+                icon: 'error',
+                title: 'Empty Fields',
+                text: `Fields marked with '*' can't be left blank`,
+            })
         }
         else{
             // push data
@@ -72,6 +76,13 @@ const checkoutForm = () => {
                 data : formData,
                 success: (data) => {
                     console.log(data);
+                    if(data === 'sold'){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sold',
+                            text: `Device sold successfully`,
+                        }).then(() => location.reload())
+                    }
                 }
             })
         }

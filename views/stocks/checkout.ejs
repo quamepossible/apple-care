@@ -7,7 +7,6 @@
     <script defer src="/resources/bootstrap.min.js"></script>
     <script type="text/javascript" defer charset="utf8" src="/resources/DataTables/datatables.js"></script>
     <script type="text/javascript" defer charset="utf8" src="/resources/DataTables/pdfmake-0.1.36/pdfmake.js"></script>
-    <script src="/js/checkout.js" type="module" defer></script>
     <title>CHECKOUT</title>
 </head>
 <body>
@@ -49,15 +48,15 @@
                     <form class="checkout-form" action="" method="POST">
                         <div class="form-row checkout-cont">
                             <div class="form-group col-md-6">
-                                <label for="">Customer Name</label>
+                                <label for="">Customer Name <span>*</span></label>
                                 <input type="text" class="form-control" id="" name="cname">
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="">Date</label>
+                                <label for="">Date <span>*</span></label>
                                 <input type="date" class="form-control" id="" name="cdate">
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="">Time</label>
+                                <label for="">Time <span>*</span></label>
                                 <input type="time" class="form-control" id="" name="ctime">
                             </div>
                             <div class="form-group col-md-6">
@@ -96,62 +95,67 @@
                 </div>
             </div>
 
-            <div class="check-cont-body row">
-                <div class="span-right">
-                    <div class="hol-table">
-                        <table id="table_id">
-                            <thead>
-                                <tr>
-                                    <% 
-                                        const cols = devices.find(d => d.model.length > 0) 
-                                        const colNames = new Map(Object.entries(cols))
-                                        const headCols = [];
-                                        colNames.forEach((v, k) => {
-                                            if(k !== 'img') {
-                                                headCols.push(k);
+            <% if(devices.length === 0) { %>
+                <p class="empty-data center">Empty Data</p>
+            <% } else { %>
+                <div class="check-cont-body row">
+                    <div class="span-right">
+                        <div class="hol-table">
+                            <table id="table_id">
+                                <thead>
+                                    <tr>
+                                        <% 
+                                            const cols = devices.find(d => d.model.length > 0) 
+                                            const colNames = new Map(Object.entries(cols))
+                                            const headCols = [];
+                                            colNames.forEach((v, k) => {
+                                                if(k !== 'img') {
+                                                    headCols.push(k);
+                                                }
+                                            })
+                                        %>
+                                        <th class="acts">ACTIONS</th>
+                                        <th>#</th>
+                                        <% let id;
+                                        headCols.forEach((key, i) => {%>
+                                            <% if(key === 'imei' || key === 'serial') {
+                                                id = i;
                                             }
-                                        })
-                                    %>
-                                    <th class="acts">ACTIONS</th>
-                                    <th>#</th>
-                                    <% let id;
-                                    headCols.forEach((key, i) => {%>
-                                        <% if(key === 'imei' || key === 'serial') {
-                                            id = i;
-                                        }
+                                            %> 
+                                            <th><%= key.toUpperCase() %> </th>
+                                        <%}) %> 
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% var count = 0 %> 
+                                    <% devices.forEach(device => {%>
+                                        <% 
+                                        const bodyVal = new Map(Object.entries(device));
+                                        const body = [];
+                                        bodyVal.forEach((v, k) => {
+                                            if(k !== 'img') body.push(v)
+                                        });
                                         %> 
-                                        <th><%= key.toUpperCase() %> </th>
+                                    <tr>
+                                        <td class="hol-btns">
+                                            <button class="btn btn-warning btn-edit" data-toggle="modal" data-val="<%= body[id] %>" data-target="#editModal">Edit</button>
+                                            <button class="btn btn-success btn-out" data-toggle="modal" data-val="<%= body[id] %>" data-target="#checkoutModal">Checkout</button>
+                                        </td>
+                                        <td><%= ++count %> </td>
+                                        <% body.forEach(item => {%>
+                                            <td><%= item = (item.length === 0) ? '-' : item.toUpperCase() %></td>
+                                        <%}) %>
+                                    </tr>
                                     <%}) %> 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% var count = 0 %> 
-                                <% devices.forEach(device => {%>
-                                    <% 
-                                    const bodyVal = new Map(Object.entries(device));
-                                    const body = [];
-                                    bodyVal.forEach((v, k) => {
-                                        if(k !== 'img') body.push(v)
-                                    });
-                                    %> 
-                                <tr>
-                                    <td class="hol-btns">
-                                        <button class="btn btn-warning btn-edit" data-toggle="modal" data-val="<%= body[id] %>" data-target="#editModal">Edit</button>
-                                        <button class="btn btn-success btn-out" data-toggle="modal" data-val="<%= body[id] %>" data-target="#checkoutModal">Checkout</button>
-                                    </td>
-                                    <td><%= ++count %> </td>
-                                    <% body.forEach(item => {%>
-                                        <td><%= item = (item.length === 0) ? '-' : item.toUpperCase() %></td>
-                                    <%}) %>
-                                </tr>
-                                <%}) %> 
-                            </tbody>
-                        </table> 
+                                </tbody>
+                            </table> 
+                        </div>
                     </div>
                 </div>
-            </div>
+                <script src="/js/checkout.js" type="module" defer></script>
+                <% } %>
+                <%- include('../includes/footer') %> 
         </div>
     </section>
-    <%- include('../includes/footer') %> 
 </body>
 </html>

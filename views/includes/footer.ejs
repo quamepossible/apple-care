@@ -25,11 +25,13 @@
         const addFormContainer = document.querySelector('.add-form-row');
         const fetchFormCol = async () => {
             const fetchCol = await fetch(`http://localhost:3000/sections/${target}`);
-            const theCols = await fetchCol.json();
+            const theCols = await fetchCol.json(); 
             theCols.forEach(col => {
+                const vers = col.toUpperCase();
+                const spanVer = (vers === 'VERSION') ? '' : '<span>*</span>';
                 const inpField = `
                                 <div class="form-group col-md-6">
-                                    <label for="">${col.toUpperCase()}</label>
+                                    <label for="">${col.toUpperCase()} ${spanVer}</label>
                                     <input type="text" class="form-control" id="" name="${col}">
                                 </div>`;
                 addFormContainer.insertAdjacentHTML('beforeend', inpField)

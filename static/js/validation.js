@@ -16,8 +16,18 @@ export const doValidation = (formClass, whichForm, url, theMethod) => {
             success : (res) => {
                 console.log(res);
                 if(res === 'saved' || res === 'edited') {
-                    alert(`Data ${res}`)
-                    location.reload();
+                    Swal.fire({
+                        icon: 'success',
+                        title: res,
+                        text: `Device ${res} successfully`,
+                    }).then(() => location.reload())
+                }
+                else if(res.toLowerCase() === 'empty data'){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Empty Fields',
+                        text: `Fields marked with '*' can't be left blank`,
+                    })
                 }
             }
         })

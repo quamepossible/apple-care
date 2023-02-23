@@ -48,15 +48,14 @@ app.get('/product/:sku', (req, res) => {
     const {sku} = req.params;
     const {model} = req.query;
     let type = (sku.length <= 2) ? 'phones' : sku;
-
     const devices = data[type].filter(d => (d.model === sku && d.version === model))
     console.log("devices " + devices.length);
-    if(devices.length > 0){
+    // if(devices.length > 0){
         res.render('stocks/checkout', {devices})
-    }
-    else{
-        res.redirect('/sections')
-    }
+    // }
+    // else{
+    //     res.redirect('/sections')
+    // }
 })
 
 app.post('/insert/:target', (req, res) => {
@@ -64,10 +63,7 @@ app.post('/insert/:target', (req, res) => {
     const validData = req.body;
     const getSize = new Map(Object.entries(validData));
     const err = [];
-    getSize.forEach((v, k) => {
-        if(k !== 'version') v.length === 0 && err.push(k)
-    });
-    console.log(`Error Length : ${err.length}`);
+    getSize.forEach((v, k) => (k !== 'version') && (v.length === 0) && err.push(k))
     // push to database using target
     if(!data[target]){
         res.send('Invalid Product');
@@ -78,7 +74,6 @@ app.post('/insert/:target', (req, res) => {
         return;
     }
     data[target].push(validData);
-    console.log(data[target]);
     res.send('saved')
 })
 
@@ -89,10 +84,7 @@ const getSingleDevice = (id) => {
     dataProp.forEach((_, k) => dataPropNames.push(k));
     for(const i of dataPropNames){
         const getItem = data[i].find(dev => (dev?.imei === id || dev?.serial === id));
-        if(getItem) {
-            // getItem.whatdevice = i;
-            return [getItem, i];
-        }
+        if(getItem) return [getItem, i];
     }
 }
 
@@ -107,7 +99,6 @@ app.get('/sections/:type', (req, res) => {
     const grapKeysMap = new Map(Object.entries(oneType));
     const holKeys = [];
     grapKeysMap.forEach((_, k) => (k !== 'img') && holKeys.push(k))
-    console.log(holKeys);
     res.send(holKeys);
 })
 
@@ -128,12 +119,25 @@ app.patch('/edit', (req, res) => {
             const removeData = data[i].filter(dev => dev[serOrime] !== id);
             data[i] = removeData;
             data[i].push(updatedData);
-            // console.log(data[i]);
             res.send('edited')
         }
         else{
             // res.send('Device not found')
         }
+    }
+})
+
+app.post('/sell', (req, res)=>{
+    const {cname, cident, cdate, ctime, cnote} = req.body;
+    const fullDate = [cdate, ctime];
+    const fdate = fullDate.join('T');
+    const devData = getSingleDevice(cident)
+    const devOriginalData = devData[0];
+    const newCheckOutData = Object.assign({}, devOriginalData, {cname, fdate, cnote, whatdevice:devData[1]});
+    if(checkOutData['devices'].push(newCheckOutData)){
+        // remove device from main database
+        data[devData[1]] = data[devData[1]].filter(d => !(d?.imei === cident || d?.serial === cident));
+        res.send('sold');
     }
 })
 // STOCKS SECTION
@@ -155,16 +159,7 @@ app.post('/checkout', (req, res) => {
     res.send(accessoryData);
 })
 
-app.post('/sell', (req, res)=>{
-    const {cname, cident, cdate, ctime, cnote} = req.body;
-    const fullDate = [cdate, ctime];
-    const fdate = fullDate.join('T');
-    const devData = getSingleDevice(cident)
-    const devOriginalData = devData[0];
-    const newCheckOutData = Object.assign({}, devOriginalData, {cname, fdate, cnote, whatdevice:devData[1]});
-    checkOutData['devices'].push(newCheckOutData)
-    console.log(checkOutData);
-})
+
 
 // SALES SECTION
 
