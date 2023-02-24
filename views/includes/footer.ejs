@@ -20,7 +20,7 @@
         const target = spanPar.querySelector('.categ-phones').dataset.target;
         document.querySelector('.overlay-content').style.display = 'none';
         document.querySelector('.data-content').style.display = 'block';
-        document.querySelector('.cont-close').style.visibility = 'hidden';
+        document.querySelector('.hol-close-cont').style.display = 'none';
         document.querySelector('.prd-name').innerHTML = target.toUpperCase();
         const addFormContainer = document.querySelector('.add-form-row');
         const fetchFormCol = async () => {
@@ -50,7 +50,7 @@
             document.querySelector('.add-form-row').innerHTML = '';
             document.querySelector('.overlay-content').style.display = 'block';
             document.querySelector('.data-content').style.display = 'none';
-            document.querySelector('.cont-close').style.visibility = 'visible';     
+            document.querySelector('.hol-close-cont').style.display = 'block';     
         }
 
         if(clickAction.action === 'add'){
