@@ -108,7 +108,7 @@ body{
     /* background-color: blue; */
 }
 
-.span-1-of-3{
+.dev-span-1-of-3{
     display: block;
     width: 280px;
     height: 100%;
@@ -120,7 +120,7 @@ body{
     transition: 0.3s;
 }
 
-.span-1-of-3:hover{
+.dev-span-1-of-3:hover{
     transform: scale(0.9);
 }
 
