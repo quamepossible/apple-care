@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <%- include('../includes/head') %>
-    <link rel="stylesheet" href="/css/stocks/sections.css">
-    <link rel="stylesheet" href="/css/stocks/media.css">
-    <title>SECTIONS</title>
+    <!-- <title>SECTIONS</title> -->
+    <%- include('../includes/head', {pageCSS: 'sections.css', mediaQueries: 'media.css', title: 'SECTION'}) %>
 </head>
 <body>
     <section id="sec-main">
         <div id="sec-container" class="">
             <div class="span-1-of-3 row">
-                <!-- <div class="hol-sub-secs"> -->
-                    <a href="/" class="sub-secs btn btn-danger">
-                        <span class="center span-sec"><ion-icon name="home-outline"></ion-icon><span class="ico">HOME</span></span>
-                    </a>
-                    <a href="#" class="sub-secs btn btn-primary">
-                        <span class="center span-sec"><ion-icon name="bar-chart-outline"></ion-icon><span class="ico">SALES</span></span>
-                    </a>
-                    <a href="#" class="sub-secs btn btn-warning">
-                        <span class="center span-sec"><ion-icon name="search-outline"></ion-icon><span class="ico">SEARCH</span></span>
-                    </a>
-                    <a href="#" class="sub-secs btn btn-light">
-                        <span class="center span-sec"><ion-icon name="settings-outline"></ion-icon><span class="ico">SETTINGS</span></span>
-                    </a>
-                <!-- </div> -->
+                <a href="/" class="sub-secs btn btn-danger">
+                    <span class="center span-sec"><ion-icon name="home-outline"></ion-icon><span class="ico">HOME</span></span>
+                </a>
+                <a href="#" class="sub-secs btn btn-primary">
+                    <span class="center span-sec"><ion-icon name="bar-chart-outline"></ion-icon><span class="ico">SALES</span></span>
+                </a>
+                <a href="#" class="sub-secs btn btn-warning">
+                    <span class="center span-sec"><ion-icon name="search-outline"></ion-icon><span class="ico">SEARCH</span></span>
+                </a>
+                <a href="#" class="sub-secs btn btn-light">
+                    <span class="center span-sec"><ion-icon name="settings-outline"></ion-icon><span class="ico">SETTINGS</span></span>
+                </a>
             </div>
             <div class="span-2-of-3">
                 <div class="span-body row">
