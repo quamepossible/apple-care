@@ -3,18 +3,20 @@
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans&family=Comfortaa&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans&family=Comfortaa&family=IBM+Plex+Sans&family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/resources/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/sales/dashboard.css">
+    <link rel="stylesheet" href="/css/sales/general.css">
+    <link rel="stylesheet" href="/css/sales/<%= pageCSS %>">
     <script src="/resources/jquery.min.js" defer></script>
     <script type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
-    <script src="/js/sales/analyze.js" type="module" defer></script>
+    <script src="/js/sales/<%= pageJS %>" defer></script>
+    <script src="/js/sales/general.js" defer></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SALES</title>
+    <title><%= title %></title>
 </head>
 <body>
     <div class="checkout-overlay">
@@ -123,3 +125,5 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="right-cont">

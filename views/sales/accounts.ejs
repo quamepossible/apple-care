@@ -1,2 +1,79 @@
-<%- include('./includes/navsec') %>
+<%- include('./includes/navsec', {pageCSS: 'accounts.css', pageJS: 'accounts.js', title: 'ACCOUNTS'}) %>
+
+<div id="accounts-content">
+    <div class="hol-today row">
+        <div class="today-amt">
+            <p> 
+                <span class="today-ico">
+                    <ion-icon name="today-outline" class="cal-ico"></ion-icon> 
+                    Today
+                </span>
+                
+            </p>
+            <p class="full-amt">$4,599</p>
+            <p>
+                <span class="tag-head">Products Sold</span><br>
+                <p class="hol-tags">
+                    <span class="tags">Phone</span>
+                    <span class="tags">Charger</span>
+                    <span class="tags">Case</span>
+                </p>
+            </p>
+        </div>
+        <div class="today-type row">
+            <div class="tran-type">
+                <div class="type-img" style="background-image:url('/imgs/cash.jpg')"></div>
+                <p>$34,000</p>
+                <span>Cash</span>
+            </div>
+            <div class="tran-type">
+                <div class="type-img" style="background-image:url('/imgs/momo.jpg')"></div>
+                <p>$14,000</p>
+                <span>Momo</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hol-past row">
+        <div class="left-chart">
+            <div class="prds-sold">
+                <p class="left-head">
+                    <span class="top-left">Products Sold</span>
+                    <span class="top-right">Total Amount ($18,600)</span>
+                </p>
+                <ul>
+                    <li>
+                        <img src="/imgs/categ/nine.png" style="width: 40px;height:40px" alt="">
+                        <span class="prd-name">Phones</span>
+
+                        <span class="all-spans">
+                            <span>$1,400</span>
+                            <span class="load">
+                                <span class="span-qty"></span>
+                            </span>
+                            <span>41%</span>
+                        </span>        
+                    </li>
+                    <li>
+                        <img src="/imgs/categ/nine.png" style="width: 40px;height:40px" alt="">
+                        <span class="prd-name">Phones</span>
+
+                        <span class="all-spans">
+                            <span>$1,400</span>
+                            <span class="load">
+                                <span class="span-qty"></span>
+                            </span>
+                            <span>49%</span>
+                        </span>        
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="right-chart">
+            <div id="trans-chart"></div>
+        </div>
+    </div>
+</div>
+
 <%- include('./includes/navfooter') %>
