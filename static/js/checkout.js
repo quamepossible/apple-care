@@ -18,10 +18,9 @@ const modalFunction = () => {
                     const getData = await fetch(`http://localhost:3000/data/${itemID}`);
                     if(!getData) throw new Error('Something went wrong')
                     const data = await getData.json();
-                    // console.log(data);
                     const mapData = new Map(Object.entries(data));
                     mapData.forEach((v, k) => {
-                        if(k === 'img') return;
+                        if(k === 'img' || k === 'dateAdded') return;
                         const vers = k.toUpperCase();
                         const spanVer = (vers === 'VERSION') ? '' : '<span>*</span>';
                         const inps = `

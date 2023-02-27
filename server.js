@@ -4,6 +4,7 @@ const path = require('path');
 const data = require('./db/data.json')
 const accessoryData = require('./db/accessory.json')
 const checkOutData = require('./db/checkout.json')
+const transactType = require('./db/transactions.json')
 const app = express();
 
 // set views
@@ -73,7 +74,9 @@ app.post('/insert/:target', (req, res) => {
         res.send('Empty Data')
         return;
     }
+    validData.dateAdded = new Date().toISOString();
     data[target].push(validData);
+    console.log(validData);
     res.send('saved')
 })
 
@@ -98,7 +101,10 @@ app.get('/sections/:type', (req, res) => {
     const oneType = data[type][0];
     const grapKeysMap = new Map(Object.entries(oneType));
     const holKeys = [];
-    grapKeysMap.forEach((_, k) => (k !== 'img') && holKeys.push(k))
+    grapKeysMap.forEach((_, k) => {
+        if(k === 'img' || k === 'dateAdded') return;
+        holKeys.push(k)
+    })
     res.send(holKeys);
 })
 
@@ -136,7 +142,7 @@ app.patch('/edit', (req, res) => {
 })
 
 app.post('/sell', (req, res)=>{
-    const {cname, cident, cdate, ctime, cnote} = req.body;
+    const {cname, cphone, cident, cdate, ctime, payment, cnote} = req.body;
     const fullDate = [cdate, ctime];
     const fdate = fullDate.join('T');
     const devData = getSingleDevice(cident)
@@ -145,6 +151,9 @@ app.post('/sell', (req, res)=>{
     if(checkOutData['devices'].push(newCheckOutData)){
         // remove device from main database
         data[devData[1]] = data[devData[1]].filter(d => !(d?.imei === cident || d?.serial === cident));
+        transactType[payment].push(newCheckOutData.price)
+        console.log("Price : " + Object.values(transactType));
+
         res.send('sold');
     }
 })
@@ -153,11 +162,11 @@ app.post('/sell', (req, res)=>{
 
 // SALES SECTION
 app.get('/sales', (req, res) => {
-    res.render('sales/index')
+    res.render('sales/dashboard')
 })
 
-app.get('/analytics', (req, res) => {
-    res.render('sales/analytics')
+app.get('/accounts', (req, res) => {
+    res.render('sales/accounts')
 })
 
 app.post('/checkout', (req, res) => {

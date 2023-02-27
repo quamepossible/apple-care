@@ -3,21 +3,41 @@
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans&family=Comfortaa&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/resources/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/sales/index.css">
+    <link rel="stylesheet" href="/css/sales/dashboard.css">
     <script src="/resources/jquery.min.js" defer></script>
     <script type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
-    <script src="/js/sales/index.js" type="module" defer></script>
+    <script src="/js/sales/analyze.js" type="module" defer></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SALES</title>
 </head>
 <body>
-    <section id="main-cont">
+    <div class="checkout-overlay">
+        <div class="checkout-content center">
+            <span class="check-header">CHECKOUT</span>
+            <div class="hol-tags">
+                <button type="button" data-name="charger" class="clicked">Charger</button>
+                <button type="button" data-name="earpods">Handsfree</button>
+                <button type="button" data-name="protector">Protector</button>
+                <button type="button" data-name="cover">Phone case</button>
+                <button type="button" data-name="screen">Screen</button>
+                <button type="button" data-name="battery">Battery</button>
+                <button type="button" data-name="dock">3-in-1 charging dock</button>
+            </div>
+            <form action="" class="cart-form">              
+                <div class="hol-sub-btns">
+                    <button type="button" class="btn btn-danger close-btn">Close</button>
+                    <button class="btn btn-success">Checkout</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <section id="analy-main">
         <div class="hol-secs row">
             <div class="left-nav">
                 <div class="left-container center">
@@ -39,7 +59,7 @@
                                 <span class="li-ico">
                                     <ion-icon name="tv-outline" class="tv-ico center"></ion-icon>
                                 </span>
-                                <a href="#" class="li-text">
+                                <a href="/sales" class="li-text">
                                    <span class="text center">Dashboard</span> 
                                 </a>
                             </li>
@@ -47,25 +67,25 @@
                                 <span class="li-ico">
                                     <ion-icon name="stats-chart-outline" class="tv-ico center"></ion-icon>
                                 </span>
-                                <a href="/analytics" class="li-text">
-                                   <span class="text center">Analytics</span> 
+                                <a href="/accounts" class="li-text">
+                                   <span class="text center">Accounts</span> 
                                 </a>
                             </li>
                             <li class="row">
                                 <span class="li-ico">
                                     <ion-icon name="search-outline" class="tv-ico center"></ion-icon>
                                 </span>
-                                <a href="#" class="li-text">
+                                <span class="li-text">
                                    <span class="text center">Look Up</span> 
-                                </a>
+                                </span>
                             </li>
                             <li class="row">
                                 <span class="li-ico">
                                     <ion-icon name="construct-outline" class="tv-ico center" style="color:red"></ion-icon>
                                 </span>
-                                <a href="#" class="li-text">
+                                <span class="li-text">
                                    <span class="text center">Services</span> 
-                                </a>
+                                </span>
                             </li>   
                         </ul>
                     </div>
@@ -97,76 +117,9 @@
                                 <span class="hol-btn-ico">
                                     <ion-icon name="scan-outline" class="top-ico center"></ion-icon>
                                 </span>
-                                <span class="hol-btn-ico">
-                                    <ion-icon name="apps-outline" class="top-ico center"></ion-icon>
+                                <span class="hol-btn-ico checkout-btn">
+                                    <ion-icon name="cart-outline"  class="top-ico center"></ion-icon>
                                 </span>
                             </div>
                         </div>
                     </div>
-
-                    <div class="hol-bcumps row">
-                        <div class="card text-white bg-primary mb-4 span-1-of-3" style="max-width: 18rem;">
-                            <div class="card-header"><span>TODAY</span></div>
-                            <div class="card-body">
-                                <span class="total-amt">$5,000</span>
-                            </div>
-                        </div>
-                        <div class="card text-white bg-danger mb-4 span-1-of-3" style="max-width: 18rem;">
-                            <div class="card-header"><span>STOCK</span></div>
-                            <div class="card-body">
-                                <div class="hol-chart center">
-                                    <div id="stock-chart" style="width:300px;height:300px;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card text-white bg-dark mb-4 span-1-of-3" style="max-width: 18rem;">
-                            <div class="card-header"><span>REVENUE</span></div>
-                            <div class="card-body">
-                              
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="right-cont">
-                        <div class="cont-header">
-                            <span class="text">Recent Activities</span>
-                        </div>
-
-                        <div class="table-cont">
-                            <div class="hol-table">
-                                <table>
-                                    <thead></thead>
-                                    <tbody>
-                                        <tr class="">
-                                            <td>iPhone 13 Pro Max</td>
-                                            <td class="amt">$5,300</td>
-                                            <td>Christiana Dzill</td>
-                                            <td><span>Sold</span></td>
-                                            <td>Today</td>
-                                        </tr>
-                                        <tr class="">
-                                            <td>iPhone 11 (64 GB)</td>
-                                            <td class="amt">$5,300</td>
-                                            <td>Christiana Dzill</td>
-                                            <td><span style="background-color: rgb(172, 254, 172);color:green;">Added</span></td>
-                                            <td>Yesterday</td>
-                                        </tr>
-                                        <tr class="">
-                                            <td>iPhone 8 (128 GB)</td>
-                                            <td class="amt">$5,300</td>
-                                            <td>Christiana Dzill</td>
-                                            <td><span>Sold</span></td>
-                                            <td>2 days ago</td>
-                                            <!-- <td>Wednesday, 19<sup>th</sup> September, 2022</td> -->
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</body>
-</html>
