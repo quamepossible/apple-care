@@ -2,7 +2,6 @@ const express = require('express');
 const methodOverride = require('method-override');
 const path = require('path');
 const data = require('./db/data.json')
-const accessoryData = require('./db/accessory.json')
 const checkOutData = require('./db/checkout.json')
 const transactType = require('./db/transactions.json')
 const app = express();
@@ -91,6 +90,23 @@ const getSingleDevice = (id) => {
     }
 }
 
+const checkoutDevice = (date, prdType, prdData) => {
+    // const theDate = new Date().toISOString().split('T')[0];
+    const theDate = date;
+    const mainDateKeys = Object.keys(checkOutData);
+    const isDateKeyAva = mainDateKeys.some(k => k === theDate);
+    if(!isDateKeyAva){
+        checkOutData[theDate] = {}
+        checkOutData[theDate][prdType] = [prdData];
+    }
+    else{
+        const dateKeys = Object.keys(checkOutData[theDate])
+        const isPrdKeyAva = dateKeys.some(k => k === prdType);
+        (!isPrdKeyAva) ? checkOutData[theDate][prdType] = [prdData] : checkOutData[theDate][prdType].push(prdData)
+    }
+    return true;
+}
+
 app.get('/data/:id', (req, res) => {
     const {id} = req.params;
     res.send(getSingleDevice(id)[0]);
@@ -142,20 +158,17 @@ app.patch('/edit', (req, res) => {
 })
 
 app.post('/sell', (req, res)=>{
-    const {cname, cphone, cident, cdate, ctime, payment, cnote} = req.body;
-    const fullDate = [cdate, ctime];
-    const fdate = fullDate.join('T');
+    const {cident, cdate} = req.body;
     const devData = getSingleDevice(cident)
     const devOriginalData = devData[0];
-    const newCheckOutData = Object.assign({}, devOriginalData, {cname, fdate, cnote, whatdevice:devData[1]});
-    if(checkOutData['devices'].push(newCheckOutData)){
+    const newCheckOutData = Object.assign({}, devOriginalData, req.body);
+    const doCheckout = checkoutDevice(cdate, devData[1], newCheckOutData);
+    if(doCheckout){
         // remove device from main database
         data[devData[1]] = data[devData[1]].filter(d => !(d?.imei === cident || d?.serial === cident));
-        transactType[payment].push(newCheckOutData.price)
-        console.log("Price : " + Object.values(transactType));
-
-        res.send('sold');
+        res.send(checkOutData);
     }
+    console.log(checkOutData);
 })
 // STOCKS SECTION
 
@@ -171,9 +184,9 @@ app.get('/accounts', (req, res) => {
 
 app.post('/checkout', (req, res) => {
     const accessData = req.body;
-    const mapData = new Map(Object.entries(accessData));
-    mapData.forEach((v, k) => accessoryData[k].push(v));
-    res.send(accessoryData);
+    // const mapData = new Map(Object.entries(accessData));
+    // mapData.forEach((v, k) => accessoryData[k].push(v));
+    // res.send(accessoryData);
 })
 
 

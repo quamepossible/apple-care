@@ -77,7 +77,7 @@ const checkoutForm = () => {
                 data : formData,
                 success: (data) => {
                     console.log(data);
-                    if(data === 'sold'){
+                    if(data){
                         Swal.fire({
                             icon: 'success',
                             title: 'Sold',

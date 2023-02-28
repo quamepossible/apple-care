@@ -58,16 +58,21 @@ const submitCart = () => {
             const itemInps = cart.querySelectorAll('input');
             itemInps.forEach(inp => data[assignCart].push(inp.value));
         })
-        // console.log(data);
-        $.ajax({
-            url: 'http://localhost:3000/checkout',
-            method: 'POST',
-            data: data,
-            success: (res) => {
-                console.log(res);
-            }
-
-        })
+        const checkInps = Object.values(data);
+        if(checkInps.flat().every(v => v.length > 0)){
+            console.log(data);
+            // $.ajax({
+            //     url: 'http://localhost:3000/checkout',
+            //     method: 'POST',
+            //     data: data,
+            //     success: (res) => {
+            //         console.log(res);
+            //     }
+            // })
+        }
+        else{
+            console.log('Empty fields');
+        }
     })
     const checkoutOverlay = document.querySelector('.checkout-overlay');
     // open checkout dialog
