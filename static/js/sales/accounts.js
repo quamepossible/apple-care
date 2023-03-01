@@ -27,8 +27,9 @@ const transactFunc = async () => {
   const toDate = new Date().toISOString().split('T')[0];
   const getTotalAmt = await fetch(`http://localhost:3000/sold/${toDate}?act=jt`);
   const resTotalAmt = await getTotalAmt.json();
-  const viewAmt = resTotalAmt?.totalAmount ? resTotalAmt.totalAmount : 'N/A';
+  const viewAmt = resTotalAmt?.totalAmount ? resTotalAmt.totalAmount : '-';
   document.querySelector('.main-amt').innerHTML = viewAmt;
+  document.querySelector('.left-head-amt').innerHTML = viewAmt;
   console.log(viewAmt);
 
 }
@@ -56,7 +57,7 @@ const fetchSold = async () => {
               <span class="load">
                   <span class="span-qty"></span>
               </span>
-              <span>41%</span>
+              <span>${v.quantity}</span>
           </span>        
       </li>`;
     holdSold.insertAdjacentHTML('beforeend', list);
