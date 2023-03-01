@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans&family=Comfortaa&family=IBM+Plex+Sans&family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/resources/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/sales/general.css">
+    <link rel="stylesheet" href="/css/sales/<%= pageCSS %>">
+    <script src="/resources/jquery.min.js" defer></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule="" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/sales/<%= pageJS %>" defer></script>
+    <script src="/js/sales/general.js" defer></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <div class="checkout-overlay">
+        <div class="checkout-content center row">
+            <div class="items-left">
+                <!-- <span class="check-header">CHECKOUT</span> -->
+                <div class="hol-tags row">
+                    <button type="button" class="tag-par" data-name="Type C Head (2 pins)">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/Type C Head (2 pins).png" alt="">
+                        <p class="">Type C head (2-pins)</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="Type C Full set (2 pins)">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/Type C Full set (2 pins).png" alt="">
+                        <p class="">Type C Set (2-pins)</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="Type C Head (3 pins)">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/Type C Head (3 pins).png" alt="">
+                        <p class="">Type C head (3-pins)</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="Type C Full set (3 pins)">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/Type C Full set (3 pins).png" alt="">
+                        <p class="">Type C Set (3-pins)</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="Type C cord-only">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/Type C cord-only.png" alt="">
+                        <p class="">Type C cord-only</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="USB Head (2 pins)">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/USB Head (2 pins).png" alt="">
+                        <p class="">USB head (2-pins)</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="USB Full set (2 pins)">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/USB Full set (2 pins).png" alt="">
+                        <p class="">USB Set (2-pins)</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="USB Head (3 pins)">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/USB Head (3 pins).png" alt="">
+                        <p class="">USB head (3-pins)</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="USB Full set (3 pins)">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/USB Full set (3 pins).png" alt="">
+                        <p class="">USB Set (3-pins)</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="USB cord-only">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/USB cord-only.png" alt="">
+                        <p class="">USB cord-only</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="Earpiece - Brush">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/Earpiece - Brush.png" alt="">
+                        <p class="">Earpiece Brush</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="Earpiece - Pin">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/Earpiece - Pin.png" alt="">
+                        <p class="">Earpiece Pin</p>
+                    </button>
+
+                    <button type="button" class="tag-par" data-name="Battery">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/Battery.png" alt="">
+                        <p class="">Battery</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="Cover">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/Cover.png" alt="">
+                        <p class="">Cover</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="Dock">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/Dock.png" alt="">
+                        <p class="">3-in-1 Dock</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="Protector">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/Protector.png" alt="">
+                        <p class="">Protector</p>
+                    </button>
+                    <button type="button" class="tag-par" data-name="Screen">
+                        <div class="tag-over"></div>
+                        <img src="/imgs/categ/sales/products/sold/Screen.png" alt="">
+                        <p class="">Screen</p>
+                    </button>
+                    <!-- <button type="button" data-name="charger" class="clicked">Charger</button>
+                    <button type="button" data-name="earpods">Handsfree</button>
+                    <button type="button" data-name="protector">Protector</button>
+                    <button type="button" data-name="cover">Phone case</button>
+                    <button type="button" data-name="screen">Screen</button>
+                    <button type="button" data-name="battery">Battery</button>
+                    <button type="button" data-name="dock">3-in-1 charging dock</button> -->
+                </div>
+                
+            </div>
+            <div class="items-right">
+                <form action="" class="cart-form">              
+                    <div class="hol-sub-btns">
+                        <button type="button" class="btn btn-danger close-btn">Close</button>
+                        <button class="btn btn-success">Checkout</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <section id="analy-main">
+        <div class="hol-secs row">
+            <div class="left-nav">
+                <div class="left-container center">
+                    <div class="logo-sec"></div>
+                    <div class="user-sec row">
+                        <div class="user-img">
+                            <div class="user-dp center"></div>
+                        </div>
+                        <div class="user-text">
+                            <div class="hol-user-spans center">
+                                <span class="name"><b>Christiana Dzill</b></span>
+                                <span class="job" style="font-size:18px">Sales Representative</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nav-cont">
+                        <ul>
+                            <li class="row">
+                                <span class="li-ico">
+                                    <ion-icon name="tv-outline" class="tv-ico center"></ion-icon>
+                                </span>
+                                <a href="/sales" class="li-text">
+                                   <span class="text center">Dashboard</span> 
+                                </a>
+                            </li>
+                            <li class="row">
+                                <span class="li-ico">
+                                    <ion-icon name="stats-chart-outline" class="tv-ico center"></ion-icon>
+                                </span>
+                                <a href="/accounts" class="li-text">
+                                   <span class="text center">Accounts</span> 
+                                </a>
+                            </li>
+                            <li class="row">
+                                <span class="li-ico">
+                                    <ion-icon name="search-outline" class="tv-ico center"></ion-icon>
+                                </span>
+                                <span class="li-text">
+                                   <span class="text center">Look Up</span> 
+                                </span>
+                            </li>
+                            <li class="row">
+                                <span class="li-ico">
+                                    <ion-icon name="construct-outline" class="tv-ico center" style="color:red"></ion-icon>
+                                </span>
+                                <span class="li-text">
+                                   <span class="text center">Services</span> 
+                                </span>
+                            </li>   
+                        </ul>
+                    </div>
+
+                    <div class="left-nav-footer">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-section">
+                <div class="right-container">
+                    <div class="right-nav">
+                        <div class="nav">
+                            <form action="" class="center">
+                                <input type="text" name="" id="" placeholder="Search System">
+                                <button>
+                                    <ion-icon name="search-outline"></ion-icon>
+                                </button>
+                            </form>
+
+                            <div class="hol-date center">
+                                <p class="todate center">
+                                    <span class="date"></span>
+                                    <span class="time">
+                                        <span class="hrs"></span> :
+                                        <span class="min"></span> :
+                                        <span class="sec"></span>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="hol-btns center">
+                                <span class="hol-btn-ico">
+                                    <ion-icon name="home-outline" class="top-ico center"></ion-icon>
+                                </span>
+                                <span class="hol-btn-ico">
+                                    <ion-icon name="notifications-outline" class="top-ico center"></ion-icon>
+                                </span>
+                                <span class="hol-btn-ico">
+                                    <ion-icon name="scan-outline" class="top-ico center"></ion-icon>
+                                </span>
+                                <span class="hol-btn-ico checkout-btn">
+                                    <ion-icon name="cart-outline"  class="top-ico center"></ion-icon>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-cont">

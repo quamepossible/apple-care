@@ -1,9 +1,8 @@
 const express = require('express');
 const methodOverride = require('method-override');
 const path = require('path');
-const data = require('./db/data.json')
-const accessoryData = require('./db/accessory.json')
-const checkOutData = require('./db/checkout.json')
+const data = require('./db/data.json');
+const checkOutData = require('./db/checkout.json');
 const app = express();
 
 // set views
@@ -73,7 +72,9 @@ app.post('/insert/:target', (req, res) => {
         res.send('Empty Data')
         return;
     }
+    validData.dateAdded = new Date().toISOString();
     data[target].push(validData);
+    console.log(validData);
     res.send('saved')
 })
 
@@ -88,6 +89,23 @@ const getSingleDevice = (id) => {
     }
 }
 
+const checkoutDevice = (date, prdType, prdData) => {
+    // const theDate = new Date().toISOString().split('T')[0];
+    const theDate = date;
+    const mainDateKeys = Object.keys(checkOutData);
+    const isDateKeyAva = mainDateKeys.some(k => k === theDate);
+    if(!isDateKeyAva){
+        checkOutData[theDate] = {}
+        checkOutData[theDate][prdType] = [prdData];
+    }
+    else{
+        const dateKeys = Object.keys(checkOutData[theDate])
+        const isPrdKeyAva = dateKeys.some(k => k === prdType);
+        (!isPrdKeyAva) ? checkOutData[theDate][prdType] = [prdData] : checkOutData[theDate][prdType].push(prdData)
+    }
+    return true;
+}
+
 app.get('/data/:id', (req, res) => {
     const {id} = req.params;
     res.send(getSingleDevice(id)[0]);
@@ -98,7 +116,10 @@ app.get('/sections/:type', (req, res) => {
     const oneType = data[type][0];
     const grapKeysMap = new Map(Object.entries(oneType));
     const holKeys = [];
-    grapKeysMap.forEach((_, k) => (k !== 'img') && holKeys.push(k))
+    grapKeysMap.forEach((_, k) => {
+        if(k === 'img' || k === 'dateAdded') return;
+        holKeys.push(k)
+    })
     res.send(holKeys);
 })
 
@@ -136,35 +157,63 @@ app.patch('/edit', (req, res) => {
 })
 
 app.post('/sell', (req, res)=>{
-    const {cname, cident, cdate, ctime, cnote} = req.body;
-    const fullDate = [cdate, ctime];
-    const fdate = fullDate.join('T');
-    const devData = getSingleDevice(cident)
+    const {cident, cdate} = req.body;
+    const devData = getSingleDevice(cident);
     const devOriginalData = devData[0];
-    const newCheckOutData = Object.assign({}, devOriginalData, {cname, fdate, cnote, whatdevice:devData[1]});
-    if(checkOutData['devices'].push(newCheckOutData)){
+    const totalAmt = +devOriginalData.price; 
+    const newCheckOutData = Object.assign({}, devOriginalData, {quantity: 1, totalAmt}, req.body);
+    const doCheckout = checkoutDevice(cdate, devData[1], newCheckOutData);
+    if(doCheckout){
         // remove device from main database
         data[devData[1]] = data[devData[1]].filter(d => !(d?.imei === cident || d?.serial === cident));
-        res.send('sold');
+        res.send(checkOutData);
     }
+    console.log(checkOutData);
 })
 // STOCKS SECTION
 
 
 // SALES SECTION
 app.get('/sales', (req, res) => {
-    res.render('sales/index')
+    res.render('sales/dashboard')
 })
 
-app.get('/analytics', (req, res) => {
-    res.render('sales/analytics')
+app.get('/accounts', (req, res) => {
+    res.render('sales/accounts')
 })
 
 app.post('/checkout', (req, res) => {
     const accessData = req.body;
-    const mapData = new Map(Object.entries(accessData));
-    mapData.forEach((v, k) => accessoryData[k].push(v));
-    res.send(accessoryData);
+    Object.keys(accessData).forEach(k => {
+        const [quantity, price, note, date] = accessData[k];
+        const justDate = date.split('T')[0];
+        const totalAmt = +quantity * +price;
+        const productData = {quantity, price, note, totalAmt};
+        checkoutDevice(justDate, k, productData);
+    })
+    // console.log(checkOutData);
+    // if(checkOutData){
+
+    // }
+    console.log(checkOutData);
+    res.send(checkOutData)
+})
+
+app.get('/sold/:date', (req, res) => {
+    const {date:theDate} = req.params;
+    console.log(theDate);
+    if(Object.keys(checkOutData).some(k => k===theDate)){
+        // we have data for date
+        const dateData = Object.values(checkOutData[theDate]);
+        let totalAmount = 0;
+        dateData.forEach(row => row.forEach(purchase => totalAmount += purchase.totalAmt))
+        console.log(totalAmount);
+        res.send({totalAmount})
+    }
+    else{
+        res.send({data: 'none'})
+        console.log('no data found');
+    }
 })
 
 

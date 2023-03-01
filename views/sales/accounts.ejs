@@ -1,0 +1,112 @@
+<%- include('./includes/navsec', {pageCSS: 'accounts.css', pageJS: 'accounts.js', title: 'ACCOUNTS'}) %>
+
+<div id="accounts-content">
+    <div class="hol-today row">
+        <div class="today-amt">
+            <p> 
+                <span class="today-ico">
+                    <ion-icon name="today-outline" class="cal-ico"></ion-icon> 
+                    Today
+                </span>
+                
+            </p>
+            <p class="full-amt">GH₵ <span class="main-amt"></span></p>
+            <p>
+                <span class="tag-head">Products Sold</span><br>
+                <p class="hol-tags">
+                    <span class="tags">Phone</span>
+                    <span class="tags">Charger</span>
+                    <span class="tags">Case</span>
+                </p>
+            </p>
+        </div>
+        <div class="today-type row">
+            <div class="tran-type">
+                <div class="type-img" style="background-image:url('/imgs/cash.jpg')"></div>
+                <p>GH₵34,000</p>
+                <span>Cash</span>
+            </div>
+            <div class="tran-type">
+                <div class="type-img" style="background-image:url('/imgs/momo.jpg')"></div>
+                <p>GH₵14,000</p>
+                <span>Momo</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hol-past row">
+        <div class="left-chart">
+            <p class="left-head">
+                <span class="top-left">Products Sold</span>
+                <span class="top-right">Total Amount (GH₵18,600)</span>
+            </p>
+            <div class="prds-sold">
+                <ul>
+                    <li>
+                        <div class="hol-prd-img">
+                            <div style="background-image: url('/imgs/categ/nine.png')" alt=""></div>
+                        </div>
+                        <span class="prd-name top-cent">Phones</span>
+
+                        <span class="all-spans">
+                            <span>GH₵1,400</span>
+                            <span class="load">
+                                <span class="span-qty"></span>
+                            </span>
+                            <span>41%</span>
+                        </span>        
+                    </li>
+                    <li>
+                        <div class="hol-prd-img">
+                            <div style="background-image: url('/imgs/categ/airpod.png')" alt=""></div>
+                        </div>
+                        <span class="prd-name top-cent">Airpods</span>
+
+                        <span class="all-spans">
+                            <span>GH₵1,400</span>
+                            <span class="load">
+                                <span class="span-qty"></span>
+                            </span>
+                            <span>41%</span>
+                        </span>        
+                    </li>
+                    <li>
+                        <div class="hol-prd-img">
+                            <div style="background-image: url('/imgs/categ/fourteen.png')" alt=""></div>
+                        </div>
+                        <span class="prd-name top-cent">Series</span>
+
+                        <span class="all-spans">
+                            <span>GH₵1,400</span>
+                            <span class="load">
+                                <span class="span-qty"></span>
+                            </span>
+                            <span>41%</span>
+                        </span>        
+                    </li>
+                    <li>
+                        <div class="hol-prd-img">
+                            <div style="background-image: url('/imgs/categ/ipad.png')" alt=""></div>
+                        </div>
+                        <span class="prd-name top-cent">iPads</span>
+
+                        <span class="all-spans">
+                            <span>GH₵1,400</span>
+                            <span class="load">
+                                <span class="span-qty"></span>
+                            </span>
+                            <span>41%</span>
+                        </span>        
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="right-chart">
+            <div id="trans-chart"></div>
+        </div>
+    </div>
+</div>
+
+<%- include('./includes/navfooter') %>

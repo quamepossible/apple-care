@@ -47,15 +47,27 @@
                         <div class="form-row checkout-cont">
                             <div class="form-group col-md-6">
                                 <label for="">Customer Name <span>*</span></label>
-                                <input type="text" class="form-control" id="" name="cname">
+                                <input type="text" class="form-control" id="" name="cname" value="John Doe">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="">Phone No. <span>*</span></label>
+                                <input type="text" class="form-control" id="" name="cphone" value="0244543234">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="">Date <span>*</span></label>
-                                <input type="date" class="form-control" id="" name="cdate">
+                                <input type="date" class="form-control" id="" name="cdate" value="2023-02-28">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="">Time <span>*</span></label>
-                                <input type="time" class="form-control" id="" name="ctime">
+                                <input type="time" class="form-control" id="" name="ctime" value="15:30">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="">Payment method <span>*</span></label>
+                                <select name="payment" class="payment btn btn-primary">
+                                    <option value="">Payment Method</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="momo">Momo</option>
+                                </select>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="">Add Note (optional)</label>
@@ -107,9 +119,8 @@
                                             const colNames = new Map(Object.entries(cols))
                                             const headCols = [];
                                             colNames.forEach((v, k) => {
-                                                if(k !== 'img') {
-                                                    headCols.push(k);
-                                                }
+                                                if(k === 'img' || k == 'dateAdded') return;
+                                                headCols.push(k)
                                             })
                                         %>
                                         <th class="acts">ACTIONS</th>
@@ -131,7 +142,8 @@
                                         const bodyVal = new Map(Object.entries(device));
                                         const body = [];
                                         bodyVal.forEach((v, k) => {
-                                            if(k !== 'img') body.push(v)
+                                            if(k === 'img' || k === 'dateAdded') return;
+                                            body.push(v)
                                         });
                                         %> 
                                     <tr>
