@@ -161,7 +161,7 @@ app.post('/sell', (req, res)=>{
     const devData = getSingleDevice(cident);
     const devOriginalData = devData[0];
     const totalAmt = +devOriginalData.price; 
-    const newCheckOutData = Object.assign({}, devOriginalData, {quantity: 1, totalAmt}, req.body);
+    const newCheckOutData = Object.assign({}, devOriginalData, {quantity: '1', totalAmt}, req.body);
     const doCheckout = checkoutDevice(cdate, devData[1], newCheckOutData);
     if(doCheckout){
         // remove device from main database
@@ -201,19 +201,38 @@ app.post('/checkout', (req, res) => {
 
 app.get('/sold/:date', (req, res) => {
     const {date:theDate} = req.params;
-    console.log(theDate);
     if(Object.keys(checkOutData).some(k => k===theDate)){
-        // we have data for date
-        const dateData = Object.values(checkOutData[theDate]);
-        let totalAmount = 0;
-        dateData.forEach(row => row.forEach(purchase => totalAmount += purchase.totalAmt))
-        console.log(totalAmount);
-        res.send({totalAmount})
+        if(req.query?.act) {
+            let totalAmount = 0;
+            const dateData = Object.values(checkOutData[theDate]);
+            dateData.forEach(row => row.forEach(purchase => totalAmount += purchase.totalAmt))
+            console.log(totalAmount);
+            res.send({totalAmount});
+        }
+        else{
+            const datePrds = Object.keys(checkOutData[theDate]);
+            const prdMap = new Map();
+            datePrds.forEach(prd => {
+                let allQty = 0;
+                let allAmt = 0;
+                // console.log(prd);
+                checkOutData[theDate][prd].forEach(obj => {
+                    console.log(obj);
+                    allQty += +obj.quantity;
+                    allAmt += obj.totalAmt;
+                })
+                prdMap.set(prd, {quantity: allQty, totalAmt: allAmt});
+            });
+            const soldObj = {};
+            prdMap.forEach((v,k) => soldObj[k] = v) 
+            console.log(soldObj);
+            res.send(soldObj);
+        }
     }
     else{
         res.send({data: 'none'})
         console.log('no data found');
-    }
+    }    
 })
 
 
