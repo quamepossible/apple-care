@@ -164,7 +164,7 @@ const dateFunc = () => {
     const toDay = new Date();
     const options = {
         year: 'numeric',
-        month : 'numeric', 
+        month : 'long', 
         day : 'numeric',
         weekday: 'long'
     }
