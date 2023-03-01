@@ -1,9 +1,8 @@
 const express = require('express');
 const methodOverride = require('method-override');
 const path = require('path');
-const data = require('./db/data.json')
-const checkOutData = require('./db/checkout.json')
-const transactType = require('./db/transactions.json')
+const data = require('./db/data.json');
+const checkOutData = require('./db/checkout.json');
 const app = express();
 
 // set views
@@ -159,9 +158,10 @@ app.patch('/edit', (req, res) => {
 
 app.post('/sell', (req, res)=>{
     const {cident, cdate} = req.body;
-    const devData = getSingleDevice(cident)
+    const devData = getSingleDevice(cident);
     const devOriginalData = devData[0];
-    const newCheckOutData = Object.assign({}, devOriginalData, req.body);
+    const totalAmt = +devOriginalData.price; 
+    const newCheckOutData = Object.assign({}, devOriginalData, {quantity: 1, totalAmt}, req.body);
     const doCheckout = checkoutDevice(cdate, devData[1], newCheckOutData);
     if(doCheckout){
         // remove device from main database
@@ -184,9 +184,36 @@ app.get('/accounts', (req, res) => {
 
 app.post('/checkout', (req, res) => {
     const accessData = req.body;
-    // const mapData = new Map(Object.entries(accessData));
-    // mapData.forEach((v, k) => accessoryData[k].push(v));
-    // res.send(accessoryData);
+    Object.keys(accessData).forEach(k => {
+        const [quantity, price, note, date] = accessData[k];
+        const justDate = date.split('T')[0];
+        const totalAmt = +quantity * +price;
+        const productData = {quantity, price, note, totalAmt};
+        checkoutDevice(justDate, k, productData);
+    })
+    // console.log(checkOutData);
+    // if(checkOutData){
+
+    // }
+    console.log(checkOutData);
+    res.send(checkOutData)
+})
+
+app.get('/sold/:date', (req, res) => {
+    const {date:theDate} = req.params;
+    console.log(theDate);
+    if(Object.keys(checkOutData).some(k => k===theDate)){
+        // we have data for date
+        const dateData = Object.values(checkOutData[theDate]);
+        let totalAmount = 0;
+        dateData.forEach(row => row.forEach(purchase => totalAmount += purchase.totalAmt))
+        console.log(totalAmount);
+        res.send({totalAmount})
+    }
+    else{
+        res.send({data: 'none'})
+        console.log('no data found');
+    }
 })
 
 
