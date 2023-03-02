@@ -98,6 +98,15 @@ const qtyMeasure = () => {
 const submitCart = () => {
     document.querySelector('.cart-form').addEventListener('submit', function(e){
         e.preventDefault();
+        const payMeth = document.querySelector('#payment').value;
+        if(payMeth === ''){
+            Swal.fire({
+                icon: 'error',
+                title: 'Select payment method 💵'
+            })
+            return;
+        }
+        console.log(payMeth);
         const data = {};
         document.querySelectorAll('.add-cart').forEach(cart => {
             const assignCart = cart.dataset.assign;
@@ -106,8 +115,8 @@ const submitCart = () => {
             data[assignCart].push(qty);
             const itemInps = cart.querySelectorAll('input');
             itemInps.forEach(inp => data[assignCart].push(inp.value));
+            data[assignCart].push(payMeth);
         })
-        // console.log(data);
         const checkInps = Object.values(data);
         const everyArr = [];
         checkInps.forEach(item => {

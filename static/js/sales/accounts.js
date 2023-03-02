@@ -1,17 +1,18 @@
 var transChart = echarts.init(document.getElementById('trans-chart'));
 
-const pageCharts = () => {
+const pageCharts = (payMeths) => {
     option = {
         xAxis: {
           type: 'category',
           data: ['Cash', 'Momo']
         },
         yAxis: {
-          type: 'value'
+          // type: 'value'
+          show: false,
         },
         series: [
           {
-            data: [120, 200],
+            data: payMeths,
             type: 'bar',
             showBackground: true,
             backgroundStyle: {
@@ -43,8 +44,12 @@ const fetchSold = async () => {
   if(dataRes?.data === 'none') return;
   const mapResData = new Map(Object.entries(dataRes));
   console.log(mapResData);
-
+  const paymentTypes = new Map();
   mapResData.forEach((v,k) => {
+    if(k === 'cash' || k === 'momo'){
+      paymentTypes.set(k, v);
+      return;
+    }
     const list = `
       <li>
           <div class="hol-prd-img">
@@ -62,9 +67,15 @@ const fetchSold = async () => {
       </li>`;
     holdSold.insertAdjacentHTML('beforeend', list);
   })
+  console.log(paymentTypes);
+  const payMethods = [];
+  paymentTypes.forEach(pay => payMethods.push(pay));
+  console.log(payMethods);
+  document.querySelector('.cash-amt').innerHTML = payMethods[0];
+  document.querySelector('.momo-amt').innerHTML = payMethods[1];
+  pageCharts(payMethods);
 }
 
 
 fetchSold();
 transactFunc();
-pageCharts();
