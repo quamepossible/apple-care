@@ -45,9 +45,12 @@ const fetchSold = async () => {
   const mapResData = new Map(Object.entries(dataRes));
   console.log(mapResData);
   const paymentTypes = new Map();
+  const payMethods = [];
+  // paymentTypes.forEach(pay => payMethods.push(pay));
   mapResData.forEach((v,k) => {
     if(k === 'cash' || k === 'momo'){
-      paymentTypes.set(k, v);
+      // paymentTypes.set(k, v);
+      payMethods.push(v);
       return;
     }
     const list = `
@@ -68,8 +71,8 @@ const fetchSold = async () => {
     holdSold.insertAdjacentHTML('beforeend', list);
   })
   console.log(paymentTypes);
-  const payMethods = [];
-  paymentTypes.forEach(pay => payMethods.push(pay));
+  // const payMethods = [];
+  // paymentTypes.forEach(pay => payMethods.push(pay));
   console.log(payMethods);
   document.querySelector('.cash-amt').innerHTML = payMethods[0];
   document.querySelector('.momo-amt').innerHTML = payMethods[1];
