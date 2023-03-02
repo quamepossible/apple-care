@@ -185,16 +185,12 @@ app.get('/accounts', (req, res) => {
 app.post('/checkout', (req, res) => {
     const accessData = req.body;
     Object.keys(accessData).forEach(k => {
-        const [quantity, price, note, date] = accessData[k];
+        const [quantity, price, note, payment, date] = accessData[k];
         const justDate = date.split('T')[0];
         const totalAmt = +quantity * +price;
-        const productData = {quantity, price, note, totalAmt};
+        const productData = {quantity, price, note, payment, totalAmt};
         checkoutDevice(justDate, k, productData);
     })
-    // console.log(checkOutData);
-    // if(checkOutData){
-
-    // }
     console.log(checkOutData);
     res.send(checkOutData)
 })
@@ -212,6 +208,8 @@ app.get('/sold/:date', (req, res) => {
         else{
             const datePrds = Object.keys(checkOutData[theDate]);
             const prdMap = new Map();
+            let cash = 0;
+            let momo = 0;
             datePrds.forEach(prd => {
                 let allQty = 0;
                 let allAmt = 0;
@@ -220,12 +218,15 @@ app.get('/sold/:date', (req, res) => {
                     console.log(obj);
                     allQty += +obj.quantity;
                     allAmt += obj.totalAmt;
+                    (obj.payment === 'cash') ? cash += +obj.totalAmt : momo += +obj.totalAmt;
                 })
                 prdMap.set(prd, {quantity: allQty, totalAmt: allAmt});
             });
-            const soldObj = {};
-            prdMap.forEach((v,k) => soldObj[k] = v) 
+            const soldObj = {cash, momo};
+            prdMap.forEach((v,k) => soldObj[k] = v);
             console.log(soldObj);
+            console.log(`Cash : ${cash}`);
+            console.log(`Momo : ${momo}`);
             res.send(soldObj);
         }
     }

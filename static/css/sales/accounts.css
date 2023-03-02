@@ -96,6 +96,7 @@
     box-shadow: 0 0 5px rgb(46, 46, 46);
     background-position: center;
     background-size: contain;
+    background-repeat: no-repeat;
     border-radius: 50%;
     margin: auto;
 }
@@ -105,7 +106,7 @@
     font-size: 30px;
     font-weight: bold;
 }
-.tran-type span{
+.tran-type .sub-span{
     display: block;
     margin-top: -20px;
     font-size: 18px;
@@ -260,17 +261,19 @@
 }
 
 
+.right-chart{
+    width: 40%;
+    height: 400px;
+    margin-left: 20px;
+    /* background-color: green; */
+    /* background-color: rgb(194, 194, 194); */
+}
+
 
 #trans-chart{
     width: 200px;
     height: 400px;
     margin: auto;
-}
-
-.right-chart{
-    width: 40%;
-    height: 400px;
-    margin-left: 20px;
-    /* background-color: rgb(194, 194, 194); */
+    /* background-color: red; */
 }
 /* PAST SECTION */
