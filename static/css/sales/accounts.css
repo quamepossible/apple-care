@@ -254,7 +254,7 @@
 
 .span-qty{
     display: inline-block;
-    width: 40%;
+    /* width: 40%; */
     height: 5px;
     background-color: #2c7be5;
     position: absolute;
