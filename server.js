@@ -2,6 +2,10 @@ const express = require('express');
 const methodOverride = require('method-override');
 const path = require('path');
 const data = require('./db/data.json');
+const mongoose = require('mongoose');
+const mngConnect = mongoose.connect('mongodb://127.0.0.1:27017/appleCareDB');
+
+const {Phones, Macbooks, Ipads, Series} = require('./db/db.js');
 const checkOutData = require('./db/checkout.json');
 const app = express();
 
@@ -25,22 +29,88 @@ app.get('/sections', (req, res) => {
     res.render('stocks/sections')
 })
 
+
+// this route is where i've listed only all iphone models
 app.get('/products/:type', (req, res) => {
     const {type} = req.params;
     res.render('stocks/products', {type})
 })
 
-app.get('/devices/:type', (req, res) => {
+
+// this route list all products of a specific type (eg: ipad, macbook, series...etc.)
+// this route also accepts a query string (?categ=7/8/SE) when searching for phones
+    // thus url/devices/phones?categ=SE (lists all iphone SE models)
+app.get('/devices/:type', async (req, res) => {
     const {type} = req.params;
     const {categ}  = req.query;
+
+    if(!categ){
+        // [macbook, ipad, series,...etc.]
+        const theProduct = type;
+    }
+
     if(categ && categ !== 'phones') return;
     if(!data[type] && categ !== 'phones') return;
 
-    const selected = (categ) ? data[categ].filter(dev => dev.model === type) : data[type];
-    const vers = selected.map(dev => dev.version);
-    let eachVersion = new Set(vers);
-    eachVersion = [...eachVersion];
-    res.render('stocks/devices', {eachVersion, type})
+    // hard coded database algorithm
+    // 1. Check if url contains "?categ=phones" string...
+        // a. if yes, get all Data of data[categ]. where 'categ' is always = 'phones' and type is [5, 6, 7, 13, 14,...etc.]
+        // b. Else, get all Data of data[type], where type could be [ipad, macbook, series, ipod,...etc.]
+    //     const selected = (categ) ? data[categ].filter(dev => dev.model === type) : data[type];
+    
+    // // 2. After getting relevant Data, return only the version of the products
+    //     // the versions could be [s, s-plus, xs-max, pro, pro-max, etc.]  
+    //     const vers = selected.map(dev => dev.version);
+    //     let eachVersion = new Set(vers);
+    //     eachVersion = [...eachVersion];
+
+    // // 3. send both version [s, s-plus, xs-max, pro, pro-max, etc.] and type [ipad, macbook, series, ipod,...etc.] to render page
+    //     res.render('stocks/devices', {eachVersion, type})
+
+
+    let virtualSelectedProduct = [];
+    // real database integration
+    // 1. Check if url contains "?categ=phones" string...
+        // a. if yes, get all Data of data[categ]. where 'categ' is always = 'phone' and type is [5, 6, 7, 13, 14,...etc.]
+        // b. Else, get all Data of data[type], where type could be [ipad, macbook, series, ipod,...etc.]
+        if(categ) {
+            // user clicked on phone
+            virtualSelectedProduct = await Phones.find({model:type});
+        }
+
+        else{
+            // it could be any of [ipad, macbook, series, ipod,...etc.];
+            mngConnect.then(async function(){
+                // connect mongoose to database using default mongo driver
+                const db = mongoose.connection.db;
+    
+                // get list of all collections
+                const allCollections = await db.listCollections().toArray();
+    
+                // now, loop through all collections
+                allCollections.forEach(async function(collection){
+                    if(collection.name === 'phones') return;
+                    // we'll  get each collection name from here
+                    const individualCollection = await db.collection(collection.name).find({model:type});
+                    
+                    // get all Documents of each collection
+                    await individualCollection.forEach(doc => {
+                        virtualSelectedProduct.push(doc);
+                    })
+                })
+            })
+        }         
+    
+    // 2. After getting relevant Data, return only the version of the products
+        // the versions could be [s, s-plus, xs-max, pro, pro-max, etc.] 
+        console.log(virtualSelectedProduct); 
+        const getDocVersions = virtualSelectedProduct.map(dev => dev.version);
+        let eachDocVersion = new Set(getDocVersions);
+        eachDocVersion = [...eachDocVersion];
+
+        // console.log(eachDocVersion)
+    // 3. send both version [s, s-plus, xs-max, pro, pro-max, etc.] and type [ipad, macbook, series, ipod,...etc.] to render page
+        res.render('stocks/devices', {eachDocVersion, type})
 })
 
 app.get('/product/:sku', (req, res) => {

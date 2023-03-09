@@ -23,7 +23,7 @@
             </div>
 
             <div class="dev-cont-body row">
-                <% eachVersion.forEach(dev => { %>
+                <% eachDocVersion.forEach(dev => { %>
                     <div class="dev-hol-1-of-3">
                         <% let hrefLink = "/product/" + type + "?model=" + dev %> 
                         <a href="<%= hrefLink %> " class="dev-span-1-of-3">
@@ -36,19 +36,8 @@
                             } %> 
                             <div class="span-top" style="background-image: url('<%=url%>');"></div>
                             <div class="span-bottom">
-                                <%
-                                    let device;
-                                    if(type.length <= 2){
-                                        device = type;
-                                    }
-                                    else{
-                                        device = type.split('');
-                                        device[0] = device[0].toUpperCase();
-                                        device = device.join('');
-                                        device += ' ';
-                                    }
-                                %> 
-                                <span class="center"><%= device.toUpperCase() %><%= dev.toUpperCase() %></span>
+                                <% let device = type %> 
+                                <span class="center"><%= device.toUpperCase() %> <%= dev.toUpperCase() %></span>
                             </div>
                         </a>
                     </div>
