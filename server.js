@@ -1,11 +1,13 @@
 const express = require('express');
+const cors = require('cors');
 const methodOverride = require('method-override');
 const path = require('path');
-const data = require('./db/data.json');
+// const data = require('./db/data.json');
 const mongoose = require('mongoose');
-const mngConnect = mongoose.connect('mongodb://127.0.0.1:27017/appleCareDB');
+mngConnect = mongoose.connect('mongodb://127.0.0.1:27017/appleCareDB');
 
 const {Phones, Macbooks, Ipads, Series} = require('./db/db.js');
+const anyObj = require('./db/fetch.js');
 const checkOutData = require('./db/checkout.json');
 const app = express();
 
@@ -18,6 +20,7 @@ app.set('views', path.join(__dirname, 'views/'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'static/')));
 app.use(methodOverride('_method'));
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.render('home');
@@ -43,88 +46,74 @@ app.get('/products/:type', (req, res) => {
 app.get('/devices/:type', async (req, res) => {
     const {type} = req.params;
     const {categ}  = req.query;
-
-    if(!categ){
-        // [macbook, ipad, series,...etc.]
-        const theProduct = type;
-    }
-
+    // console.log(type);
     if(categ && categ !== 'phones') return;
-    if(!data[type] && categ !== 'phones') return;
-
-    // hard coded database algorithm
-    // 1. Check if url contains "?categ=phones" string...
-        // a. if yes, get all Data of data[categ]. where 'categ' is always = 'phones' and type is [5, 6, 7, 13, 14,...etc.]
-        // b. Else, get all Data of data[type], where type could be [ipad, macbook, series, ipod,...etc.]
-    //     const selected = (categ) ? data[categ].filter(dev => dev.model === type) : data[type];
-    
-    // // 2. After getting relevant Data, return only the version of the products
-    //     // the versions could be [s, s-plus, xs-max, pro, pro-max, etc.]  
-    //     const vers = selected.map(dev => dev.version);
-    //     let eachVersion = new Set(vers);
-    //     eachVersion = [...eachVersion];
-
-    // // 3. send both version [s, s-plus, xs-max, pro, pro-max, etc.] and type [ipad, macbook, series, ipod,...etc.] to render page
-    //     res.render('stocks/devices', {eachVersion, type})
-
 
     let virtualSelectedProduct = [];
-    // real database integration
     // 1. Check if url contains "?categ=phones" string...
-        // a. if yes, get all Data of data[categ]. where 'categ' is always = 'phone' and type is [5, 6, 7, 13, 14,...etc.]
-        // b. Else, get all Data of data[type], where type could be [ipad, macbook, series, ipod,...etc.]
+    //     a. if yes, get all Data of data[categ]. where 'categ' is always = 'phone' and type is [5, 6, 7, 13, 14,...etc.]
+    //     b. Else, get all Data of data[type], where type could be [ipad, macbook, series, ipod,...etc.]
         if(categ) {
             // user clicked on phone
             virtualSelectedProduct = await Phones.find({model:type});
         }
 
-        else{
-            // it could be any of [ipad, macbook, series, ipod,...etc.];
-            mngConnect.then(async function(){
-                // connect mongoose to database using default mongo driver
-                const db = mongoose.connection.db;
-    
-                // get list of all collections
-                const allCollections = await db.listCollections().toArray();
-    
-                // now, loop through all collections
-                allCollections.forEach(async function(collection){
-                    if(collection.name === 'phones') return;
-                    // we'll  get each collection name from here
-                    const individualCollection = await db.collection(collection.name).find({model:type});
-                    
-                    // get all Documents of each collection
-                    await individualCollection.forEach(doc => {
-                        virtualSelectedProduct.push(doc);
-                    })
-                })
-            })
-        }         
+        else{      
+            try{
+                virtualSelectedProduct = await anyObj({model:type}, virtualSelectedProduct);
+                if(!virtualSelectedProduct) throw Error (`Couldn't find data`)
+            }
+            catch(err) {
+                console.log(err.message);
+            }
+        }       
+        // console.log(virtualSelectedProduct);    
     
     // 2. After getting relevant Data, return only the version of the products
-        // the versions could be [s, s-plus, xs-max, pro, pro-max, etc.] 
-        console.log(virtualSelectedProduct); 
+        // the versions could be [s, s-plus, xs-max, pro, pro, s-plus, pro-max, etc.] 
+        // ...and hence remove duplicates from the versions list        
         const getDocVersions = virtualSelectedProduct.map(dev => dev.version);
         let eachDocVersion = new Set(getDocVersions);
         eachDocVersion = [...eachDocVersion];
 
-        // console.log(eachDocVersion)
     // 3. send both version [s, s-plus, xs-max, pro, pro-max, etc.] and type [ipad, macbook, series, ipod,...etc.] to render page
         res.render('stocks/devices', {eachDocVersion, type})
 })
 
-app.get('/product/:sku', (req, res) => {
+app.get('/product/:sku', async (req, res) => {
     const {sku} = req.params;
     const {model} = req.query;
     let type = (sku.length <= 2) ? 'phones' : sku;
-    const devices = data[type].filter(d => (d.model === sku && d.version === model))
-    console.log("devices " + devices.length);
-    // if(devices.length > 0){
-        res.render('stocks/checkout', {devices})
-    // }
-    // else{
-    //     res.redirect('/sections')
-    // }
+    // const devices = data[type].filter(d => (d.model === sku && d.version === model))
+    // console.log("devices " + devices.length);
+    // res.render('stocks/checkout', {devices})
+    let virtualSelectedProduct = [];
+    const query = {model:sku, version:model};
+    // hard coded algorithm
+    // 1. We get sku & model from url. sku = [se, 5, 8, 14, series, ipad, macbook, ...etc.]
+        // ...model = ['', pro-max, plus, s-plus, air, mini,...etc.]
+        
+    // 2. if sku.length <= 2 (it means) product is a phone
+        // ...and hence, type = 'phones'
+        if(type === 'phones'){
+            virtualSelectedProduct = await Phones.find(query);
+        }
+
+        // else type = 'series' or 'ipad' or 'macbook'
+        else{    
+        // 3. Search database using the following filter document.model = sku && document.version = model
+            try{
+                virtualSelectedProduct = await anyObj(query, virtualSelectedProduct);
+                if(!virtualSelectedProduct) throw Error (`Couldn't find data`)
+            }
+            catch(err) {
+                console.log(err.message);
+            }
+        }   
+
+
+    // 4. render page
+    res.render('stocks/checkout', {virtualSelectedProduct})
 })
 
 app.post('/insert/:target', (req, res) => {

@@ -105,7 +105,7 @@
                 </div>
             </div>
 
-            <% if(devices.length === 0) { %>
+            <% if(virtualSelectedProduct.length === 0) { %>
                 <p class="empty-data center">Empty Data</p>
             <% } else { %>
                 <div class="check-cont-body row">
@@ -115,7 +115,7 @@
                                 <thead>
                                     <tr>
                                         <% 
-                                            const cols = devices.find(d => d.model.length > 0) 
+                                            const cols = virtualSelectedProduct.find(d => d.model.length > 0) 
                                             const colNames = new Map(Object.entries(cols))
                                             const headCols = [];
                                             colNames.forEach((v, k) => {
@@ -137,7 +137,7 @@
                                 </thead>
                                 <tbody>
                                     <% var count = 0 %> 
-                                    <% devices.forEach(device => {%>
+                                    <% virtualSelectedProduct.forEach(device => {%>
                                         <% 
                                         const bodyVal = new Map(Object.entries(device));
                                         const body = [];
@@ -153,7 +153,7 @@
                                         </td>
                                         <td><%= ++count %> </td>
                                         <% body.forEach(item => {%>
-                                            <td><%= item = (item.length === 0) ? '-' : item.toUpperCase() %></td>
+                                            <td><%= item = (item.length === 0) ? '-' : item %></td>
                                         <%}) %>
                                     </tr>
                                     <%}) %> 
