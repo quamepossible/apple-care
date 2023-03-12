@@ -42,6 +42,7 @@ const modalFunction = () => {
             const itemId = clicked.dataset.val;
             console.log(itemId.trim());
             document.querySelector('#cident').value = itemId.trim();;
+            // document.querySelector('#cprice').value = itemId.trim();;
         }
     })
 }
@@ -77,7 +78,7 @@ const checkoutForm = () => {
                 data : formData,
                 success: (data) => {
                     console.log(data);
-                    if(data){
+                    if(data === 'sold'){
                         Swal.fire({
                             icon: 'success',
                             title: 'Sold',

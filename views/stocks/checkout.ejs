@@ -137,6 +137,7 @@
                                         <% 
                                         const bodyVal = new Map(Object.entries(device));
                                         const id = bodyVal.get('_id');
+                                        const price = bodyVal.get('price');
                                         const body = [];
                                         bodyVal.forEach((v, k) => {
                                             if(k === 'dateAdded' || k === '_id' || k === '__v') return;
@@ -146,7 +147,7 @@
                                     <tr>
                                         <td class="hol-btns">
                                             <button class="btn btn-warning btn-edit" data-toggle="modal" data-val="<%= id %>" data-target="#editModal">Edit</button>
-                                            <button class="btn btn-success btn-out" data-toggle="modal" data-val="<%= id %>" data-target="#checkoutModal">Checkout</button>
+                                            <button class="btn btn-success btn-out" data-toggle="modal" data-val="<%= id %>-<%= price %>" data-target="#checkoutModal">Checkout</button>
                                         </td>
                                         <td><%= ++count %> </td>
                                         <% body.forEach(item => {%>

@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const ObjectId = require('mongodb').ObjectId
 mngConnect = mongoose.connect('mongodb://127.0.0.1:27017/appleCareDB');
 
-const {Phones, Macbooks, Ipads, Series} = require('./db/db.js');
+const {Phones, Macbooks, Ipads, Series, CheckedOut} = require('./db/db.js');
 const {anyObj} = require('./db/fetch.js');
 const checkOutData = require('./db/checkout.json');
 const app = express();
@@ -50,23 +50,22 @@ app.get('/devices/:type', async (req, res) => {
     let virtualSelectedProduct = [];
     // 1. get all Data of data[type], where type could be [iphone, ipad, macbook, series, homepod,...etc.]     
         try{
-            virtualSelectedProduct = await anyObj({model:type}, virtualSelectedProduct);
-            if(!virtualSelectedProduct) throw Error (`Couldn't find data`)
+            virtualSelectedProduct = await anyObj({model:type}, virtualSelectedProduct, 'view');
+            if(!virtualSelectedProduct) throw Error (`Couldn't find data`);
+            // 2. After getting relevant Data, return only the version of the products
+                // the versions could be [s, s-plus, xs-max, pro, pro, s-plus, pro-max, etc.] 
+                // ...and hence remove duplicates from the versions list        
+                const getDocVersions = virtualSelectedProduct.map(dev => dev.version);
+                let eachDocVersion = new Set(getDocVersions);
+                eachDocVersion = [...eachDocVersion];
+
+            // 3. send both version [s, s-plus, xs-max, pro, pro-max, etc.] and type [ipad, macbook, series, ipod,...etc.] to render page
+            res.render('stocks/devices', {eachDocVersion, type})
         }
         catch(err) {
             console.log(err.message);
         }      
         // console.log(virtualSelectedProduct);    
-    
-    // 2. After getting relevant Data, return only the version of the products
-        // the versions could be [s, s-plus, xs-max, pro, pro, s-plus, pro-max, etc.] 
-        // ...and hence remove duplicates from the versions list        
-        const getDocVersions = virtualSelectedProduct.map(dev => dev.version);
-        let eachDocVersion = new Set(getDocVersions);
-        eachDocVersion = [...eachDocVersion];
-
-    // 3. send both version [s, s-plus, xs-max, pro, pro-max, etc.] and type [ipad, macbook, series, ipod,...etc.] to render page
-        res.render('stocks/devices', {eachDocVersion, type})
 })
 
 app.get('/product/:sku', async (req, res) => {
@@ -80,18 +79,17 @@ app.get('/product/:sku', async (req, res) => {
         // ...model = ['', pro-max, plus, s-plus, air, mini,...etc.]
    
     // 2. Search database using the following filter document.model = sku && document.version = model
-        try{
-            virtualSelectedProduct = await anyObj(query, virtualSelectedProduct);
-            if(!virtualSelectedProduct) throw Error (`Couldn't find data`)
-        }
-        catch(err) {
-            console.log(err.message);
-        }
-        console.log(virtualSelectedProduct);
-
-    // 4. render page
-    // res.send(virtualSelectedProduct)
-    res.render('stocks/checkout', {virtualSelectedProduct})
+    try{
+        virtualSelectedProduct = await anyObj(query, virtualSelectedProduct, 'view');
+        if(!virtualSelectedProduct) throw Error (`Couldn't find data`);
+        // 3. render page
+        // res.send(virtualSelectedProduct)
+        res.render('stocks/checkout', {virtualSelectedProduct})
+    }
+    catch(err) {
+        console.log(err.message);
+    }
+    // console.log(virtualSelectedProduct);
 })
 
 app.post('/insert/:target', (req, res) => {
@@ -148,14 +146,14 @@ app.get('/data/:id', async (req, res) => {
     let virtualSelectedProduct = [];
     const query = {_id: new ObjectId(id)}
     try{
-        virtualSelectedProduct = await anyObj(query, virtualSelectedProduct);
-        if(!virtualSelectedProduct) throw Error (`Couldn't find data`)
+        virtualSelectedProduct = await anyObj(query, virtualSelectedProduct, 'view');
+        if(!virtualSelectedProduct) throw Error (`Couldn't find data`);
+        const [singleProduct] = virtualSelectedProduct;
+        res.send(singleProduct)
     }
     catch(err) {
         console.log(err.message);
     }
-    const [singleProduct] = virtualSelectedProduct;
-    res.send(singleProduct)
 })
 
 app.get('/sections/:type', (req, res) => {
@@ -203,19 +201,49 @@ app.patch('/edit', (req, res) => {
     }
 })
 
-app.post('/sell', (req, res)=>{
-    const {cident, cdate} = req.body;
-    const devData = getSingleDevice(cident);
-    const devOriginalData = devData[0];
-    const totalAmt = +devOriginalData.price; 
-    const newCheckOutData = Object.assign({}, devOriginalData, {quantity: '1', totalAmt}, req.body);
-    const doCheckout = checkoutDevice(cdate, devData[1], newCheckOutData);
-    if(doCheckout){
-        // remove device from main database
-        data[devData[1]] = data[devData[1]].filter(d => !(d?.imei === cident || d?.serial === cident));
-        res.send(checkOutData);
+app.post('/sell', async (req, res)=>{
+    const {cname, cphone, cdate, ctime, payment, cnote, cident} = req.body;
+    const idPrice = cident.split('-');
+    let [id, price] = idPrice;
+    price = +price;
+
+    let virtualSelectedProduct = [];
+    const query = {_id: new ObjectId(id)}
+    try{
+        virtualSelectedProduct = await anyObj(query, virtualSelectedProduct, 'view');
+        if(!virtualSelectedProduct) throw Error (`Couldn't find data`);
+        const [singleProduct] = virtualSelectedProduct;
+        const checkOutData = {
+            customerName: cname,
+            customerPhone: cphone,
+            paymentMethod: payment,
+            note: cnote,
+            amount: price,
+            quantity: 1,
+            totalPaid: price,
+            checkTime: ctime,
+            checkDate: cdate 
+        }
+        
+        const originalDataPlusOut = Object.assign({}, singleProduct, checkOutData);
+        console.log(originalDataPlusOut);
+        const checkOutDevice = new CheckedOut(originalDataPlusOut);
+        checkOutDevice.save().then(async function(){
+            // now delete product from database
+            let soldRes;
+            try{
+                soldRes = await anyObj(query, [], 'remove');
+                if(!soldRes) throw Error (`Couldn't Sell data`);
+                res.send(soldRes);
+            }
+            catch(err) {
+                console.log(err.message);
+            }
+        });
     }
-    console.log(checkOutData);
+    catch(err) {
+        console.log(err.message);
+    }
 })
 // STOCKS SECTION
 
