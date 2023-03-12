@@ -16,11 +16,11 @@ const modalFunction = () => {
             try{
                 const fetchData = async () => {
                     const getData = await fetch(`http://localhost:3000/data/${itemID}`);
-                    if(!getData) throw new Error('Something went wrong')
+                    if(!getData) throw new Error('Something went wrong');
                     const data = await getData.json();
                     const mapData = new Map(Object.entries(data));
                     mapData.forEach((v, k) => {
-                        if(k === 'img' || k === 'dateAdded') return;
+                        if(k === 'dateAdded' || k === '_id' || k === '__v') return;
                         const vers = k.toUpperCase();
                         const spanVer = (vers === 'VERSION') ? '' : '<span>*</span>';
                         const inps = `

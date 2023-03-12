@@ -119,18 +119,14 @@
                                             const colNames = new Map(Object.entries(cols))
                                             const headCols = [];
                                             colNames.forEach((v, k) => {
-                                                if(k === 'img' || k == 'dateAdded') return;
+                                                if(k === 'dateAdded' || k === '_id' || k === '__v') return;
                                                 headCols.push(k)
                                             })
                                         %>
                                         <th class="acts">ACTIONS</th>
                                         <th>#</th>
-                                        <% let id;
-                                        headCols.forEach((key, i) => {%>
-                                            <% if(key === 'imei' || key === 'serial') {
-                                                id = i;
-                                            }
-                                            %> 
+                                        <% headCols.forEach((key, i) => { %>
+        
                                             <th><%= key.toUpperCase() %> </th>
                                         <%}) %> 
                                     </tr>
@@ -140,16 +136,17 @@
                                     <% virtualSelectedProduct.forEach(device => {%>
                                         <% 
                                         const bodyVal = new Map(Object.entries(device));
+                                        const id = bodyVal.get('_id');
                                         const body = [];
                                         bodyVal.forEach((v, k) => {
-                                            if(k === 'img' || k === 'dateAdded') return;
+                                            if(k === 'dateAdded' || k === '_id' || k === '__v') return;
                                             body.push(v)
                                         });
                                         %> 
                                     <tr>
                                         <td class="hol-btns">
-                                            <button class="btn btn-warning btn-edit" data-toggle="modal" data-val="<%= body[id] %>" data-target="#editModal">Edit</button>
-                                            <button class="btn btn-success btn-out" data-toggle="modal" data-val="<%= body[id] %>" data-target="#checkoutModal">Checkout</button>
+                                            <button class="btn btn-warning btn-edit" data-toggle="modal" data-val="<%= id %>" data-target="#editModal">Edit</button>
+                                            <button class="btn btn-success btn-out" data-toggle="modal" data-val="<%= id %>" data-target="#checkoutModal">Checkout</button>
                                         </td>
                                         <td><%= ++count %> </td>
                                         <% body.forEach(item => {%>
