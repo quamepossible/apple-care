@@ -30,6 +30,15 @@ const otherProductSchema = mongoose.Schema({
     dateAdded : Date
 })
 
+const podSchema = mongoose.Schema({
+    model : String,
+    version: String,
+    color: String,
+    dateAdded: String,
+    price: String
+})
+
+
 const checkoutSchema = mongoose.Schema({
     ...otherProductSchema.obj,
     customerName: {
@@ -49,9 +58,11 @@ const checkoutSchema = mongoose.Schema({
     checkDate: String,
 })
 
+
 const Phones = mongoose.model('phones', phoneSchema);
 const Macbooks = mongoose.model('macbooks', otherProductSchema);
 const Ipads = mongoose.model('ipads', otherProductSchema);
 const Series = mongoose.model('series', otherProductSchema);
+const AirPods = mongoose.model('airpods', podSchema)
 const CheckedOut = mongoose.model('checkedout', checkoutSchema);
-module.exports = {Phones, Macbooks, Ipads, Series, CheckedOut};
+module.exports = {Phones, Macbooks, Ipads, Series, AirPods, CheckedOut};

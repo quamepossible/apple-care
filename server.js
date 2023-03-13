@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const ObjectId = require('mongodb').ObjectId
 mngConnect = mongoose.connect('mongodb://127.0.0.1:27017/appleCareDB');
 
-const {Phones, Macbooks, Ipads, Series, CheckedOut} = require('./db/db.js');
+const {Phones, Macbooks, Ipads, Series, AirPods, CheckedOut} = require('./db/db.js');
 const {anyObj} = require('./db/fetch.js');
 const checkOutData = require('./db/checkout.json');
 const app = express();
@@ -93,23 +93,48 @@ app.get('/product/:sku', async (req, res) => {
 
 app.post('/insert/:target', (req, res) => {
     const {target} = req.params;
+    console.log('target => ' + target);
     const validData = req.body;
     const getSize = new Map(Object.entries(validData));
     const err = [];
     getSize.forEach((v, k) => (k !== 'version') && (v.length === 0) && err.push(k))
     // push to database using target
-    if(!data[target]){
-        res.send('Invalid Product');
-        return;
-    } 
+    // if(!data[target]){
+    //     res.send('Invalid Product');
+    //     return;
+    // } 
     if(getSize.size === 0 || err.length > 0){
         res.send('Empty Data')
         return;
     }
     validData.dateAdded = new Date().toISOString();
-    data[target].push(validData);
-    console.log(validData);
-    res.send('saved')
+    switch (target){
+        case 'phones':
+            schVal = Phones(validData).save();
+            break;
+        case 'macbook':
+            schVal = Macbooks(validData).save();
+            break;
+        case 'ipad':
+            schVal = Ipads(validData).save();
+            break;
+        case 'series':
+            schVal = Series(validData).save();
+            break;
+        case 'airpod':
+            schVal = AirPods(validData).save();
+            break;
+        default:
+            schVal = [];
+            break;
+    }
+    schVal.then(() =>{
+        console.log(`${target} added to products`);
+        res.send('saved')
+    })
+    // data[target].push(validData);
+    // console.log(validData);
+    // res.send('saved')
 })
 
 const checkoutDevice = (date, prdType, prdData) => {
@@ -146,26 +171,37 @@ app.get('/data/:id', async (req, res) => {
 
 app.get('/sections/:type', async (req, res) => {
     const {type} = req.params;
-    // const dGet = Phones.findById(type);
-    const arr = [];
-    const schVal = Object.keys(Macbooks.schema.obj);
+    console.log(type);
+    let schVal = [];
+    const action = type;
+    switch (action){
+        case 'phones':
+            schVal = Object.keys(Phones.schema.obj);
+            break;
+        case 'macbook':
+            schVal = Object.keys(Macbooks.schema.obj);
+            break;
+        case 'ipad':
+            schVal = Object.keys(Ipads.schema.obj);
+            break;
+        case 'series':
+            schVal = Object.keys(Series.schema.obj);
+            break;
+        case 'airpod':
+            schVal = Object.keys(AirPods.schema.obj);
+            break;
+        default:
+            schVal = [];
+            break;
+    }
     console.log(schVal);
-    // res.send(dGet)
-    // const {type} = req.params;
-    // const oneType = data[type][0];
-    // const grapKeysMap = new Map(Object.entries(oneType));
-    // const holKeys = [];
-    // grapKeysMap.forEach((_, k) => {
-    //     if(k === 'img' || k === 'dateAdded') return;
-    //     holKeys.push(k)
-    // })
-    // res.send(holKeys);
+    res.send(schVal);
 })
 app.patch('/edit', async (req, res) => {
     const updatedData = req.body;
     const {id} = req.body;
     // console.log(updatedData);
-    const ething = [Phones, Macbooks, Ipads, Series];
+    const ething = [Phones, Macbooks, Ipads, Series, AirPods];
     ething.reduce(async (previous, value) => {
         await previous;
         const val = await value.findOneAndUpdate({_id:id}, req.body, {new:true});

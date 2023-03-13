@@ -130,14 +130,10 @@
                                     <% var count = 0 %> 
                                     <% virtualSelectedProduct.forEach(device => {%>
                                         <% 
-                                        const bodyVal = new Map(Object.entries(device));
-                                        const id = bodyVal.get('_id');
-                                        const price = bodyVal.get('price');
-                                        const body = [];
-                                        bodyVal.forEach((v, k) => {
-                                            if(k === 'dateAdded' || k === '_id' || k === '__v') return;
-                                            body.push(v)
-                                        });
+                                        const bodyVal = Object.entries(device);
+                                        const mapBody = new Map(Object.entries(device));
+                                        const id = mapBody.get('_id');
+                                        const price = mapBody.get('price');
                                         %> 
                                     <tr>
                                         <td class="hol-btns">
@@ -145,7 +141,8 @@
                                             <button class="btn btn-success btn-out" data-toggle="modal" data-val="<%= id %>-<%= price %>" data-target="#checkoutModal">Checkout</button>
                                         </td>
                                         <td><%= ++count %> </td>
-                                        <% body.forEach(item => {%>
+                                        <% bodyVal.forEach(([key,item]) => { %>
+                                            <% if(key === 'dateAdded' || key === '_id' || key === '__v') return; %>
                                             <td><%= item = (item.length === 0) ? '-' : item %></td>
                                         <%}) %>
                                     </tr>

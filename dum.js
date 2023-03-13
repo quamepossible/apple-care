@@ -1,24 +1,47 @@
 'use strict';
-const data = [1, 2, 3, 4, 5];
-data.reduce(async (prev, value) => {
-    await prev;
-    // Return new promise
-    console.log(value);
-    let hey = 5;
-    return new Promise((resolve) => {
-        // let hey;
-        // console.log(value);
-        let x = 1;
-        if(value === 2){
-            x = hey;
-        }
 
-        resolve(x);
-    });
-}, Promise.resolve()).then((e) => {
-    console.log('loop finished');
-    console.log(e);
-});
+const action = 'macbook';
+
+switch (action) {
+    case 'phone':
+        console.log('action is phone');
+        break;
+    case 'macbook':
+        console.log('action is macbook');
+        break;
+    default:
+        break;
+}
+
+
+// const obj = {
+//     name: 'John',
+//     age: 30
+// }
+// const doLoop = Object.entries(obj);
+// doLoop.forEach(([x,y], k) => {
+//     console.log(x);
+// })
+// const data = [1, 2, 3, 4, 5];
+// data.reduce(async (prev, value) => {
+//     await prev;
+//     // Return new promise
+//     console.log(value);
+//     let hey = 5;
+//     return new Promise((resolve) => {
+//         // let hey;
+//         // console.log(value);
+//         let x = 1;
+//         if(value === 2){
+//             x = hey;
+//         }
+
+//         resolve(x);
+//     });
+// }, Promise.resolve()).then((e) => {
+//     console.log('loop finished');
+//     console.log(e);
+// });
 
 // const data = {
 //     "2023-02-29" : {
