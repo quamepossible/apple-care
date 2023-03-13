@@ -144,18 +144,23 @@ app.get('/data/:id', async (req, res) => {
     }
 })
 
-app.get('/sections/:type', (req, res) => {
+app.get('/sections/:type', async (req, res) => {
     const {type} = req.params;
-    const oneType = data[type][0];
-    const grapKeysMap = new Map(Object.entries(oneType));
-    const holKeys = [];
-    grapKeysMap.forEach((_, k) => {
-        if(k === 'img' || k === 'dateAdded') return;
-        holKeys.push(k)
-    })
-    res.send(holKeys);
+    // const dGet = Phones.findById(type);
+    const arr = [];
+    const schVal = Object.keys(Macbooks.schema.obj);
+    console.log(schVal);
+    // res.send(dGet)
+    // const {type} = req.params;
+    // const oneType = data[type][0];
+    // const grapKeysMap = new Map(Object.entries(oneType));
+    // const holKeys = [];
+    // grapKeysMap.forEach((_, k) => {
+    //     if(k === 'img' || k === 'dateAdded') return;
+    //     holKeys.push(k)
+    // })
+    // res.send(holKeys);
 })
-
 app.patch('/edit', async (req, res) => {
     const updatedData = req.body;
     const {id} = req.body;
