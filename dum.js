@@ -1,53 +1,73 @@
 'use strict';
+const data = [1, 2, 3, 4, 5];
+data.reduce(async (prev, value) => {
+    await prev;
+    // Return new promise
+    console.log(value);
+    let hey = 5;
+    return new Promise((resolve) => {
+        // let hey;
+        // console.log(value);
+        let x = 1;
+        if(value === 2){
+            x = hey;
+        }
 
-const data = {
-    "2023-02-29" : {
-        phones : [
-            {
-                quantity : '1',
-                amt: '50'
-            },
-            {
-                quantity : '1',
-                amt: '50'
-            },
-            {
-                quantity : '5',
-                amt: '50'
-            }
-        ],
-        charger : [
-            {
-                quantity : '4',
-                amt: '100'
-            },
-            {
-                quantity : '5',
-                amt: '100'
-            },
-            {
-                quantity : '1',
-                amt: '100'
-            }
-        ],
-    }
-}
-
-const keys = Object.keys(data["2023-02-29"]);
-const prdMap = new Map();
-keys.forEach(key => {
-    let allQty = 0;
-    let allAmt = 0;
-    data["2023-02-29"][key].forEach(obj => {
-        allQty += +obj.quantity;
-        allAmt += +obj.amt;
+        resolve(x);
     });
-    prdMap.set(key, {quantity: allQty, totalAmt: allAmt});
-})
-console.log(prdMap);
-prdMap.forEach(v => {
-    console.log(v.quantity);
-})
+}, Promise.resolve()).then((e) => {
+    console.log('loop finished');
+    console.log(e);
+});
+
+// const data = {
+//     "2023-02-29" : {
+//         phones : [
+//             {
+//                 quantity : '1',
+//                 amt: '50'
+//             },
+//             {
+//                 quantity : '1',
+//                 amt: '50'
+//             },
+//             {
+//                 quantity : '5',
+//                 amt: '50'
+//             }
+//         ],
+//         charger : [
+//             {
+//                 quantity : '4',
+//                 amt: '100'
+//             },
+//             {
+//                 quantity : '5',
+//                 amt: '100'
+//             },
+//             {
+//                 quantity : '1',
+//                 amt: '100'
+//             }
+//         ],
+//     }
+// }
+
+// const keys = Object.keys(data["2023-02-29"]);
+// const prdMap = new Map();
+// keys.forEach(key => {
+//     let allQty = 0;
+//     let allAmt = 0;
+//     data["2023-02-29"][key].forEach(obj => {
+//         allQty += +obj.quantity;
+//         allAmt += +obj.amt;
+//     });
+//     prdMap.set(key, {quantity: allQty, totalAmt: allAmt});
+// })
+// console.log(prdMap);
+// prdMap.forEach(v => {
+//     console.log(v.quantity);
+// })
 
 
 

@@ -12,6 +12,7 @@ const modalFunction = () => {
         if(e.target.classList.contains('btn-edit')){
             const clicked = e.target.closest('.btn-edit');
             const itemID = clicked.dataset.val;
+            let mainID;
             console.log(itemID);
             try{
                 const fetchData = async () => {
@@ -20,6 +21,7 @@ const modalFunction = () => {
                     const data = await getData.json();
                     const mapData = new Map(Object.entries(data));
                     mapData.forEach((v, k) => {
+                        if(k === '_id') mainID = v;
                         if(k === 'dateAdded' || k === '_id' || k === '__v') return;
                         const vers = k.toUpperCase();
                         const spanVer = (vers === 'VERSION') ? '' : '<span>*</span>';
@@ -30,6 +32,8 @@ const modalFunction = () => {
                                     </div>`;
                         formContainer.insertAdjacentHTML('beforeend', inps);
                     })
+                    const holdID = `<input type="text" style="display:none" value=${mainID} name="id" class="editID">`;
+                    formContainer.insertAdjacentHTML('beforeend', holdID);
                 }
                 fetchData();
             }

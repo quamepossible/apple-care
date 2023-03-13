@@ -46,26 +46,25 @@ app.get('/products/:type', (req, res) => {
     // thus url/devices/phones?categ=SE (lists all iphone SE models)
 app.get('/devices/:type', async (req, res) => {
     const {type} = req.params;
-
     let virtualSelectedProduct = [];
     // 1. get all Data of data[type], where type could be [iphone, ipad, macbook, series, homepod,...etc.]     
-        try{
-            virtualSelectedProduct = await anyObj({model:type}, virtualSelectedProduct, 'view');
-            if(!virtualSelectedProduct) throw Error (`Couldn't find data`);
-            // 2. After getting relevant Data, return only the version of the products
-                // the versions could be [s, s-plus, xs-max, pro, pro, s-plus, pro-max, etc.] 
-                // ...and hence remove duplicates from the versions list        
-                const getDocVersions = virtualSelectedProduct.map(dev => dev.version);
-                let eachDocVersion = new Set(getDocVersions);
-                eachDocVersion = [...eachDocVersion];
+    try{
+        virtualSelectedProduct = await anyObj({model:type}, virtualSelectedProduct, 'view');
+        if(!virtualSelectedProduct) throw Error (`Couldn't find data`);
+        // 2. After getting relevant Data, return only the version of the products
+            // the versions could be [s, s-plus, xs-max, pro, pro, s-plus, pro-max, etc.] 
+            // ...and hence remove duplicates from the versions list        
+            const getDocVersions = virtualSelectedProduct.map(dev => dev.version);
+            let eachDocVersion = new Set(getDocVersions);
+            eachDocVersion = [...eachDocVersion];
 
-            // 3. send both version [s, s-plus, xs-max, pro, pro-max, etc.] and type [ipad, macbook, series, ipod,...etc.] to render page
-            res.render('stocks/devices', {eachDocVersion, type})
-        }
-        catch(err) {
-            console.log(err.message);
-        }      
-        // console.log(virtualSelectedProduct);    
+        // 3. send both version [s, s-plus, xs-max, pro, pro-max, etc.] and type [ipad, macbook, series, ipod,...etc.] to render page
+        res.render('stocks/devices', {eachDocVersion, type})
+    }
+    catch(err) {
+        console.log(err.message);
+    }      
+    // console.log(virtualSelectedProduct);    
 })
 
 app.get('/product/:sku', async (req, res) => {
@@ -113,17 +112,6 @@ app.post('/insert/:target', (req, res) => {
     res.send('saved')
 })
 
-const getSingleDevice = (id) => {
-    // put data properties into Map
-    const dataProp = new Map(Object.entries(data));
-    const dataPropNames = [];
-    dataProp.forEach((_, k) => dataPropNames.push(k));
-    for(const i of dataPropNames){
-        const getItem = data[i].find(dev => (dev?.imei === id || dev?.serial === id));
-        if(getItem) return [getItem, i];
-    }
-}
-
 const checkoutDevice = (date, prdType, prdData) => {
     // const theDate = new Date().toISOString().split('T')[0];
     const theDate = date;
@@ -168,37 +156,61 @@ app.get('/sections/:type', (req, res) => {
     res.send(holKeys);
 })
 
-app.patch('/edit', (req, res) => {
+app.patch('/edit', async (req, res) => {
     const updatedData = req.body;
-    console.log(updatedData);
-    const mapGetData = new Map(Object.entries(updatedData));
-    const err = [];
-    mapGetData.forEach((v, k) => (k !== 'version') && (v.length === 0) && err.push(k))
-    if(mapGetData.size === 0 || err.length > 0){
-        res.send('Empty Data')
-        return;
-    }
-    const id = (updatedData?.imei) ? updatedData.imei : updatedData.serial;
-    const serOrime = (updatedData?.imei) ? 'imei' : 'serial';
-    console.log(`${serOrime} : ${id}`);
-    const dataProp = new Map(Object.entries(data));
-    // put data properties into Map
-    const dataPropNames = [];
-    dataProp.forEach((_, k) => dataPropNames.push(k));
-    for(const i of dataPropNames){
-        const getItem = data[i].find(dev => (dev?.imei === id || dev?.serial === id));
-        if(getItem){
-            console.log(i);
-            // i = phones, macbook, ipad, series
-            const removeData = data[i].filter(dev => dev[serOrime] !== id);
-            data[i] = removeData;
-            data[i].push(updatedData);
-            res.send('edited')
-        }
-        else{
-            // res.send('Device not found')
-        }
-    }
+    const {id} = req.body;
+    // console.log(updatedData);
+    const ething = [Phones, Macbooks, Ipads, Series];
+    ething.reduce(async (previous, value) => {
+        await previous;
+        const val = await value.findOneAndUpdate({_id:id}, req.body, {new:true});
+        return new Promise((resolve) => {
+            let x = '';
+            if(val) x = val;
+            resolve(x)
+        });
+    }, Promise.resolve()).then((e) => {
+        console.log(e);
+        res.send('edited')
+    })
+
+    // new Promise ((res, rej) => {
+    //     ething.forEach(async function(e){
+    //         const allData = await e.findById(id);
+    //         if(allData){
+    //             res(getData);
+    //         }
+    //     })
+    // })
+    // console.log(getData);
+    // const mapGetData = new Map(Object.entries(updatedData));
+    // const err = [];
+    // mapGetData.forEach((v, k) => (k !== 'version') && (v.length === 0) && err.push(k))
+    // if(mapGetData.size === 0 || err.length > 0){
+    //     res.send('Empty Data')
+    //     return;
+    // }
+    // const id = (updatedData?.imei) ? updatedData.imei : updatedData.serial;
+    // const serOrime = (updatedData?.imei) ? 'imei' : 'serial';
+    // console.log(`${serOrime} : ${id}`);
+    // const dataProp = new Map(Object.entries(data));
+    // // put data properties into Map
+    // const dataPropNames = [];
+    // dataProp.forEach((_, k) => dataPropNames.push(k));
+    // for(const i of dataPropNames){
+    //     const getItem = data[i].find(dev => (dev?.imei === id || dev?.serial === id));
+    //     if(getItem){
+    //         console.log(i);
+    //         // i = phones, macbook, ipad, series
+    //         const removeData = data[i].filter(dev => dev[serOrime] !== id);
+    //         data[i] = removeData;
+    //         data[i].push(updatedData);
+    //         res.send('edited')
+    //     }
+    //     else{
+    //         // res.send('Device not found')
+    //     }
+    // }
 })
 
 app.post('/sell', async (req, res)=>{
@@ -224,9 +236,7 @@ app.post('/sell', async (req, res)=>{
             checkTime: ctime,
             checkDate: cdate 
         }
-        
         const originalDataPlusOut = Object.assign({}, singleProduct, checkOutData);
-        console.log(originalDataPlusOut);
         const checkOutDevice = new CheckedOut(originalDataPlusOut);
         checkOutDevice.save().then(async function(){
             // now delete product from database
