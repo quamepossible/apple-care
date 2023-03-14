@@ -200,11 +200,10 @@ app.get('/sections/:type', async (req, res) => {
 app.patch('/edit', async (req, res) => {
     const updatedData = req.body;
     const {id} = req.body;
-    // console.log(updatedData);
     const ething = [Phones, Macbooks, Ipads, Series, AirPods];
     ething.reduce(async (previous, value) => {
         await previous;
-        const val = await value.findOneAndUpdate({_id:id}, req.body, {new:true});
+        const val = await value.findOneAndUpdate({_id:id}, updatedData, {new:true});
         return new Promise((resolve) => {
             let x = '';
             if(val) x = val;
@@ -214,44 +213,6 @@ app.patch('/edit', async (req, res) => {
         console.log(e);
         res.send('edited')
     })
-
-    // new Promise ((res, rej) => {
-    //     ething.forEach(async function(e){
-    //         const allData = await e.findById(id);
-    //         if(allData){
-    //             res(getData);
-    //         }
-    //     })
-    // })
-    // console.log(getData);
-    // const mapGetData = new Map(Object.entries(updatedData));
-    // const err = [];
-    // mapGetData.forEach((v, k) => (k !== 'version') && (v.length === 0) && err.push(k))
-    // if(mapGetData.size === 0 || err.length > 0){
-    //     res.send('Empty Data')
-    //     return;
-    // }
-    // const id = (updatedData?.imei) ? updatedData.imei : updatedData.serial;
-    // const serOrime = (updatedData?.imei) ? 'imei' : 'serial';
-    // console.log(`${serOrime} : ${id}`);
-    // const dataProp = new Map(Object.entries(data));
-    // // put data properties into Map
-    // const dataPropNames = [];
-    // dataProp.forEach((_, k) => dataPropNames.push(k));
-    // for(const i of dataPropNames){
-    //     const getItem = data[i].find(dev => (dev?.imei === id || dev?.serial === id));
-    //     if(getItem){
-    //         console.log(i);
-    //         // i = phones, macbook, ipad, series
-    //         const removeData = data[i].filter(dev => dev[serOrime] !== id);
-    //         data[i] = removeData;
-    //         data[i].push(updatedData);
-    //         res.send('edited')
-    //     }
-    //     else{
-    //         // res.send('Device not found')
-    //     }
-    // }
 })
 
 app.post('/sell', async (req, res)=>{
@@ -310,56 +271,61 @@ app.get('/accounts', (req, res) => {
 
 app.post('/checkout', (req, res) => {
     const accessData = req.body;
-    Object.keys(accessData).forEach(k => {
-        const [quantity, price, note, payment, date] = accessData[k];
+    console.log(accessData);
+    Object.keys(accessData).forEach(model => {
+        console.log(model);
+        const [quantity, price, note, payment, date] = accessData[model];
         const justDate = date.split('T')[0];
-        const totalAmt = +quantity * +price;
-        const productData = {quantity, price, note, payment, totalAmt};
-        checkoutDevice(justDate, k, productData);
+        const justTime = date.split('T')[1];
+        const amount = +price;
+        const totaldPaid = +quantity * amount;
+        const productData = {model, quantity, amount, note, payment, totaldPaid, justTime, justDate};
+        console.log(productData);
     })
-    console.log(checkOutData);
-    res.send(checkOutData)
+    // console.log(checkOutData);
+    // res.send(checkOutData)
 })
 
 app.get('/sold/:date', (req, res) => {
-    const {date:theDate} = req.params;
-    if(Object.keys(checkOutData).some(k => k===theDate)){
-        if(req.query?.act) {
-            let totalAmount = 0;
-            const dateData = Object.values(checkOutData[theDate]);
-            dateData.forEach(row => row.forEach(purchase => totalAmount += purchase.totalAmt))
-            console.log(totalAmount);
-            res.send({totalAmount});
-        }
-        else{
-            const datePrds = Object.keys(checkOutData[theDate]);
-            const prdMap = new Map();
-            let cash = 0;
-            let momo = 0;
-            datePrds.forEach(prd => {
-                let allQty = 0;
-                let allAmt = 0;
-                // console.log(prd);
-                checkOutData[theDate][prd].forEach(obj => {
-                    console.log(obj);
-                    allQty += +obj.quantity;
-                    allAmt += obj.totalAmt;
-                    (obj.payment === 'cash') ? cash += +obj.totalAmt : momo += +obj.totalAmt;
-                })
-                prdMap.set(prd, {quantity: allQty, totalAmt: allAmt});
-            });
-            const soldObj = {cash, momo};
-            prdMap.forEach((v,k) => soldObj[k] = v);
-            console.log(soldObj);
-            console.log(`Cash : ${cash}`);
-            console.log(`Momo : ${momo}`);
-            res.send(soldObj);
-        }
-    }
-    else{
-        res.send({data: 'none'})
-        console.log('no data found');
-    }    
+
+    // const {date:theDate} = req.params;
+    // if(Object.keys(checkOutData).some(k => k===theDate)){
+    //     if(req.query?.act) {
+    //         let totalAmount = 0;
+    //         const dateData = Object.values(checkOutData[theDate]);
+    //         dateData.forEach(row => row.forEach(purchase => totalAmount += purchase.totalAmt))
+    //         console.log(totalAmount);
+    //         res.send({totalAmount});
+    //     }
+    //     else{
+    //         const datePrds = Object.keys(checkOutData[theDate]);
+    //         const prdMap = new Map();
+    //         let cash = 0;
+    //         let momo = 0;
+    //         datePrds.forEach(prd => {
+    //             let allQty = 0;
+    //             let allAmt = 0;
+    //             // console.log(prd);
+    //             checkOutData[theDate][prd].f2orEach(obj => {
+    //                 console.log(obj);
+    //                 allQty += +obj.quantity;
+    //                 allAmt += obj.totalAmt;
+    //                 (obj.payment === 'cash') ? cash += +obj.totalAmt : momo += +obj.totalAmt;
+    //             })
+    //             prdMap.set(prd, {quantity: allQty, totalAmt: allAmt});
+    //         });
+    //         const soldObj = {cash, momo};
+    //         prdMap.forEach((v,k) => soldObj[k] = v);
+    //         console.log(soldObj);
+    //         console.log(`Cash : ${cash}`);
+    //         console.log(`Momo : ${momo}`);
+    //         res.send(soldObj);
+    //     }
+    // }
+    // else{
+    //     res.send({data: 'none'})
+    //     console.log('no data found');
+    // }    
 })
 
 

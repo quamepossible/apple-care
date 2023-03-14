@@ -22,11 +22,11 @@ body{
     position: absolute;
     background-color: rgba(0, 0, 0, 0.945);
     z-index: 20;
-    display: none;
+    /* display: none; */
 }
 
 .checkout-content{
-    width: 90%;
+    width: 98%;
     height: 90vh;
     margin: auto;
     /* padding-bottom: 30px; */
@@ -37,7 +37,7 @@ body{
 }
 
 .items-left, .items-right{
-    width: 40%;
+    width: 35%;
     height: 100%;
     margin: auto;
     /* background-color: blue; */
@@ -46,7 +46,8 @@ body{
 }
 
 .items-right{
-    width: 60%;
+    width: 65%;
+    /* background-color: red; */
 }
 
 .check-header{
@@ -151,13 +152,13 @@ body{
 
 .add-cart .form-rep{
     display: inline-block;
-    width: 600px;
+    width: 90%;
     left: 55%;
     /* background-color: yellow; */
 }
 
 .form-row{
-    width: 600px;
+    width: 95%;
     height: 100px;
     margin: auto;
     /* background-color: green; */
@@ -172,6 +173,39 @@ label{
     width: 150px;
     height: auto;
     /* background-color: blue; */
+}
+
+.form-row .hol-table{
+    width: 250px;
+    /* background-color: red; */
+    margin: 0 10px 0 0;
+    position: relative;
+}
+
+.opt-row{
+    border-bottom: 2px solid black;
+}
+
+tr .mid{
+    border-right: 1px solid black;
+}
+
+.cash-val, .momo-val, .total-val{
+    font-weight: bold;
+}
+
+.total-val{
+    color: red;
+    font-size: 21px;
+}
+
+.hol-table table{
+    border: 1px dashed black;
+}
+
+.form-row .hol-table td{
+    padding: 5px 20px;
+    text-align: center;
 }
 
 .hol-qty-spans{
@@ -204,12 +238,10 @@ label{
     border: none;
 }
 
-
-
 .form-row .hol-inps input{
     width: 130px;
     padding: 10px 0px;
-    border-radius: 5px;
+    border-radius: 50px;
     padding-left: 15px;
     border: 2px solid rgb(128, 128, 128);
     outline: none !important;
@@ -220,7 +252,7 @@ label{
 }
 
 .hol-x-ico{
-    width: 20%;
+    width: 50px;
     height: auto;
     /* background-color: black; */
     position: relative;
@@ -256,6 +288,68 @@ label{
 .clicked{
     cursor: not-allowed;
 }
+
+.receipt{
+    width: 60%;
+    /* height: auto; */
+    background-color: rgb(0, 126, 184);
+    margin: auto;
+    border-radius: 15px;
+    display: none;
+    /* overflow: hidden; */
+}
+
+.total{
+    font-size: 23px;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.total span{
+    font-weight: bold;
+    color: red;
+}
+
+
+.rec-table{
+    width: 60%;
+    padding-bottom: 20px;
+    margin: auto;
+    /* background-color: green; */
+}
+
+.rec-table table{
+    width: 100%;
+    border: 2px dashed black;
+    /* background-color: yellow; */
+}
+
+.rec-table table td{
+    text-align: center;
+    width: 80px;
+    /* background-color: pink; */
+    /* border: 1px solid black; */
+    padding: 5px 0;
+}
+
+.ftd{
+    border-right: 2px solid black;
+}
+
+.tot-mval{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.rec-table table td input{
+    width: 80px;
+    border: none;
+    outline: none !important;
+    padding: 5px;
+}
+
 
 /* CHECKOUT OVERLAY */
 

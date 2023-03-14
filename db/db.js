@@ -50,6 +50,7 @@ const checkoutSchema = mongoose.Schema({
         default: 'N/A'
     },
     paymentMethod: String,
+    methodRatio: Object,
     note: String,
     amount: Number,
     quantity: Number,

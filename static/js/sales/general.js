@@ -41,8 +41,24 @@ const checkout = () => {
                             </div>
                             <div class="hol-inps">
                                 <label for="price">Price</label><br>
-                                <input type="number" id="price" name="price" min="1">
+                                <input type="number" id="price" name="price" class="price" min="1">
                             </div>
+
+                            <div class="hol-table">
+                                <table class="center">
+                                    <tr class="opt-row">
+                                        <td>Cash</td>
+                                        <td class="mid">Momo</td>
+                                        <td>Total</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cash-val">-</td>
+                                        <td class="momo-val mid">-</td>
+                                        <td class="total-val">0</td>
+                                    </tr>
+                                </table>
+                            </div>
+
                             <div class="hol-inps">
                                 <label for="">Notes (optional)</label><br>
                                 <input type="text" id="note" name="note">
@@ -55,7 +71,7 @@ const checkout = () => {
                 </div>
                 `
         cartForm.insertAdjacentHTML('beforeend', checkInput);
-
+        eachProductFunc();
     })
 }
 
@@ -66,13 +82,18 @@ const closeItem = () => {
         const assignEl = xClickedElem.dataset.assign;
         holdTags.querySelectorAll('button').forEach(btn => (btn.dataset.name === assignEl) && resetClick(btn))
         xClickedElem.remove();
+        sumTotal();
+        resetTransAmt();
     })
 }
+
 const qtyMeasure = () => {
     document.addEventListener('click', (e) => {
         if(e.target.closest('.minus') || e.target.closest('.plus')){
             const holBtns = e.target.closest('.hol-qty-spans');
             let qtyNum = holBtns.querySelector('.qty');
+            const price = e.target.closest('.add-cart').querySelector('.price');
+            // console.log('price => ' + price.value);
             const btnAction = e.target.closest('button').dataset.symbol;
             if(btnAction === 'add'){
                 holBtns.querySelector('.minus').removeAttribute('disabled');
@@ -91,9 +112,68 @@ const qtyMeasure = () => {
                     qtyNum.innerHTML = (+qtyNum.innerHTML) - 1;
                 }
             }
+            const sum = +qtyNum.innerHTML * +price.value;
+            e.target.closest('.add-cart').querySelector('.total-val').innerHTML = sum;
+            sumTotal();
+            resetTransAmt();
         }
     })
 }
+
+
+const eachProductFunc = () => {
+    const allCartProduct = document.querySelectorAll('.add-cart');
+    allCartProduct.forEach(product => {
+        const qty = product.querySelector('.qty');
+        const price = product.querySelector('.price');
+        const totalVal = product.querySelector('.total-val');
+        price.addEventListener('keyup', function(e) {
+            const sum = +qty.innerHTML * +price.value;
+            totalVal.innerHTML = sum;
+            sumTotal();
+            resetTransAmt();
+        })
+    })
+}
+
+const totMo = document.querySelector('.tot-mval');
+const totVal = document.querySelector('.big-tot');
+const cashInp = document.querySelector('.cash-inp');
+const sumTotal = () => {
+    const allTotal = document.querySelectorAll('.total-val');
+    let sumTotal = 0;
+    allTotal.forEach(init => sumTotal += +init.innerHTML);
+    totVal.innerHTML = sumTotal;
+    cashInp.setAttribute('max',`${sumTotal-1}`)
+}
+
+document.querySelector('.cash-inp').addEventListener('keyup', function(){
+    const newtotVal = +totVal.innerHTML;
+    if(+totVal.innerHTML === 0) return;
+    if(+this.value >= +newtotVal){
+        totMo.innerHTML = '0';
+        return;
+    } 
+    const cashAmt = +this.value;
+    const momoAmt = +newtotVal - cashAmt;
+    totMo.innerHTML = momoAmt;
+})
+
+const resetTransAmt = () => {
+    cashInp.value = '';
+    totMo.innerHTML = '0';
+}
+
+document.querySelector('#payment').addEventListener('change', function(){
+    if(this.value === 'split'){
+        document.querySelector('.receipt').style.display = 'block';
+    }
+    else{
+        document.querySelector('.receipt').style.display = 'none';
+    }
+    
+})
+
 
 const submitCart = () => {
     document.querySelector('.cart-form').addEventListener('submit', function(e){
@@ -130,21 +210,21 @@ const submitCart = () => {
         if(validFields){
             Object.keys(data).forEach(k => data[k].push(new Date().toISOString()));
             console.log(data);
-            $.ajax({
-                url: 'http://localhost:3000/checkout',
-                method: 'POST',
-                data: data,
-                success: (res) => {
-                    console.log(res);
-                    if(res){
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success ✅',
-                            text: `Checkout Successful`,
-                        }).then(() => location.reload())
-                    }
-                }
-            })
+            // $.ajax({
+            //     url: 'http://localhost:3000/checkout',
+            //     method: 'POST',
+            //     data: data,
+            //     success: (res) => {
+            //         console.log(res);
+            //         if(res){
+            //             Swal.fire({
+            //                 icon: 'success',
+            //                 title: 'Success ✅',
+            //                 text: `Checkout Successful`,
+            //             }).then(() => location.reload())
+            //         }
+            //     }
+            // })
         }
         else{
             console.log('Empty fields');
