@@ -1,17 +1,36 @@
 'use strict';
 
-const action = 'macbook';
 
-switch (action) {
-    case 'phone':
-        console.log('action is phone');
-        break;
-    case 'macbook':
-        console.log('action is macbook');
-        break;
-    default:
-        break;
-}
+let total = 275;
+let cash = 1;
+let momo = 274;
+
+const prds = [
+    // {item: 'charger', price: 150, cash: 0, momo: 0},
+    // {item: 'handsfree', price: 125, cash: 0, momo: 0},
+];
+
+prds.forEach(item => {
+    total -= item.price;
+    if(cash >= item.price){
+        cash -= item.price;
+        item.cash = item.price;
+    }
+    else{
+        item.cash = cash;
+        // item.momo = item.price - cash;
+        cash -= item.cash;
+    }
+})
+
+console.log(prds);
+
+
+
+
+
+
+
 
 
 // const obj = {

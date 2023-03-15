@@ -157,6 +157,37 @@ document.querySelector('.cash-inp').addEventListener('keyup', function(){
     const cashAmt = +this.value;
     const momoAmt = +newtotVal - cashAmt;
     totMo.innerHTML = momoAmt;
+
+    console.log('Total : ' + +newtotVal);
+    console.log('Cash : ' + cashAmt);
+    console.log('Momo : ' + momoAmt);
+
+    let initTotal = +newtotVal;
+    let initCash = cashAmt;
+    let initMomo = momoAmt;
+    document.querySelectorAll('.add-cart').forEach(item => {
+        let selectTotal = item.querySelector('.total-val');
+        let selectCash = item.querySelector('.cash-val');
+        let selectMomo = item.querySelector('.momo-val');
+
+        let itemTotal = selectTotal.innerHTML;
+        let itemCash = 0;
+        let itemMomo = 0;
+
+        initTotal -= +itemTotal;
+        if(initCash >= +itemTotal){
+            initCash -= +itemTotal;
+            itemCash = +itemTotal;
+        }
+        else{
+            itemCash = initCash;
+            itemMomo = +itemTotal - initCash;
+            initCash -= itemCash;
+        }
+        selectCash.innerHTML = itemCash;
+        selectMomo.innerHTML = itemMomo;
+    })
+
 })
 
 const resetTransAmt = () => {
@@ -165,11 +196,30 @@ const resetTransAmt = () => {
 }
 
 document.querySelector('#payment').addEventListener('change', function(){
+    const payMeth = this.value;
     if(this.value === 'split'){
-        document.querySelector('.receipt').style.display = 'block';
+        document.querySelector('.rec-table').style.display = 'block';
+        document.querySelectorAll('.cash-val').forEach(item=>item.innerHTML = '-');
+        document.querySelectorAll('.momo-val').forEach(item=>item.innerHTML = '-');
+
     }
     else{
-        document.querySelector('.receipt').style.display = 'none';
+        document.querySelector('.rec-table').style.display = 'none';
+        document.querySelectorAll('.add-cart').forEach(item => {
+            if(payMeth === 'cash'){
+                item.querySelector('.cash-val').innerHTML = '✅';
+                item.querySelector('.momo-val').innerHTML = '';
+            }
+            else if(payMeth === 'momo'){
+                item.querySelector('.momo-val').innerHTML = '✅';
+                item.querySelector('.cash-val').innerHTML = '';
+            }
+            else{
+                item.querySelector('.momo-val').innerHTML = '-';
+                item.querySelector('.cash-val').innerHTML = '-';
+            }
+        })
+        resetTransAmt();
     }
     
 })
@@ -261,8 +311,8 @@ const dateFunc = () => {
     const fullDate = new Intl.DateTimeFormat(locale, options).format(toDay);
     document.querySelector('.date').innerHTML = fullDate;
 }
-dateFunc();
 setInterval(() => {
+    dateFunc();
     let hrs = new Date().getHours();
     let min = new Date().getMinutes();
     let sec = new Date().getSeconds();
