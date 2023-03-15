@@ -271,22 +271,68 @@ app.get('/accounts', (req, res) => {
 
 app.post('/checkout', (req, res) => {
     const accessData = req.body;
+    const allAccessories = [];
     console.log(accessData);
     Object.keys(accessData).forEach(model => {
-        console.log(model);
-        const [quantity, price, note, paytype, customer, date, {cash}, {momo}] = accessData[model];
-        const justDate = date.split('T')[0];
-        const justTime = date.split('T')[1];
+        const [quant, price, note, paymentMethod, customerDetails, date, ...payRate] = accessData[model];
+        let methodRatio = {};
+        if(payRate.length === 1){
+            methodRatio = payRate[0];
+        }
+        else{
+            payRate.forEach(rate => {
+                const key = Object.entries(rate)[0][0];
+                const val = Object.entries(rate)[0][1];
+                methodRatio[key] = val;
+            })
+        }
+        console.log(methodRatio);
+        const checkDate = date.split('T')[0];
+        const checkTime = date.split('T')[1];
         const amount = +price;
-        const totaldPaid = +quantity * amount;
-        const productData = {model, quantity, amount, note, paytype, payRatio: {cash, momo}, customer, totaldPaid, justTime, justDate};
+        const quantity = +quant;
+        const totalPaid = +quantity * amount;
+        const productData = {model, quantity, amount, note, paymentMethod, methodRatio, customerDetails, totalPaid, checkTime, checkDate};
+        allAccessories.push(productData);
+        CheckedOut(productData).save();
         console.log(productData);
     })
+    // const checkOutAcc = new CheckedOut(allAccessories);
+    // checkOutAcc.save().then(() => {
+    //     console.log('Accessories sold');
+    // })
+    // console.log(allAccessories);
     // console.log(checkOutData);
     // res.send(checkOutData)
 })
 
-app.get('/sold/:date', (req, res) => {
+app.get('/sold/:date', async (req, res) => {
+    const {date} = req.params;
+    const dateData = CheckedOut.find({checkDate:date})
+    const docLen = await CheckedOut.countDocuments({checkDate:date});
+    console.log(docLen);
+    if(docLen){
+        if(req.query?.act){
+            const amountData = await dateData.then(function(allData){
+                return allData.map(eachDoc => eachDoc.totalPaid)
+            });
+            console.log(amountData);
+            const totalAmount = amountData.reduce((a,b) => a+b,0)
+            console.log(totalAmount);
+            res.send({totalAmount})
+        }
+        else{
+            
+        }
+    }
+    else{
+        res.send({data: 'none'});
+    }
+ 
+    // const dateData = await CheckedOut.find({checkDate:date}).then(function(allData){
+    //     return allData.map(eachDoc => eachDoc.totalPaid)
+    // });
+    // console.log(dateData);
 
     // const {date:theDate} = req.params;
     // if(Object.keys(checkOutData).some(k => k===theDate)){
@@ -306,7 +352,7 @@ app.get('/sold/:date', (req, res) => {
     //             let allQty = 0;
     //             let allAmt = 0;
     //             // console.log(prd);
-    //             checkOutData[theDate][prd].f2orEach(obj => {
+    //             checkOutData[theDate][prd].forEach(obj => {
     //                 console.log(obj);
     //                 allQty += +obj.quantity;
     //                 allAmt += obj.totalAmt;

@@ -229,6 +229,14 @@ const submitCart = () => {
     document.querySelector('.cart-form').addEventListener('submit', function(e){
         e.preventDefault();
         const payMeth = document.querySelector('#payment').value;
+        const allPrds = document.querySelectorAll('.add-cart');
+        if(allPrds.length === 0){
+            Swal.fire({
+                icon: 'error',
+                title: 'No accessory selected'
+            })
+            return;
+        }
         if(payMeth === ''){
             Swal.fire({
                 icon: 'error',

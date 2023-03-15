@@ -49,6 +49,7 @@ const checkoutSchema = mongoose.Schema({
         type: String,
         default: 'N/A'
     },
+    customerDetails: String,
     paymentMethod: String,
     methodRatio: Object,
     note: String,
