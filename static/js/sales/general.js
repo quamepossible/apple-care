@@ -238,14 +238,32 @@ const submitCart = () => {
         }
         console.log(payMeth);
         const data = {};
-        document.querySelectorAll('.add-cart').forEach(cart => {
+        document.querySelectorAll('.add-cart').forEach(function(cart){
             const assignCart = cart.dataset.assign;
             const qty = cart.querySelector('.qty').innerHTML;
+            const custData = document.querySelector('.c-data').value;
+            const cashElem = cart.querySelector('.cash-val')
+            const momoElem = cart.querySelector('.momo-val')
+            const totalElem = cart.querySelector('.total-val')
+            const payMethObj = {};
+            if(payMeth === 'split'){
+                payMethObj.cash = cashElem.innerHTML; 
+                payMethObj.momo = momoElem.innerHTML; 
+            }
+            else if(payMeth === 'cash'){
+                payMethObj.cash = totalElem.innerHTML; 
+            }
+            else if(payMeth === 'momo'){
+                payMethObj.momo = totalElem.innerHTML; 
+            }
+
             data[assignCart] = [];
             data[assignCart].push(qty);
             const itemInps = cart.querySelectorAll('input');
             itemInps.forEach(inp => data[assignCart].push(inp.value));
             data[assignCart].push(payMeth);
+            data[assignCart].push(payMethObj);
+            data[assignCart].push(custData);
         })
         const checkInps = Object.values(data);
         const everyArr = [];
@@ -260,21 +278,21 @@ const submitCart = () => {
         if(validFields){
             Object.keys(data).forEach(k => data[k].push(new Date().toISOString()));
             console.log(data);
-            // $.ajax({
-            //     url: 'http://localhost:3000/checkout',
-            //     method: 'POST',
-            //     data: data,
-            //     success: (res) => {
-            //         console.log(res);
-            //         if(res){
-            //             Swal.fire({
-            //                 icon: 'success',
-            //                 title: 'Success ✅',
-            //                 text: `Checkout Successful`,
-            //             }).then(() => location.reload())
-            //         }
-            //     }
-            // })
+            $.ajax({
+                url: 'http://localhost:3000/checkout',
+                method: 'POST',
+                data: data,
+                success: (res) => {
+                    console.log(res);
+                    if(res){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success ✅',
+                            text: `Checkout Successful`,
+                        }).then(() => location.reload())
+                    }
+                }
+            })
         }
         else{
             console.log('Empty fields');

@@ -274,12 +274,12 @@ app.post('/checkout', (req, res) => {
     console.log(accessData);
     Object.keys(accessData).forEach(model => {
         console.log(model);
-        const [quantity, price, note, payment, date] = accessData[model];
+        const [quantity, price, note, paytype, customer, date, {cash}, {momo}] = accessData[model];
         const justDate = date.split('T')[0];
         const justTime = date.split('T')[1];
         const amount = +price;
         const totaldPaid = +quantity * amount;
-        const productData = {model, quantity, amount, note, payment, totaldPaid, justTime, justDate};
+        const productData = {model, quantity, amount, note, paytype, payRatio: {cash, momo}, customer, totaldPaid, justTime, justDate};
         console.log(productData);
     })
     // console.log(checkOutData);
