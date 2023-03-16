@@ -4,12 +4,11 @@ const methodOverride = require('method-override');
 const path = require('path');
 // const data = require('./db/data.json');
 const mongoose = require('mongoose');
-const ObjectId = require('mongodb').ObjectId
+const ObjectId = require('mongodb').ObjectId;
 mngConnect = mongoose.connect('mongodb://127.0.0.1:27017/appleCareDB');
 
 const {Phones, Macbooks, Ipads, Series, AirPods, CheckedOut} = require('./db/db.js');
 const {anyObj} = require('./db/fetch.js');
-const checkOutData = require('./db/checkout.json');
 const app = express();
 
 // set views
@@ -310,25 +309,35 @@ app.get('/sold/:date', async (req, res) => {
     const {date} = req.params;
     const dateData = CheckedOut.find({checkDate:date})
     const docLen = await CheckedOut.countDocuments({checkDate:date});
-    console.log(docLen);
+    
     if(docLen){
-        if(req.query?.act){
-            const amountData = await dateData.then(function(allData){
-                return allData.map(eachDoc => eachDoc.totalPaid)
-            });
-            console.log(amountData);
-            const totalAmount = amountData.reduce((a,b) => a+b,0)
-            console.log(totalAmount);
-            res.send({totalAmount})
-        }
-        else{
-            let allPrdSold = await dateData.then((allData) => {
-                return allData.map(eachDoc => eachDoc.model);
-            })
-            console.log(allPrdSold);
-            const uniqModels = new Set(allPrdSold);
-            res.send(uniqModels);
-        }
+        res.send('good kay okay');
+        // if(req.query?.act){
+        //     const amountData = await dateData.then(function(allData){
+        //         return allData.map(eachDoc => eachDoc.totalPaid)
+        //     });
+        //     console.log(amountData);
+        //     const totalAmount = amountData.reduce((a,b) => a+b,0)
+        //     console.log(totalAmount);
+        //     res.send({totalAmount})
+        // }
+        // else{
+        //     let allPrdSold = await dateData.then((allData) => {
+        //         return allData.map(eachDoc => eachDoc.model);
+        //     })
+        //     console.log(allPrdSold);
+        //     const uniqModels = new Set(allPrdSold);
+        //     const soldPrds = [...uniqModels];
+        //     const mapPrds = new Map();
+        //     soldPrds.forEach(async (prd) => {
+        //         const prdDocs = await CheckedOut.find({model:prd});
+        //         // const prdType = (prd.length <= 2) ? 'Phones' : prd;
+        //         console.log(prd);
+        //         mapPrds.set(prd, prdDocs);
+        //     })
+        //     console.log(mapPrds);
+        //     res.send(uniqModels);
+        // }
     }
     else{
         res.send({data: 'none'});
