@@ -322,7 +322,12 @@ app.get('/sold/:date', async (req, res) => {
             res.send({totalAmount})
         }
         else{
-            
+            let allPrdSold = await dateData.then((allData) => {
+                return allData.map(eachDoc => eachDoc.model);
+            })
+            console.log(allPrdSold);
+            const uniqModels = new Set(allPrdSold);
+            res.send(uniqModels);
         }
     }
     else{

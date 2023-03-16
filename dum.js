@@ -1,29 +1,36 @@
 'use strict';
 
 
-let total = 275;
-let cash = 1;
-let momo = 274;
+const arr = [1, 2, 2, 1, 1, 3, 4, 4];
+const doarr = new Set(arr);
+console.log(doarr);
 
-const prds = [
-    // {item: 'charger', price: 150, cash: 0, momo: 0},
-    // {item: 'handsfree', price: 125, cash: 0, momo: 0},
-];
 
-prds.forEach(item => {
-    total -= item.price;
-    if(cash >= item.price){
-        cash -= item.price;
-        item.cash = item.price;
-    }
-    else{
-        item.cash = cash;
-        // item.momo = item.price - cash;
-        cash -= item.cash;
-    }
-})
 
-console.log(prds);
+
+// let total = 275;
+// let cash = 1;
+// let momo = 274;
+
+// const prds = [
+//     // {item: 'charger', price: 150, cash: 0, momo: 0},
+//     // {item: 'handsfree', price: 125, cash: 0, momo: 0},
+// ];
+
+// prds.forEach(item => {
+//     total -= item.price;
+//     if(cash >= item.price){
+//         cash -= item.price;
+//         item.cash = item.price;
+//     }
+//     else{
+//         item.cash = cash;
+//         // item.momo = item.price - cash;
+//         cash -= item.cash;
+//     }
+// })
+
+// console.log(prds);
 
 
 
