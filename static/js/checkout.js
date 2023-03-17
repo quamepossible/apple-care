@@ -59,12 +59,54 @@ const editDataFunc = () => {
 }
 
 const checkoutForm = () => {
+    const paymentType = document.querySelector('.payment');
+    paymentType.addEventListener('change', function(){
+        const splitMode = document.querySelectorAll('.split-pay');
+        if(this.value === 'split'){
+            splitMode.forEach(split => split.style.display = 'block');
+        }
+        else{
+            splitMode.forEach(split => split.style.display = 'none');
+        }
+
+    })
+
+    const cashSec = document.querySelector('#cash');
+    const momoSec = document.querySelector('#momo');
+    cashSec.addEventListener('keyup', function(){
+        const getIdInfo = document.querySelector('#cident');
+        const toBePaid = getIdInfo.value.split('-')[1];
+        this.setAttribute('max', +toBePaid-1);
+
+        if(this.value > +toBePaid-1){
+            momoSec.value = '-'
+            return;
+        } 
+        const momoPay = +toBePaid - +this.value;
+        momoSec.value = momoPay;
+    })
+
+
     document.querySelector('.checkout-form').addEventListener('submit', function(e){
         e.preventDefault();
         const formData = Object.fromEntries(new FormData(this));
+        const getIdInfo = document.querySelector('#cident');
+        const toBePaid = getIdInfo.value.split('-')[1];
+        formData.methodRatio = {};
+        const payType = paymentType.value;
+        if(payType === 'split'){
+            formData.methodRatio = {
+                cash: cashSec.value,
+                momo: momoSec.value
+            }
+        }
+        else if(payType === 'cash' || payType === 'momo'){
+            formData.methodRatio[payType] = toBePaid;
+        }
         const mapData = new Map(Object.entries(formData));
         // console.log(mapData);
         const err = [];
+        (payType === 'split') && (cashSec.value.length === 0) && err.push('error');
         mapData.forEach((v,k)=>(k !== 'cnote') && (v.length === 0) && err.push(k))
         if(err.length > 0){
             // there's error
@@ -75,6 +117,7 @@ const checkoutForm = () => {
             })
         }
         else{
+            console.log(formData);
             // push data
             $.ajax({
                 url: 'http://localhost:3000/sell',

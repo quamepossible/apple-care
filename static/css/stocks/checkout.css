@@ -178,6 +178,10 @@ td button{
     color: white;
 }
 
+.split-pay{
+    display: none;
+}
+
 .payment{
     /* width: 250px; */
 }

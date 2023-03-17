@@ -67,12 +67,23 @@
                                     <option value="">Payment Method</option>
                                     <option value="cash">Cash</option>
                                     <option value="momo">Momo</option>
+                                    <option value="split">Split</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="">Add Note (optional)</label>
                                 <input type="text" class="form-control" id="" name="cnote">
                             </div>
+                            <div class="form-group col-md-6 split-pay">
+                                <label for="">Cash</label>
+                                <input type="number" min="1" class="form-control" id="cash">
+                            </div>
+                            <div class="form-group col-md-6 split-pay">
+                                <label for="">Momo</label>
+                                <input type="text" class="form-control" id="momo">
+                            </div>
+                            </div>
+                            
                             <input type="text" id="cident" name="cident" value="" style="display: none;">
                         </div>
                         <div class="modal-footer">

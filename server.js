@@ -215,7 +215,8 @@ app.patch('/edit', async (req, res) => {
 })
 
 app.post('/sell', async (req, res)=>{
-    const {cname, cphone, cdate, ctime, payment, cnote, cident} = req.body;
+    console.log(req.body);
+    const {cname, cphone, cdate, ctime, payment, cnote, cident, methodRatio} = req.body;
     const idPrice = cident.split('-');
     let [id, price] = idPrice;
     price = +price;
@@ -235,7 +236,8 @@ app.post('/sell', async (req, res)=>{
             quantity: 1,
             totalPaid: price,
             checkTime: ctime,
-            checkDate: cdate 
+            checkDate: cdate ,
+            methodRatio
         }
         const originalDataPlusOut = Object.assign({}, singleProduct, checkOutData);
         const checkOutDevice = new CheckedOut(originalDataPlusOut);
@@ -311,33 +313,63 @@ app.get('/sold/:date', async (req, res) => {
     const docLen = await CheckedOut.countDocuments({checkDate:date});
     
     if(docLen){
-        res.send('good kay okay');
-        // if(req.query?.act){
-        //     const amountData = await dateData.then(function(allData){
-        //         return allData.map(eachDoc => eachDoc.totalPaid)
-        //     });
-        //     console.log(amountData);
-        //     const totalAmount = amountData.reduce((a,b) => a+b,0)
-        //     console.log(totalAmount);
-        //     res.send({totalAmount})
-        // }
-        // else{
-        //     let allPrdSold = await dateData.then((allData) => {
-        //         return allData.map(eachDoc => eachDoc.model);
-        //     })
-        //     console.log(allPrdSold);
-        //     const uniqModels = new Set(allPrdSold);
-        //     const soldPrds = [...uniqModels];
-        //     const mapPrds = new Map();
-        //     soldPrds.forEach(async (prd) => {
-        //         const prdDocs = await CheckedOut.find({model:prd});
-        //         // const prdType = (prd.length <= 2) ? 'Phones' : prd;
-        //         console.log(prd);
-        //         mapPrds.set(prd, prdDocs);
-        //     })
-        //     console.log(mapPrds);
-        //     res.send(uniqModels);
-        // }
+        if(req.query?.act){
+            const amountData = await dateData.then(function(allData){
+                return allData.map(eachDoc => eachDoc.totalPaid)
+            });
+            console.log(amountData);
+            const totalAmount = amountData.reduce((a,b) => a+b,0)
+            console.log(totalAmount);
+            res.send({totalAmount})
+        }
+        else{
+            let allPrdSold = await dateData.then((allData) => {
+                return allData.map(eachDoc => eachDoc.model);
+            })
+            console.log(allPrdSold);
+            const uniqModels = new Set(allPrdSold);
+            const soldPrds = [...uniqModels];
+            const mapPrds = [];
+            const holPrds = await soldPrds.reduce(async (prv, val) => {
+                await prv;
+                const prdDocs = await CheckedOut.find({model:val});
+                mapPrds.push(prdDocs)
+                return new Promise(res => {
+                    res(mapPrds);
+                });
+            }, Promise.resolve());
+            const mapRes = new Map();
+            holPrds.forEach((arr, k) => {
+                mapRes.set(soldPrds[k], arr)
+            })
+            const allObj = {};
+            mapRes.forEach((v, k) => {
+                v.forEach(e => {
+                    let type = k
+                    if(type.length <= 2){
+                        type = 'phones';
+                    }
+                    if(!allObj[type]){
+                        allObj[type] = [];
+                    }
+                    allObj[type].push(e);
+                })
+            });
+
+            const mapedData = new Map(Object.entries(allObj));
+            const anodaMap = new Map();
+            mapedData.forEach((v, k) => {
+                let mapTotal = 0;
+                v.forEach(e => mapTotal +=e.totalPaid);
+                anodaMap.set(k, mapTotal);
+            })
+            const convToObj = Object.fromEntries(anodaMap);
+            console.log(convToObj);
+            const justAmt = Object.values(convToObj).reduce((a,b)=>a+b,0);
+            console.log(justAmt);
+            res.send({justAmt})
+            // console.log(JSON.stringify(convToObj));
+        }
     }
     else{
         res.send({data: 'none'});
