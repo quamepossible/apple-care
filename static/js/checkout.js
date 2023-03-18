@@ -106,7 +106,7 @@ const checkoutForm = () => {
         const mapData = new Map(Object.entries(formData));
         // console.log(mapData);
         const err = [];
-        (payType === 'split') && (cashSec.value.length === 0) && err.push('error');
+        (payType === 'split') && (cashSec.value.length === 0 || momoSec.value.length === 0) && err.push('error');
         mapData.forEach((v,k)=>(k !== 'cnote') && (v.length === 0) && err.push(k))
         if(err.length > 0){
             // there's error

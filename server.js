@@ -287,7 +287,6 @@ app.post('/checkout', (req, res) => {
                 methodRatio[key] = val;
             })
         }
-        console.log(methodRatio);
         const checkDate = date.split('T')[0];
         const checkTime = date.split('T')[1];
         const amount = +price;
@@ -295,16 +294,14 @@ app.post('/checkout', (req, res) => {
         const totalPaid = +quantity * amount;
         const productData = {model, quantity, amount, note, paymentMethod, methodRatio, customerDetails, totalPaid, checkTime, checkDate};
         allAccessories.push(productData);
-        CheckedOut(productData).save();
-        console.log(productData);
     })
-    // const checkOutAcc = new CheckedOut(allAccessories);
-    // checkOutAcc.save().then(() => {
-    //     console.log('Accessories sold');
-    // })
-    // console.log(allAccessories);
-    // console.log(checkOutData);
-    // res.send(checkOutData)
+    CheckedOut.insertMany(allAccessories).then(() => {
+        console.log('Accessory Saved');
+        res.send('sold')
+    }).catch(err => {
+        res.send('unable')
+    })
+    
 })
 
 app.get('/sold/:date', async (req, res) => {
@@ -332,7 +329,7 @@ app.get('/sold/:date', async (req, res) => {
             const mapPrds = [];
             const holPrds = await soldPrds.reduce(async (prv, val) => {
                 await prv;
-                const prdDocs = await CheckedOut.find({model:val});
+                const prdDocs = await CheckedOut.find({model:val,checkDate:date});
                 mapPrds.push(prdDocs)
                 return new Promise(res => {
                     res(mapPrds);
@@ -358,66 +355,28 @@ app.get('/sold/:date', async (req, res) => {
 
             const mapedData = new Map(Object.entries(allObj));
             const anodaMap = new Map();
+            const devQty = new Map();
+            const fullPrdDetails = new Map();
+            let cash = 0;
+            let momo = 0;
             mapedData.forEach((v, k) => {
+                let initQty = 0;
                 let mapTotal = 0;
-                v.forEach(e => mapTotal +=e.totalPaid);
-                anodaMap.set(k, mapTotal);
-            })
-            const convToObj = Object.fromEntries(anodaMap);
-            console.log(convToObj);
-            const justAmt = Object.values(convToObj).reduce((a,b)=>a+b,0);
-            console.log(justAmt);
-            res.send({justAmt})
-            // console.log(JSON.stringify(convToObj));
+                v.forEach(e => {
+                    mapTotal +=e.totalPaid;
+                    initQty += e.quantity;
+                    ((e.paymentMethod === 'cash') && (cash += +e.methodRatio.cash)) || ((e.paymentMethod === 'momo') && (momo += +e.methodRatio.momo)) || ((e.paymentMethod === 'split') && ((momo += +e.methodRatio.momo) && (cash += +e.methodRatio.cash)))
+                });
+                fullPrdDetails.set(k, {quantity: initQty, totalAmt: mapTotal});
+            });
+            const soldObj = {cash, momo};
+            fullPrdDetails.forEach((v,k) => soldObj[k] = v);
+            res.send(soldObj);
         }
     }
     else{
         res.send({data: 'none'});
     }
- 
-    // const dateData = await CheckedOut.find({checkDate:date}).then(function(allData){
-    //     return allData.map(eachDoc => eachDoc.totalPaid)
-    // });
-    // console.log(dateData);
-
-    // const {date:theDate} = req.params;
-    // if(Object.keys(checkOutData).some(k => k===theDate)){
-    //     if(req.query?.act) {
-    //         let totalAmount = 0;
-    //         const dateData = Object.values(checkOutData[theDate]);
-    //         dateData.forEach(row => row.forEach(purchase => totalAmount += purchase.totalAmt))
-    //         console.log(totalAmount);
-    //         res.send({totalAmount});
-    //     }
-    //     else{
-    //         const datePrds = Object.keys(checkOutData[theDate]);
-    //         const prdMap = new Map();
-    //         let cash = 0;
-    //         let momo = 0;
-    //         datePrds.forEach(prd => {
-    //             let allQty = 0;
-    //             let allAmt = 0;
-    //             // console.log(prd);
-    //             checkOutData[theDate][prd].forEach(obj => {
-    //                 console.log(obj);
-    //                 allQty += +obj.quantity;
-    //                 allAmt += obj.totalAmt;
-    //                 (obj.payment === 'cash') ? cash += +obj.totalAmt : momo += +obj.totalAmt;
-    //             })
-    //             prdMap.set(prd, {quantity: allQty, totalAmt: allAmt});
-    //         });
-    //         const soldObj = {cash, momo};
-    //         prdMap.forEach((v,k) => soldObj[k] = v);
-    //         console.log(soldObj);
-    //         console.log(`Cash : ${cash}`);
-    //         console.log(`Momo : ${momo}`);
-    //         res.send(soldObj);
-    //     }
-    // }
-    // else{
-    //     res.send({data: 'none'})
-    //     console.log('no data found');
-    // }    
 })
 
 

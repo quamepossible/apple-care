@@ -275,6 +275,8 @@ const submitCart = () => {
         })
         const checkInps = Object.values(data);
         const everyArr = [];
+        (payMeth === 'split') && (cashInp.value.length === 0 || totMo.innerHTML == '0') && everyArr.push(false);
+
         checkInps.forEach(item => {
             item.map((v, k) => {
                 if(k === 0 || k === 1){
@@ -292,12 +294,19 @@ const submitCart = () => {
                 data: data,
                 success: (res) => {
                     console.log(res);
-                    if(res){
+                    if(res === 'sold'){
                         Swal.fire({
                             icon: 'success',
                             title: 'Success ✅',
                             text: `Checkout Successful`,
                         }).then(() => location.reload())
+                    }
+                    else if(res === 'unable'){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'oops... ❌',
+                            text: `Couldn't sell product(s), try Again 😢`,
+                        })
                     }
                 }
             })

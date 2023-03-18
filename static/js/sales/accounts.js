@@ -41,37 +41,37 @@ const fetchSold = async () => {
   const getData = await fetch(`http://localhost:3000/sold/${date}`);
   const dataRes = await getData.json();
   console.log(dataRes);
-  // if(dataRes?.data === 'none') return;
-  // const mapResData = new Map(Object.entries(dataRes));
-  // console.log(mapResData);
-  // const payMethods = [];
-  // mapResData.forEach((v,k) => {
-  //   if(k === 'cash' || k === 'momo'){
-  //     payMethods.push(v);
-  //     return;
-  //   }
-  //   const fullAmt = payMethods.reduce((a,b)=>a+b,0);
-  //   const perc = Math.floor((v.totalAmt / fullAmt) * 100);
-  //   const list = `
-  //     <li>
-  //         <div class="hol-prd-img">
-  //             <div style="background-image: url('/imgs/categ/sales/products/sold/${k}.png')" alt=""></div>
-  //         </div>
-  //         <span class="prd-name top-cent">${k}</span>
+  if(dataRes?.data === 'none') return;
+  const mapResData = new Map(Object.entries(dataRes));
+  console.log(mapResData);
+  const payMethods = [];
+  mapResData.forEach((v,k) => {
+    if(k === 'cash' || k === 'momo'){
+      payMethods.push(v);
+      return;
+    }
+    const fullAmt = payMethods.reduce((a,b)=>a+b,0);
+    const perc = Math.floor((v.totalAmt / fullAmt) * 100);
+    const list = `
+      <li>
+          <div class="hol-prd-img">
+              <div style="background-image: url('/imgs/categ/sales/products/sold/${k}.png')" alt=""></div>
+          </div>
+          <span class="prd-name top-cent">${k}</span>
 
-  //         <span class="all-spans">
-  //             <span>GH₵${v.totalAmt}</span>
-  //             <span class="load">
-  //                 <span class="span-qty" style="width: ${perc}%"></span>
-  //             </span>
-  //             <span>${v.quantity}</span>
-  //         </span>        
-  //     </li>`;
-  //   holdSold.insertAdjacentHTML('beforeend', list);
-  // })
-  // document.querySelector('.cash-amt').innerHTML = payMethods[0];
-  // document.querySelector('.momo-amt').innerHTML = payMethods[1];
-  // pageCharts(payMethods);
+          <span class="all-spans">
+              <span>GH₵${v.totalAmt}</span>
+              <span class="load">
+                  <span class="span-qty" style="width: ${perc}%"></span>
+              </span>
+              <span>${v.quantity}</span>
+          </span>        
+      </li>`;
+    holdSold.insertAdjacentHTML('beforeend', list);
+  })
+  document.querySelector('.cash-amt').innerHTML = payMethods[0];
+  document.querySelector('.momo-amt').innerHTML = payMethods[1];
+  pageCharts(payMethods);
 }
 
 

@@ -1,12 +1,38 @@
 'use strict';
 
-
-const arr = [1, 2, 2, 1, 1, 3, 4, 4];
-const doarr = new Set(arr);
-console.log(doarr);
-
-
-
+const arr = [
+    {
+        payment: 'cash',
+        ratio: {cash: 100}
+    },
+    {
+        payment: 'momo',
+        ratio: {momo: 350}
+    },
+    {
+        payment: 'cash',
+        ratio: {cash: 500}
+    },
+    {
+        payment: 'split',
+        ratio: {cash: 80, momo: 240}
+    },
+    {
+        payment: 'momo',
+        ratio: {momo: 120}
+    },
+    {
+        payment: 'split',
+        ratio: {cash: 50, momo: 800}
+    },
+];
+let cash = 0;
+let momo = 0;
+arr.forEach(el => {
+    ((el.payment === 'cash') && (cash += el.ratio.cash)) || ((el.payment === 'momo') && (momo += el.ratio.momo)) || ((el.payment === 'split') && ((momo += el.ratio.momo) && (cash += el.ratio.cash)))
+})
+console.log('cash => ' + cash);
+console.log('momo => ' + momo);
 
 // let total = 275;
 // let cash = 1;
