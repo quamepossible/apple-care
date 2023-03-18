@@ -97,11 +97,7 @@ app.post('/insert/:target', (req, res) => {
     const getSize = new Map(Object.entries(validData));
     const err = [];
     getSize.forEach((v, k) => (k !== 'version') && (v.length === 0) && err.push(k))
-    // push to database using target
-    // if(!data[target]){
-    //     res.send('Invalid Product');
-    //     return;
-    // } 
+    // push to database using target 
     if(getSize.size === 0 || err.length > 0){
         res.send('Empty Data')
         return;
@@ -126,32 +122,13 @@ app.post('/insert/:target', (req, res) => {
         default:
             schVal = [];
             break;
-    }
+    };
     schVal.then(() =>{
         console.log(`${target} added to products`);
         res.send('saved')
-    })
-    // data[target].push(validData);
-    // console.log(validData);
-    // res.send('saved')
+    });
 })
 
-const checkoutDevice = (date, prdType, prdData) => {
-    // const theDate = new Date().toISOString().split('T')[0];
-    const theDate = date;
-    const mainDateKeys = Object.keys(checkOutData);
-    const isDateKeyAva = mainDateKeys.some(k => k === theDate);
-    if(!isDateKeyAva){
-        checkOutData[theDate] = {}
-        checkOutData[theDate][prdType] = [prdData];
-    }
-    else{
-        const dateKeys = Object.keys(checkOutData[theDate])
-        const isPrdKeyAva = dateKeys.some(k => k === prdType);
-        (!isPrdKeyAva) ? checkOutData[theDate][prdType] = [prdData] : checkOutData[theDate][prdType].push(prdData)
-    }
-    return true;
-}
 
 app.get('/data/:id', async (req, res) => {
     const {id} = req.params;
@@ -378,8 +355,6 @@ app.get('/sold/:date', async (req, res) => {
         res.send({data: 'none'});
     }
 })
-
-
 
 // SALES SECTION
 
