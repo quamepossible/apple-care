@@ -419,9 +419,9 @@ tr .mid{
     height: 500px;
     /* margin-left: 20px; */
     background-color: white;
-    box-shadow: 0 0 5px black;
+    box-shadow: 0 0 2px black;
     border-radius: 10px;
-    border: 3px dashed black;
+    /* border: 3px solid black; */
     overflow: hidden;
 }
 
