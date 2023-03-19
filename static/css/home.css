@@ -29,6 +29,7 @@ body{
     height: 90vh;
     border: 20px solid white;
     border-radius: 30px;
+    overflow-y: auto;
 }
 
 .hol-circs{
