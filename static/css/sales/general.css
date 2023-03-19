@@ -22,7 +22,7 @@ body{
     position: absolute;
     background-color: rgba(0, 0, 0, 0.945);
     z-index: 20;
-    display: none;
+    /* display: none; */
 }
 
 .checkout-content{
@@ -124,7 +124,7 @@ body{
 }
 
 .add-cart{
-    width: 95%;
+    width: 900px;
     height: 100px;
     background-color: var(--gray);
     border-radius: 10px;
