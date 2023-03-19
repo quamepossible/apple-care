@@ -1,0 +1,257 @@
+@media(max-width: 1300px){
+    .left-nav{
+        width: 30%;
+    }
+    .right-section{
+        width: 70%;
+    }
+    #accounts-content{
+        width: 100%;
+    }
+    .hol-today, .hol-past{
+        width: 100%;
+    }
+    .hol-date{
+        width: 500px;
+    }
+}
+
+@media(max-width: 1175px){
+    .left-nav, .right-section{
+        width: 100%;
+    }
+
+    .left-nav{
+        height: 200px;
+        position: relative;
+    }
+
+    .left-container{
+        height: 100%;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+    
+    }
+    .nav-cont ul{
+        width: 100%;
+        margin: 0;
+    }
+
+    .nav-cont ul li{
+        width: 24%;
+        margin: auto 2px;
+        display: inline-block;
+    }
+
+    .li-ico{
+        display: inline-block;
+        width: 30%;
+    }
+
+    .li-text{
+        width: 70%;
+        float: right;
+    }
+
+    .li-text span{
+        color: black;
+    }
+
+    .today-amt{
+        /* width: 300px; */
+        margin-left: 100px;
+    }
+}
+
+@media(max-width: 920px){
+    .hol-today, .hol-past{
+        width: 100%;
+    }
+    .today-amt{
+        width: 300px;
+        margin-left: 50px;
+    }
+}
+
+@media(max-width: 850px){
+    .nav-cont ul li{
+        height: 35px;
+    }
+    
+    .tv-ico{
+        font-size: 23px;
+    }
+
+
+}
+
+@media(max-width: 820px){
+    /* .hol-today, .hol-past{
+        width: 100%;
+    } */
+    .today-amt{
+        /* width: 300px; */
+        margin-left: 20px;
+    }
+    .right-chart{
+        display: none;
+    }
+}
+
+@media(max-width: 750px){
+    .left-nav{
+        height: 250px;
+    }
+    .nav-cont ul li{
+        width: 48%;
+        height: 50px;
+    }
+
+    .hol-date{
+        width: 450px;
+    }
+
+    .todate{
+        font-size: 20px;
+    }
+    .hol-btns{
+        width: 270px;
+        left: 87%;
+    }
+
+}
+@media(max-width: 750px){
+    /* .hol-today, .hol-past{
+        width: 100%;
+    } */
+    .today-amt{
+        /* width: 300px; */
+        margin-left: 5px;
+    }
+}
+
+@media(max-width: 710px){
+    .today-amt{
+        width: 600px;
+        margin: auto;
+    }
+
+    .today-type{
+        width: 600px;
+        margin-top: 20px;
+    }
+    .tran-type{
+        margin: auto;
+    }
+}
+
+@media(max-width: 670px){
+    .hol-btns{
+        width: 250px;
+    }
+    .hol-btns span, .hol-btns a{
+        border-radius: 50%;
+        margin: auto 5px;
+    }
+}
+
+@media(max-width: 650px){
+    .nav{
+        height: auto;
+    }
+
+    .hol-date{
+        height: 55px;
+        margin: 0 auto;
+    }
+    .hol-btns{
+        position: relative;
+        top: 0;
+        left: 0;
+        transform: translate(0,0);
+        width: 200px;
+        margin: 10px auto;
+    }
+    .hol-btns span, .hol-btns a{
+        border-radius: 50%;
+        margin: auto 5px;
+    }
+}
+
+@media(max-width: 480px){
+    .prds-sold ul{
+        width: 90%;
+    }
+
+    .prds-sold ul li{
+        height: 90px;
+        /* background-color: green; */
+        position: relative;
+        margin-bottom: 10px;
+        /* padding-top: 20px; */
+        /* display: block; */
+    }
+
+    .prds-sold ul li .hol-prd-img{
+        padding-top: 15px;
+    }
+
+    .top-cent{
+        display: inline-block;
+        top: -70px;
+        left: -15px;
+    }
+    .all-spans{
+        float: none;
+        position: relative;
+        top: -75px;
+        left: 85px;
+    }
+}
+@media(max-width: 450px){
+    .tran-type{
+        margin-top: 20px;
+    }
+
+    .left-head{
+        padding: 10px 0;
+    }
+
+    .left-head .top-left, .top-right{
+        margin: 0 20px;
+        display: inline;
+    }
+
+    .top-right{
+        /* float: none; */
+    }
+}
+
+@media(max-width: 420px){
+    .li-text span{
+        font-size: 18px;
+    }
+}
+
+@media(max-width: 408px){
+    .time{
+        width: 150px;
+    }
+    .todate{
+        font-size: 16px;
+    }
+}
+@media(max-width: 370px){
+    .left-head .top-left, .top-right{
+        display: block;
+        text-align: center;
+        margin: 0 10px;
+    }
+    .top-right{
+        float: none;
+    }
+}
+
+@media(max-width: 350px){
+}

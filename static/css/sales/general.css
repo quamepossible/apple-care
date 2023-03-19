@@ -22,7 +22,7 @@ body{
     position: absolute;
     background-color: rgba(0, 0, 0, 0.945);
     z-index: 20;
-    /* display: none; */
+    display: none;
 }
 
 .checkout-content{
@@ -375,7 +375,7 @@ tr .mid{
 /* CHECKOUT OVERLAY */
 
 #analy-main{
-    width: 1500px;
+    max-width: 1500px;
     height: 770px;
     margin: auto;
     overflow: auto;
@@ -399,6 +399,7 @@ tr .mid{
     width: 25%;
     height: 100%;
     background-color: var(--gray);
+    /* background-color: red; */
     position: sticky;
     top: 0;
     /* background: red; */
@@ -409,12 +410,12 @@ tr .mid{
     height: 100%;
     background-color: var(--gray);
     overflow: auto;
-    overflow: hidden;
-    /* background-color: green; */
+    /* overflow: hidden; */
+    /* background-color: yellow; */
 }
 
 .left-container{
-    width: 90%;
+    width: 320px;
     height: 500px;
     /* margin-left: 20px; */
     background-color: white;
@@ -501,7 +502,6 @@ tr .mid{
     height: 50px;
     margin: auto;
     margin-top: 20px;
-    /* background-color: red; */
     border-radius: 50px;
     overflow: hidden;
     box-shadow: 0 0 15px rgb(196, 196, 196);
@@ -525,7 +525,6 @@ tr .mid{
 
 .tv-ico{
     font-size: 30px;
-    /* color: blue; */
 }
 
 .li-text span{
@@ -575,6 +574,7 @@ tr .mid{
     margin-top: 30px;
     padding-top: 20px;
     background-color: var(--gray);
+    /* background-color: green; */
     /* box-shadow: 0 0 3px rgb(195, 193, 193); */
 }
 
@@ -651,7 +651,7 @@ tr .mid{
 }
 
 .hol-date{
-    /* background-color: blue; */
+    /* background-color: yellow; */
     width: 700px;
     height: 80px;
     position: relative;

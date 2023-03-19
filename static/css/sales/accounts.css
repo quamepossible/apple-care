@@ -1,25 +1,24 @@
 #accounts-content{
-    width: 1050px;
+    width: 95%;
     height: auto;
     margin: auto;
     padding-bottom: 20px;
+    /* background-color: yellow; */
 }
 
 /* TODAY SECTION */
 .hol-today{
-    width: 80%;
+    width: 90%;
     height: auto;
     margin: auto;
     font-family: 'IBM Plex Sans', sans-serif;
     /* background-color: blue; */
-
-    width: 1010px;
 }
 
 .today-amt{
-    width: 60%;
+    width: 400px;
     height: auto;
-    /* background-color: green; */
+    /* background-color: pink; */
 }
 
 .today-ico{
@@ -72,17 +71,16 @@
 
 
 .today-type{
-    width: 40%;
+    width: 400px;
     height: 100%;
     margin: 0 auto;
     /* background-color: yellow; */
 }
 
 .tran-type{
-    width: 50%;
+    width: 200px;
     height: auto;
     background-color: white;
-    /* background: red; */
     padding: 40px 0;
     border-right: 2px solid var(--gray);
     /* padding-left: 20px; */
@@ -122,11 +120,11 @@
     height: auto;
     margin: 30px auto;
     overflow: hidden;
-    /* background-color: green; */
+    /* background-color: blue; */
 }
 
 .left-chart{
-    width: 55%;
+    width: 500px;
     margin: auto;
     height: 400px;
     border-radius: 5px;
@@ -145,10 +143,12 @@
 .left-head .top-left, .top-right{
     display: inline-block;
     margin: 10px 40px;
+    /* background-color: green; */
 }
 
 .top-right{
     float: right;
+    /* background-color: green; */
 }
 
 .left-head-amt{
@@ -222,14 +222,9 @@
     position: relative;
     top: -25px;
     left: -30px;
-    /* position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%); */
 }
 
 .prd-name{
-    /* left: 100px; */
-    /* background-color: blue; */
     z-index: 10;
 }
 
@@ -264,7 +259,7 @@
 
 
 .right-chart{
-    width: 40%;
+    width: 300px;
     height: 400px;
     margin-left: 20px;
     /* background-color: green; */
