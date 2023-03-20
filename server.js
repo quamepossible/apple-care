@@ -331,8 +331,6 @@ app.get('/sold/:date', async (req, res) => {
             });
 
             const mapedData = new Map(Object.entries(allObj));
-            const anodaMap = new Map();
-            const devQty = new Map();
             const fullPrdDetails = new Map();
             let cash = 0;
             let momo = 0;
