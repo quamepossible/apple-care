@@ -82,7 +82,7 @@ body{
     overflow: hidden;
     position: relative;
     outline: none !important;
-    /* background-color: blue; */
+    background-color: black;
     /* display: inline-block; */
 
 }
@@ -106,6 +106,7 @@ body{
     color: white;
     padding: 7px 0;
     margin-top: 15px;
+    border-top: 2px solid white;
     /* border-radius: 40px; */
 }
 
