@@ -355,7 +355,7 @@ app.get('/sold/:date', async (req, res) => {
 })
 
 app.get('/search', (req, res) => {
-    res.send("Search Page")
+    res.render('sales/search')
 })
 
 

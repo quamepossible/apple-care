@@ -377,8 +377,8 @@ tr .mid{
 
 #analy-main{
     max-width: 1500px;
-    /* height: 790px; */
-    height: auto;
+    height: 790px;
+    /* height: auto; */
     margin: auto;
     overflow: auto;
     /* background-color: green; */
