@@ -340,7 +340,7 @@ app.get('/sold/:date', async (req, res) => {
                 v.forEach(e => {
                     mapTotal +=e.totalPaid;
                     initQty += e.quantity;
-                    ((e.paymentMethod === 'cash') && (cash += +e.methodRatio.cash)) || ((e.paymentMethod === 'momo') && (momo += +e.methodRatio.momo)) || ((e.paymentMethod === 'split') && ((momo += +e.methodRatio.momo) && (cash += +e.methodRatio.cash)))
+                    ((e.paymentMethod === 'cash') && (cash += +e.methodRatio.cash)) || ((e.paymentMethod === 'momo') && (momo += +e.methodRatio.momo)) || ((e.paymentMethod === 'split') && (((momo += +e.methodRatio.momo) || 1) && (cash += +e.methodRatio.cash)))
                 });
                 fullPrdDetails.set(k, {quantity: initQty, totalAmt: mapTotal});
             });
@@ -353,6 +353,11 @@ app.get('/sold/:date', async (req, res) => {
         res.send({data: 'none'});
     }
 })
+
+app.get('/search', (req, res) => {
+    res.send("Search Page")
+})
+
 
 // SALES SECTION
 
