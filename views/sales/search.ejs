@@ -1,3 +1,19 @@
-<%- include('./includes/navsec', {pageCSS: 'search.css', pageJS: 'search.js', title: 'ACCOUNTS'}) %>
-    Search Page
+<%- include('./includes/navsec', {pageCSS: 'search.css', pageJS: 'search.js', title: 'SEARCH'}) %>
+    
+    <div id="search-content">
+        <div class="hol-search-form">
+            <form action="" class="search-form">
+                <select name="search-by" id="">
+                    <option value="imei">IMEI</option>
+                    <option value="serial">Serial Number</option>
+                    <option value="customer">Customer Details</option>
+                    <option value="date">DATE</option>
+                    <option value="imei">IMEI</option>
+                </select>
+                <input type="text" class="search-inp" name="search" placeholder="">
+            </form>
+        </div>
+    </div>
+
+
 <%- include('./includes/navfooter') %>
