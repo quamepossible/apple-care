@@ -1,0 +1,27 @@
+#search-content{
+    width: 95%;
+    height: 500px;
+    margin: auto;
+    background-color: red;
+}
+
+.hol-search-form{
+    width: 90%;
+    height: 100px;
+    margin: auto;
+    background-color: green;
+}
+
+.search-inp{
+    width: 450px;
+    height: 60px;
+    padding: 10px 20px;
+    display: block;
+    margin: 0 auto;
+    border: none;
+    border-radius: 50px;
+}
+
+.search-inp::placeholder{
+    /* font-size: 18px; */
+}
