@@ -354,10 +354,10 @@ app.get('/sold/:date', async (req, res) => {
     }
 })
 
-
 app.get('/search', (req, res) => {
-    res.send("Search page");
+    res.render('sales/search')
 })
+
 
 // SALES SECTION
 
