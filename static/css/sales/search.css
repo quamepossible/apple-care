@@ -1,8 +1,8 @@
 #search-content{
     width: 95%;
-    height: 500px;
+    height: auto;
     margin: auto;
-    background-color: red;
+    /* background-color: red; */
 }
 
 .hol-search-form{
@@ -10,18 +10,48 @@
     height: 100px;
     margin: auto;
     background-color: green;
+    position: relative;
+}
+
+.search-form{
+    /* background-color: blue; */
+    width: 650px;
+    margin: auto;
+}
+.search-inp, .search-by{
+    outline: none !important;
 }
 
 .search-inp{
     width: 450px;
     height: 60px;
     padding: 10px 20px;
-    display: block;
+    display: inline-block;
     margin: 0 auto;
     border: none;
-    border-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
 }
 
 .search-inp::placeholder{
     /* font-size: 18px; */
+}
+
+.search-by{
+    width: 200px;
+    height: 60px;
+    padding: 10px;
+    border: none;
+    margin-right: -3px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    background-color: orangered;
+    color: white;
+}
+
+.hol-search-content{
+    width: 90%;
+    height: 500px;
+    background-color: blue;
+    margin: auto;
 }
