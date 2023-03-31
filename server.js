@@ -359,6 +359,40 @@ app.get('/search', (req, res) => {
 })
 
 
+app.get('/fetch/:searchItem', async (req, res) => {
+    const {query:queryString} = req.query;
+    const {searchItem} = req.params;
+    let query = {};
+    switch (searchItem) {
+        case 'imei':
+            // query = {imei: {$regex: `/${queryString}/`}};
+            query = {imei: queryString};
+            break;
+        case 'serial':
+            query = {serial:queryString};
+            break;
+        case 'customer':
+            query = {$or: [{customerName:queryString}, {customerPhone:queryString}]};
+            break;
+        case 'date':
+            query = {date:queryString};
+            break;
+        default:
+            break;
+    }
+    console.log(query);
+    try{
+        let virtualSelectedProduct = [];
+        virtualSelectedProduct = await anyObj(query, virtualSelectedProduct, 'search');
+        // console.log(virtualSelectedProduct);
+    }
+    catch(err){
+        console.log(err.message);
+    }
+    // res.send(query);
+})
+
+
 // SALES SECTION
 
 

@@ -15,7 +15,7 @@ const anyObj = async function (query, virtualSelectedProduct, action) {
             allCollections.forEach(async function(collection, k, arr){
                 // we'll  get each collection name from here
                 // const collectionSize = await db.collection(collection.name).countDocuments(query);
-                if(collection.name === 'checkedout') return; // we don't want to loop through this collection
+                if(action !== 'search' && collection.name === 'checkedout') return; // we don't want to loop through this collection
 
                 if(action === 'remove'){
                     db.collection(collection.name).deleteOne(query).then((resp) => {
@@ -23,18 +23,23 @@ const anyObj = async function (query, virtualSelectedProduct, action) {
                     });
                 }
 
-                if(action === 'view'){
+                if(action === 'view' || action === 'search'){
                     const individualCollection = db.collection(collection.name).find(query);
                     // get all Documents of each collection
                     await individualCollection.forEach(doc => {
                         virtualSelectedProduct.push(doc);
+                        console.log(doc);
                     })
-                    // this block ensures all collections are looped through before it sends response
                     if(count === arr.length - 1){
+                        console.log(virtualSelectedProduct);
                         res(virtualSelectedProduct)
                     }
                     count++;
                 }    
+
+                // if(action === 'search'){
+
+                // }
             })
         })
     })

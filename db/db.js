@@ -41,6 +41,7 @@ const podSchema = mongoose.Schema({
 
 const checkoutSchema = mongoose.Schema({
     ...otherProductSchema.obj,
+    imei: String,
     customerName: {
         type: String,
         default: 'N/A'
