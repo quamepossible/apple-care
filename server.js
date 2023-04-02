@@ -372,7 +372,7 @@ app.get('/fetch/:searchItem', async (req, res) => {
             query = {serial:queryString};
             break;
         case 'customer':
-            query = {$or: [{customerName:queryString}, {customerPhone:queryString}]};
+            query = {$or: [{customerName:queryString}, {customerPhone:queryString}, {customerDetails:queryString}]};
             break;
         case 'date':
             query = {date:queryString};
@@ -384,7 +384,8 @@ app.get('/fetch/:searchItem', async (req, res) => {
     try{
         let virtualSelectedProduct = [];
         virtualSelectedProduct = await anyObj(query, virtualSelectedProduct, 'search');
-        // console.log(virtualSelectedProduct);
+        console.log(virtualSelectedProduct);
+        res.send(virtualSelectedProduct)
     }
     catch(err){
         console.log(err.message);
