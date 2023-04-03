@@ -193,7 +193,7 @@ app.patch('/edit', async (req, res) => {
 
 app.post('/sell', async (req, res)=>{
     console.log(req.body);
-    const {cname, cphone, cdate, ctime, payment, cnote, cident, methodRatio} = req.body;
+    const {cname, cphone, cdate, ctime, payment, cnote, cident, method_ratio} = req.body;
     const idPrice = cident.split('-');
     let [id, price] = idPrice;
     price = +price;
@@ -205,16 +205,16 @@ app.post('/sell', async (req, res)=>{
         if(!virtualSelectedProduct) throw Error (`Couldn't find data`);
         const [singleProduct] = virtualSelectedProduct;
         const checkOutData = {
-            customerName: cname,
-            customerPhone: cphone,
-            paymentMethod: payment,
+            customer_name: cname,
+            customer_phone: cphone,
+            payment_method: payment,
             note: cnote,
             amount: price,
             quantity: 1,
-            totalPaid: price,
-            checkTime: ctime,
-            checkDate: cdate ,
-            methodRatio
+            total_paid: price,
+            check_time: ctime,
+            check_date: cdate ,
+            method_ratio
         }
         const originalDataPlusOut = Object.assign({}, singleProduct, checkOutData);
         const checkOutDevice = new CheckedOut(originalDataPlusOut);
@@ -252,24 +252,24 @@ app.post('/checkout', (req, res) => {
     const allAccessories = [];
     console.log(accessData);
     Object.keys(accessData).forEach(model => {
-        const [quant, price, note, paymentMethod, customerDetails, date, ...payRate] = accessData[model];
-        let methodRatio = {};
+        const [quant, price, note, payment_method, customer_details, date, ...payRate] = accessData[model];
+        let method_ratio = {};
         if(payRate.length === 1){
-            methodRatio = payRate[0];
+            method_ratio = payRate[0];
         }
         else{
             payRate.forEach(rate => {
                 const key = Object.entries(rate)[0][0];
                 const val = Object.entries(rate)[0][1];
-                methodRatio[key] = val;
+                method_ratio[key] = val;
             })
         }
-        const checkDate = date.split('T')[0];
-        const checkTime = date.split('T')[1];
+        const check_date = date.split('T')[0];
+        const check_time = date.split('T')[1];
         const amount = +price;
         const quantity = +quant;
-        const totalPaid = +quantity * amount;
-        const productData = {model, quantity, amount, note, paymentMethod, methodRatio, customerDetails, totalPaid, checkTime, checkDate};
+        const total_paid = +quantity * amount;
+        const productData = {model, quantity, amount, note, payment_method, method_ratio, customer_details, total_paid, check_time, check_date};
         allAccessories.push(productData);
     })
     CheckedOut.insertMany(allAccessories).then(() => {
@@ -283,13 +283,13 @@ app.post('/checkout', (req, res) => {
 
 app.get('/sold/:date', async (req, res) => {
     const {date} = req.params;
-    const dateData = CheckedOut.find({checkDate:date})
-    const docLen = await CheckedOut.countDocuments({checkDate:date});
+    const dateData = CheckedOut.find({check_date:date})
+    const docLen = await CheckedOut.countDocuments({check_date:date});
     
     if(docLen){
         if(req.query?.act){
             const amountData = await dateData.then(function(allData){
-                return allData.map(eachDoc => eachDoc.totalPaid)
+                return allData.map(eachDoc => eachDoc.total_paid)
             });
             console.log(amountData);
             const totalAmount = amountData.reduce((a,b) => a+b,0)
@@ -306,7 +306,7 @@ app.get('/sold/:date', async (req, res) => {
             const mapPrds = [];
             const holPrds = await soldPrds.reduce(async (prv, val) => {
                 await prv;
-                const prdDocs = await CheckedOut.find({model:val,checkDate:date});
+                const prdDocs = await CheckedOut.find({model:val,check_date:date});
                 mapPrds.push(prdDocs)
                 return new Promise(res => {
                     res(mapPrds);
@@ -338,9 +338,9 @@ app.get('/sold/:date', async (req, res) => {
                 let initQty = 0;
                 let mapTotal = 0;
                 v.forEach(e => {
-                    mapTotal +=e.totalPaid;
+                    mapTotal +=e.total_paid;
                     initQty += e.quantity;
-                    ((e.paymentMethod === 'cash') && (cash += +e.methodRatio.cash)) || ((e.paymentMethod === 'momo') && (momo += +e.methodRatio.momo)) || ((e.paymentMethod === 'split') && (((momo += +e.methodRatio.momo) || 1) && (cash += +e.methodRatio.cash)))
+                    ((e.payment_method === 'cash') && (cash += +e.method_ratio.cash)) || ((e.payment_method === 'momo') && (momo += +e.method_ratio.momo)) || ((e.payment_method === 'split') && (((momo += +e.method_ratio.momo) || 1) && (cash += +e.method_ratio.cash)))
                 });
                 fullPrdDetails.set(k, {quantity: initQty, totalAmt: mapTotal});
             });
@@ -372,7 +372,7 @@ app.get('/fetch/:searchItem', async (req, res) => {
             query = {serial:queryString};
             break;
         case 'customer':
-            query = {$or: [{customerName:queryString}, {customerPhone:queryString}, {customerDetails:queryString}]};
+            query = {$or: [{customer_name:queryString}, {customer_phone:queryString}, {customer_details:queryString}]};
             break;
         case 'date':
             query = {date:queryString};

@@ -11,7 +11,7 @@ const phoneSchema = mongoose.Schema({
     bh: String,
     color: String,
     price: Number,
-    dateAdded: Date
+    date_added: Date
 })
 
 const otherProductSchema = mongoose.Schema({
@@ -27,14 +27,14 @@ const otherProductSchema = mongoose.Schema({
     size : String,
     touchbar : String,
     display : String,
-    dateAdded : Date
+    date_added : Date
 })
 
 const podSchema = mongoose.Schema({
     model : String,
     version: String,
     color: String,
-    dateAdded: String,
+    date_added: String,
     price: String
 })
 
@@ -42,23 +42,23 @@ const podSchema = mongoose.Schema({
 const checkoutSchema = mongoose.Schema({
     ...otherProductSchema.obj,
     imei: String,
-    customerName: {
+    customer_name: {
         type: String,
         default: 'N/A'
     },
-    customerPhone: {
+    customer_phone: {
         type: String,
         default: 'N/A'
     },
-    customerDetails: String,
-    paymentMethod: String,
-    methodRatio: Object,
+    customer_details: String,
+    payment_method: String,
+    method_ratio: Object,
     note: String,
     amount: Number,
     quantity: Number,
-    totalPaid: Number,
-    checkTime: String,
-    checkDate: String,
+    total_paid: Number,
+    check_time: String,
+    check_date: String,
 })
 
 

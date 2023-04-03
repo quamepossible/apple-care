@@ -9,13 +9,16 @@
     width: 90%;
     height: 100px;
     margin: auto;
-    background-color: green;
+    /* background-color: rgb(0, 21, 90); */
     position: relative;
 }
 
 .search-form{
-    /* background-color: blue; */
-    width: 650px;
+    /* background-color: rgb(89, 0, 214); */
+    box-shadow: 0 0 5px rgb(44, 44, 44);
+    padding: 5px;
+    width: 660px;
+    border-radius: 80px;
     margin: auto;
 }
 .search-inp, .search-by{
@@ -52,6 +55,111 @@
 .hol-search-content{
     width: 90%;
     height: 500px;
-    background-color: blue;
+    /* background-color: blue; */
     margin: auto;
+}
+
+.hol-search-content .row{
+    width: 990px;
+    height: auto;
+    margin: auto;
+    padding-top: 30px;
+    /* background-color: red; */
+}
+
+.hol-search{
+    width: 330px;
+    height: auto;
+    margin-bottom: 30px;
+    /* background-color: yellow; */
+}
+
+.search-1-of-3{
+    width: 320px;
+    height: auto;
+    margin: auto;
+    /* border: 1px solid black; */
+    box-shadow: 0 0 2px rgb(108, 108, 108);
+    border-radius: 8px;
+    overflow: hidden;
+    /* background-color: green; */
+}
+
+.search-1-of-3 .item-head{
+    background-color: rgb(0, 116, 232);
+    /* border-bottom: 3px solid black; */
+    text-align: center;
+    padding: 10px 0;
+}
+
+.item-name{
+    font-weight: bold;
+    color: var(--gray)
+}
+
+.item-status{
+    padding: 5px 10px;
+    background-color: green;
+    border: 2px solid var(--gray);
+    color: white;
+    border-radius: 40px;
+}
+
+.search-1-of-3 .search-content{
+    height: auto;
+    margin: auto;
+    margin-top: -15px;
+    padding: 10px 0;
+    /* background-color: green; */
+}
+
+.search-1-of-3 .item-foot{
+    padding: 10px 0;
+    background-color: white;
+    /* margin-bottom: 0px; */
+    margin: auto;
+    text-align: center;
+}
+
+.date-content{
+    font-weight: bold;
+}
+
+.search-1-of-3 .search-content table{
+    width: 90%;
+    margin: auto;
+}
+
+.search-1-of-3 .search-content table tr{
+    padding: 10px 0;
+}
+
+.search-1-of-3 .search-content table td{
+    /* border: 1px solid black; */
+    height: 50px;
+    text-align: center;
+}
+
+.res-title, .res-data{
+    padding: 8px 0;
+    border: 1px solid black;
+}
+
+.res-title{
+    display: inline-block;
+    width: 130px;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+
+.res-data{
+    display: inline-block;
+    width: 150px;
+    background-color: var(--gray);
+    color: black;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
 }
