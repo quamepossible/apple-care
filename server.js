@@ -195,7 +195,7 @@ app.patch('/edit', async (req, res) => {
 
 app.post('/sell', async (req, res)=>{
     console.log(req.body);
-    const {cname, cphone, cdate, ctime, payment, cnote, cident, method_ratio} = req.body;
+    let {cname, cphone, cdate, ctime, payment, cnote, cident, method_ratio} = req.body;
     const idPrice = cident.split('-');
     let [id, price] = idPrice;
     price = +price;
@@ -207,10 +207,10 @@ app.post('/sell', async (req, res)=>{
         if(!virtualSelectedProduct) throw Error (`Couldn't find data`);
         const [singleProduct] = virtualSelectedProduct;
         const checkOutData = {
-            customer_name: cname,
+            customer_name: cname.toLowerCase(),
             customer_phone: cphone,
             payment_method: payment,
-            note: cnote,
+            note: cnote.toLowerCase(),
             amount: price,
             quantity: 1,
             total_paid: price,
@@ -254,7 +254,7 @@ app.post('/checkout', (req, res) => {
     const allAccessories = [];
     console.log(accessData);
     Object.keys(accessData).forEach(model => {
-        const [quant, price, note, payment_method, customer_details, date, ...payRate] = accessData[model];
+        let [quant, price, note, payment_method, customer_details, date, ...payRate] = accessData[model];
         let method_ratio = {};
         if(payRate.length === 1){
             method_ratio = payRate[0];
@@ -266,6 +266,8 @@ app.post('/checkout', (req, res) => {
                 method_ratio[key] = val;
             })
         }
+        customer_details = customer_details.toLowerCase();
+        note = note.toLowerCase();
         const check_date = date.split('T')[0];
         const check_time = date.split('T')[1];
         const amount = +price;

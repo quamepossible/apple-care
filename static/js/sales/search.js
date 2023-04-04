@@ -22,7 +22,7 @@ document.querySelector('.search-inp').addEventListener('keyup', async function()
     const searchBy = document.querySelector('.search-by');
     if(searchBy.value.length === 0) return;
     const searchWhat = searchBy.value;
-    const queryString = this.value;
+    const queryString = this.value.toLowerCase();
     const fetchRes = await fetch(`http://localhost:3000/fetch/${searchWhat}?query=${queryString}`);
     const resData = await fetchRes.json();
     console.log(resData.length);
@@ -39,19 +39,21 @@ document.querySelector('.search-inp').addEventListener('keyup', async function()
             if(k === 'method_ratio'){
                 k = 'payment style'
                 const {momo, cash} = data.method_ratio;
+                console.log('Momo ' + typeof momo);
+                console.log('Cash ' + typeof cash);
                 if(momo === undefined){
                     v = `<b>Cash :</b> ${cash}`
                 }
                 if(cash === undefined){
                     v = `<b>Momo :</b> ${momo}`
                 }
-                else{
+                if(momo !== undefined && cash !== undefined){
                     v = `<b>Cash :</b> ${cash}, <b>Momo :</b> ${momo}`;
                 }
             }
             k = k.replace('_', ' ');
             row += `<tr>
-                <td><span class="res-title">${k.toUpperCase()}</span><span class="res-data">${v}</span></td>
+                <td><span class="res-title">${k.toUpperCase()}</span><span class="res-data">${(''+v).toUpperCase()}</span></td>
             </tr>`
         });
         const {model, version=''} = data;
