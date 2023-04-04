@@ -102,7 +102,9 @@ app.post('/insert/:target', (req, res) => {
         res.send('Empty Data')
         return;
     }
-    validData.dateAdded = new Date().toISOString();
+    const theDate = new Date().toISOString();
+    validData.date_added = theDate.split('T')[0];
+    validData.time_added = theDate.split('T')[1];
     switch (target){
         case 'phones':
             schVal = Phones(validData).save();
@@ -375,7 +377,7 @@ app.get('/fetch/:searchItem', async (req, res) => {
             query = {$or: [{customer_name:queryString}, {customer_phone:queryString}, {customer_details:queryString}]};
             break;
         case 'date':
-            query = {date:queryString};
+            query = {$or:[{date_added:queryString}, {check_date:queryString}]};
             break;
         default:
             break;

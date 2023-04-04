@@ -11,7 +11,8 @@ const phoneSchema = mongoose.Schema({
     bh: String,
     color: String,
     price: Number,
-    date_added: Date
+    time_added: String,
+    date_added: String
 })
 
 const otherProductSchema = mongoose.Schema({
@@ -27,6 +28,7 @@ const otherProductSchema = mongoose.Schema({
     size : String,
     touchbar : String,
     display : String,
+    time_added: String,
     date_added : Date
 })
 

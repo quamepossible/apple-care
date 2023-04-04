@@ -54,13 +54,18 @@
 
 .hol-search-content{
     width: 90%;
-    height: 500px;
+    height: auto;
+    position: relative;
     /* background-color: blue; */
     margin: auto;
 }
 
+.search-row{
+    position: relative;
+}
+
 .hol-search-content .row{
-    width: 990px;
+    width: 900px;
     height: auto;
     margin: auto;
     padding-top: 30px;
@@ -68,14 +73,14 @@
 }
 
 .hol-search{
-    width: 330px;
+    width: 450px;
     height: auto;
     margin-bottom: 30px;
     /* background-color: yellow; */
 }
 
 .search-1-of-3{
-    width: 320px;
+    width: 420px;
     height: auto;
     margin: auto;
     /* border: 1px solid black; */
@@ -86,7 +91,8 @@
 }
 
 .search-1-of-3 .item-head{
-    background-color: rgb(0, 116, 232);
+    /* background-color: rgb(0, 116, 232); */
+    /* background-color: red; */
     /* border-bottom: 3px solid black; */
     text-align: center;
     padding: 10px 0;
@@ -99,7 +105,7 @@
 
 .item-status{
     padding: 5px 10px;
-    background-color: green;
+    /* background-color: green; */
     border: 2px solid var(--gray);
     color: white;
     border-radius: 40px;
@@ -126,8 +132,9 @@
 }
 
 .search-1-of-3 .search-content table{
-    width: 90%;
+    width: 100%;
     margin: auto;
+    /* background-color: red; */
 }
 
 .search-1-of-3 .search-content table tr{
@@ -141,13 +148,15 @@
 }
 
 .res-title, .res-data{
-    padding: 8px 0;
+    padding: 8px 10px;
     border: 1px solid black;
+    white-space: nowrap;
+    /* overflow: auto; */
 }
 
 .res-title{
     display: inline-block;
-    width: 130px;
+    width: 170px;
     background-color: black;
     color: white;
     font-weight: bold;
@@ -157,9 +166,15 @@
 
 .res-data{
     display: inline-block;
-    width: 150px;
+    width: 230px;
     background-color: var(--gray);
     color: black;
     border-top-right-radius: 30px;
     border-bottom-right-radius: 30px;
+}
+
+.no-res{
+    color: red;
+    font-size: 24px;
+    display: none;
 }

@@ -27,7 +27,7 @@
             const fetchCol = await fetch(`http://localhost:3000/sections/${target}`);
             const theCols = await fetchCol.json(); 
             theCols.forEach(col => {
-                if(col === 'dateAdded') return;
+                if(col === 'date_added' || col === 'time_added') return;
                 // console.log(col);
                 const vers = col.toUpperCase();
                 const spanVer = (vers === 'VERSION') ? '' : '<span>*</span>';
