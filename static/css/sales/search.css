@@ -157,7 +157,7 @@
 .res-title{
     display: inline-block;
     width: 170px;
-    background-color: black;
+    background-color: rgb(0, 72, 20);
     color: white;
     font-weight: bold;
     border-top-left-radius: 30px;

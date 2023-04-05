@@ -18,6 +18,11 @@ document.querySelector('.search-form').addEventListener('submit', (e)=>e.prevent
 const searchParent = document.querySelector('.search-row');
 // add keyup event, so that we'll do ajax request per data in input field
 document.querySelector('.search-inp').addEventListener('keyup', async function(){
+    if(this.value.length === 0){
+        $('.no-res').css('display', 'none');
+        searchParent.innerHTML = '';
+        return;
+    }
     searchParent.innerHTML = '';
     const searchBy = document.querySelector('.search-by');
     if(searchBy.value.length === 0) return;
