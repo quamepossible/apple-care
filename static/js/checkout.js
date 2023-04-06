@@ -22,7 +22,7 @@ const modalFunction = () => {
                     const mapData = new Map(Object.entries(data));
                     mapData.forEach((v, k) => {
                         if(k === '_id') mainID = v;
-                        if(k === 'dateAdded' || k === '_id' || k === '__v') return;
+                        if(k === 'date_added' || k === 'time_added'  || k === '_id' || k === '__v') return;
                         const vers = k.toUpperCase();
                         const spanVer = (vers === 'VERSION') ? '' : '<span>*</span>';
                         const inps = `

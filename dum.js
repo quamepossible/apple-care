@@ -1,14 +1,27 @@
 'use strict';
 
-function writeNum(){
-    for(let i = 3; i < 20; i++){
-        console.log(i);
-    }
-}
-console.log(1);
-console.log(2);
-writeNum();
-console.log(20);
+const date = new Date().toISOString();
+console.log(date.split('T'));
+
+
+
+
+
+
+
+
+
+// const payRate = [{cash: 50}];
+// let method_ratio = {};
+// payRate.forEach(rate => {
+//     for(let [k,v] of Object.entries(rate)){
+//         method_ratio[k] = v;
+//     }
+// })
+
+// console.log(method_ratio);
+
+
 
 // let total = 275;
 // let cash = 1;

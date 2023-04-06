@@ -132,19 +132,19 @@
                                         <th class="acts">ACTIONS</th>
                                         <th>#</th>
                                         <% colNames.forEach(key => { %>       
-                                            <% if(key === 'dateAdded' || key === '_id' || key === '__v') return %> 
+                                            <% if(key === 'date_added' || key === 'time_added' || key === '_id' || key === '__v') return %> 
                                             <th><%= key.toUpperCase() %> </th>
-                                        <%}) %> 
+                                        <%})%> 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <% var count = 0 %> 
                                     <% virtualSelectedProduct.forEach(device => {%>
                                         <% 
-                                        const bodyVal = Object.entries(device);
-                                        const mapBody = new Map(Object.entries(device));
-                                        const id = mapBody.get('_id');
-                                        const price = mapBody.get('price');
+                                            const bodyVal = Object.entries(device);
+                                            const mapBody = new Map(Object.entries(device));
+                                            const id = mapBody.get('_id');
+                                            const price = mapBody.get('price');
                                         %> 
                                     <tr>
                                         <td class="hol-btns">
@@ -153,7 +153,7 @@
                                         </td>
                                         <td><%= ++count %> </td>
                                         <% bodyVal.forEach(([key,item]) => { %>
-                                            <% if(key === 'dateAdded' || key === '_id' || key === '__v') return; %>
+                                            <% if(key === 'date_added' || key === 'time_added'|| key === '_id' || key === '__v') return; %>
                                             <td><%= item = (item.length === 0) ? '-' : item %></td>
                                         <%}) %>
                                     </tr>
