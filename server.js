@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const methodOverride = require('method-override');
 const path = require('path');
-// const data = require('./db/data.json');
 const mongoose = require('mongoose');
 const ObjectId = require('mongodb').ObjectId;
 mngConnect = mongoose.connect('mongodb://127.0.0.1:27017/appleCareDB');
