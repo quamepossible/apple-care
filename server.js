@@ -62,7 +62,6 @@ app.get('/devices/:type', async (req, res) => {
     catch(err) {
         console.log(err.message);
     }      
-    // console.log(virtualSelectedProduct);    
 })
 
 app.get('/product/:sku', async (req, res) => {
@@ -86,7 +85,6 @@ app.get('/product/:sku', async (req, res) => {
     catch(err) {
         console.log(err.message);
     }
-    // console.log(virtualSelectedProduct);
 })
 
 app.post('/insert/:target', (req, res) => {
@@ -102,8 +100,6 @@ app.post('/insert/:target', (req, res) => {
     }
     let theDate = new Date().toISOString();
     [validData.date_added, validData.time_added] = theDate.split('T');
-    console.log(`Date added => ${validData.date_added}`);
-    console.log(`Time added => ${validData.time_added}`);
     switch (target){
         case 'phones':
             schVal = Phones(validData).save();
@@ -125,7 +121,6 @@ app.post('/insert/:target', (req, res) => {
             break;
     };
     schVal.then(() =>{
-        // console.log(`${target} added to products`);
         res.send('saved')
     });
 })
@@ -148,7 +143,6 @@ app.get('/data/:id', async (req, res) => {
 
 app.get('/sections/:type', async (req, res) => {
     const {type} = req.params;
-    // console.log(type);
     let schVal = [];
     const action = type;
     switch (action){
@@ -171,7 +165,6 @@ app.get('/sections/:type', async (req, res) => {
             schVal = [];
             break;
     }
-    // console.log(schVal);
     res.send(schVal);
 })
 app.patch('/edit', async (req, res) => {
@@ -186,14 +179,12 @@ app.patch('/edit', async (req, res) => {
             if(val) x = val;
             resolve(x)
         });
-    }, Promise.resolve()).then((e) => {
-        // console.log(e);
+    }, Promise.resolve()).then(() => {
         res.send('edited')
     })
 })
 
 app.post('/sell', async (req, res)=>{
-    // console.log(req.body);
     let {cname, cphone, cdate, ctime, payment, cnote, cident, methodRatio} = req.body;
     const idPrice = cident.split('-');
     let [id, price] = idPrice;
@@ -205,7 +196,6 @@ app.post('/sell', async (req, res)=>{
         virtualSelectedProduct = await anyObj(query, virtualSelectedProduct, 'view');
         if(!virtualSelectedProduct) throw Error (`Couldn't find data`);
         const [singleProduct] = virtualSelectedProduct;
-        console.log(singleProduct);
         const checkOutData = {
             customer_name: cname.toLowerCase(),
             customer_phone: cphone,
@@ -254,7 +244,6 @@ app.get('/accounts', (req, res) => {
 app.post('/checkout', (req, res) => {
     const accessData = req.body;
     const allAccessories = [];
-    // console.log(accessData);
     Object.keys(accessData).forEach(model => {
         let [quant, price, note, payment_method, customer_details, date, ...payRate] = accessData[model];
         let method_ratio = {};
@@ -273,7 +262,6 @@ app.post('/checkout', (req, res) => {
         allAccessories.push(productData);
     })
     CheckedOut.insertMany(allAccessories).then(() => {
-        // console.log('Accessory Saved');
         res.send('sold')
     }).catch(err => {
         res.send('unable')
@@ -291,16 +279,13 @@ app.get('/sold/:date', async (req, res) => {
             const amountData = await dateData.then(function(allData){
                 return allData.map(eachDoc => eachDoc.total_paid)
             });
-            // console.log(amountData);
             const totalAmount = amountData.reduce((a,b) => a+b,0)
-            // console.log(totalAmount);
             res.send({totalAmount})
         }
         else{
             let allPrdSold = await dateData.then((allData) => {
                 return allData.map(eachDoc => eachDoc.model);
             })
-            // console.log(allPrdSold);
             const uniqModels = new Set(allPrdSold);
             const soldPrds = [...uniqModels];
             const mapPrds = [];
@@ -317,7 +302,6 @@ app.get('/sold/:date', async (req, res) => {
                 mapRes.set(soldPrds[k], arr)
             })
             const allObj = {};
-            console.log(mapRes);
             mapRes.forEach((v, k) => {
                 v.forEach(e => {
                     let type = k;
@@ -381,11 +365,9 @@ app.get('/fetch/:searchItem', async (req, res) => {
         default:
             break;
     }
-    // console.log(query);
     try{
         let virtualSelectedProduct = [];
         virtualSelectedProduct = await anyObj(query, virtualSelectedProduct, 'search');
-        // console.log(virtualSelectedProduct);
         res.send(virtualSelectedProduct)
     }
     catch(err){
