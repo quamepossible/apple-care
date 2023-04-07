@@ -29,7 +29,7 @@ const otherProductSchema = mongoose.Schema({
     touchbar : String,
     display : String,
     time_added: String,
-    date_added : Date
+    date_added : String
 })
 
 const podSchema = mongoose.Schema({

@@ -104,7 +104,7 @@ app.post('/insert/:target', (req, res) => {
     let theDate = new Date().toISOString();
     [validData.date_added, validData.time_added] = theDate.split('T');
     console.log(`Date added => ${validData.date_added}`);
-    console.log(`Time added => ${validData.timee_added}`);
+    console.log(`Time added => ${validData.time_added}`);
     switch (target){
         case 'phones':
             schVal = Phones(validData).save();
@@ -195,7 +195,7 @@ app.patch('/edit', async (req, res) => {
 
 app.post('/sell', async (req, res)=>{
     // console.log(req.body);
-    let {cname, cphone, cdate, ctime, payment, cnote, cident, method_ratio} = req.body;
+    let {cname, cphone, cdate, ctime, payment, cnote, cident, methodRatio} = req.body;
     const idPrice = cident.split('-');
     let [id, price] = idPrice;
     price = +price;
@@ -206,6 +206,7 @@ app.post('/sell', async (req, res)=>{
         virtualSelectedProduct = await anyObj(query, virtualSelectedProduct, 'view');
         if(!virtualSelectedProduct) throw Error (`Couldn't find data`);
         const [singleProduct] = virtualSelectedProduct;
+        console.log(singleProduct);
         const checkOutData = {
             customer_name: cname.toLowerCase(),
             customer_phone: cphone,
@@ -216,7 +217,7 @@ app.post('/sell', async (req, res)=>{
             total_paid: price,
             check_time: ctime,
             check_date: cdate ,
-            method_ratio
+            method_ratio: methodRatio
         }
         const originalDataPlusOut = Object.assign({}, singleProduct, checkOutData);
         const checkOutDevice = new CheckedOut(originalDataPlusOut);
@@ -226,8 +227,9 @@ app.post('/sell', async (req, res)=>{
             try{
                 soldRes = await anyObj(query, [], 'remove');
                 if(!soldRes) throw Error (`Couldn't Sell data`);
-                console.log(soldRes);
-                res.send(soldRes);
+                const [finRes] = soldRes;
+                // finRes = 'sold'
+                res.send(finRes);
             }
             catch(err) {
                 console.log(err.message);
@@ -316,9 +318,10 @@ app.get('/sold/:date', async (req, res) => {
                 mapRes.set(soldPrds[k], arr)
             })
             const allObj = {};
+            console.log(mapRes);
             mapRes.forEach((v, k) => {
                 v.forEach(e => {
-                    let type = k
+                    let type = k;
                     if(type.length <= 2){
                         type = 'phones';
                     }

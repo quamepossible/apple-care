@@ -18,8 +18,8 @@ const anyObj = async function (query, virtualSelectedProduct, action) {
                 if(action !== 'search' && collection.name === 'checkedout') return; // we don't want to loop through this collection
 
                 if(action === 'remove'){
-                    db.collection(collection.name).deleteOne(query).then((resp) => {
-                        if(resp.deletedCount === 1) res('sold');
+                    await db.collection(collection.name).deleteOne(query).then((resp) => {
+                        if(resp.deletedCount === 1) virtualSelectedProduct.push('sold');
                     });
                 }
 

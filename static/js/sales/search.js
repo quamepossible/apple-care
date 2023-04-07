@@ -72,7 +72,7 @@ document.querySelector('.search-inp').addEventListener('keyup', async function()
             itemHead = bg = 'red';
 
         }
-        if(data?.date_added){
+        else if(data?.date_added){
             dateArr = data.date_added;
             timeStatus = 'Date Added';
             availability = 'Available';
