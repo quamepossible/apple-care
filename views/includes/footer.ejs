@@ -23,22 +23,36 @@
         document.querySelector('.hol-close-cont').style.display = 'none';
         document.querySelector('.prd-name').innerHTML = target.toUpperCase();
         const addFormContainer = document.querySelector('.add-form-row');
-        const fetchFormCol = async () => {
-            const fetchCol = await fetch(`http://localhost:3000/sections/${target}`);
-            const theCols = await fetchCol.json(); 
-            theCols.forEach(col => {
-                if(col === 'date_added' || col === 'time_added') return;
-                // console.log(col);
-                const vers = col.toUpperCase();
-                const spanVer = (vers === 'VERSION') ? '' : '<span>*</span>';
-                const inpField = `
-                                <div class="form-group col-md-6">
-                                    <label for="">${col.toUpperCase()} ${spanVer}</label>
-                                    <input type="text" class="form-control" id="" name="${col}">
-                                </div>`;
-                addFormContainer.insertAdjacentHTML('beforeend', inpField)
+        const fetchFormCol = () => {
+            return new Promise( async () => {
+                const fetchCol = await fetch(`http://localhost:3000/sections/${target}`);
+                const theCols = await fetchCol.json(); 
+                theCols.forEach(col => {
+                    let inpField;
+                    if(col === 'date_added' || col === 'time_added') return;
+                    const vers = col.toUpperCase();
+                    const spanVer = (vers === 'VERSION') ? '' : '<span>*</span>';
+                    if(vers === 'MODEL' || vers === 'VERSION' || vers === 'COLOR' ){
+                        inpField = `
+                            <div class="form-group col-md-6">
+                                <label for="">${col.toUpperCase()} ${spanVer}</label>
+                                <select type="text" class="form-control" id="" name="${col}">
+                                    <option>iPhone SE</option>
+                                    <option>iPhone 5</option>
+                                    <option>iPhone 6</option>
+                                </select>
+                            </div>`;
+                    }
+                    else{
+                        inpField = `
+                            <div class="form-group col-md-6">
+                                <label for="">${col.toUpperCase()} ${spanVer}</label>
+                                <input type="text" class="form-control" id="" name="${col}">
+                            </div>`;
+                    }
+                    addFormContainer.insertAdjacentHTML('beforeend', inpField)
+                })
             })
-            // console.log(theCols);
         }
         fetchFormCol(); 
     })
