@@ -19,11 +19,69 @@
 .today-amt{
     width: 400px;
     height: auto;
+    /* margin: auto; */
     /* background-color: pink; */
 }
 
 .today-ico{
     font-size: 40px;
+    /* background-color: red; */
+    display: inline-block;
+    width: 40%;
+    margin-left: 20px;
+
+}
+
+.period-form{
+    width: 50%;
+    display: inline-block;
+    /* background-color: red; */
+    position: relative;
+}
+
+.hol-reset{
+    width: 200px;
+    position: relative;
+    /* background-color: blue; */
+}
+
+.period-form input, .period-form .reset{
+    outline: none !important;
+    display: inline-block;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    height: 40px;
+    border: 2px solid orangered;
+}
+
+.period-form input{
+    border-top-left-radius: 35px;
+    border-bottom-left-radius: 35px;
+    width: 150px;
+    border-right: none;
+}
+
+.period-form .reset{
+    border-top-right-radius: 35px;
+    border-bottom-right-radius: 35px;
+    width: 50px;
+    margin-left: -4px;
+    border-left: none;
+    background-color: orangered;
+    position: absolute;
+}
+
+.reset span{
+    /* background-color: blue; */
+    padding: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+}
+
+.reset-ico{
+    color: white;
 }
 
 .cal-ico{

@@ -418,7 +418,7 @@ tr .mid{
 
 .left-container{
     width: 320px;
-    height: 500px;
+    height: 550px;
     /* margin-left: 20px; */
     background-color: white;
     box-shadow: 0 0 2px black;
@@ -523,6 +523,14 @@ tr .mid{
     width: 70%;
     height: 100%;
     background-color: rgb(0, 171, 214);
+}
+
+.look-ico{
+    background-color: white;
+}
+
+.look-up{
+    background-color: orangered;
 }
 
 .tv-ico{

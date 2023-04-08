@@ -24,8 +24,7 @@ const pageCharts = (payMeths) => {
     transChart.setOption(option)
 }
 
-const transactFunc = async () => {
-  const toDate = new Date().toISOString().split('T')[0];
+const transactFunc = async (toDate) => {
   const getTotalAmt = await fetch(`http://localhost:3000/sold/${toDate}?act=jt`);
   const resTotalAmt = await getTotalAmt.json();
   const viewAmt = resTotalAmt?.totalAmount ? resTotalAmt.totalAmount : '-';
@@ -35,10 +34,9 @@ const transactFunc = async () => {
 
 }
 
-const fetchSold = async () => {
-  const holdSold = document.querySelector('.hold-sold');
-  const date = new Date().toISOString().split('T')[0];
-  const getData = await fetch(`http://localhost:3000/sold/${date}`);
+const holdSold = document.querySelector('.hold-sold');
+const fetchSold = async (toDate) => {
+  const getData = await fetch(`http://localhost:3000/sold/${toDate}`);
   const dataRes = await getData.json();
   console.log(dataRes);
   if(dataRes?.data === 'none') return;
@@ -74,6 +72,23 @@ const fetchSold = async () => {
   pageCharts(payMethods);
 }
 
+document.querySelector('.period-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  const formData = new FormData(this);
+  const {resinp} = Object.fromEntries(formData);
+  console.log(resinp);
+  if(resinp.length === 0) return;
+  $('.cust-date').html('Custom : ');
+  $('.cust-date').css({
+    'font-size': '25px',
+    'font-weight':'bold',
+    'color':'green'
+  });
+  holdSold.innerHTML = '';
+  fetchSold(resinp);
+  transactFunc(resinp);
+})
 
-fetchSold();
-transactFunc();
+const [date] = new Date().toISOString().split('T');
+fetchSold(date);
+transactFunc(date);
