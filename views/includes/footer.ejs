@@ -24,38 +24,83 @@
         document.querySelector('.prd-name').innerHTML = target.toUpperCase();
         const addFormContainer = document.querySelector('.add-form-row');
         const fetchFormCol = () => {
-            return new Promise( async () => {
+            new Promise( async (res) => {
                 const fetchCol = await fetch(`http://localhost:3000/sections/${target}`);
                 const theCols = await fetchCol.json(); 
                 theCols.forEach(col => {
                     let inpField;
+                    let subs = [];
+                    let productObj = {
+                        year: ['-','2010','2011','2012','2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023'],
+                        ram: ['-','2 GB', '4 GB', '6 GB', '8 GB', '16 GB', '32 GB', '64 GB'],
+                        storage: ['16 GB', '32 GB', '64 GB', '128 GB', '256 GB', '512 GB', '1 TB', '2 TB'],
+                        processor : ['-', 'Core i5', 'Core i7','M1', 'M2'],
+                        touchbar : ['No', 'Yes'],
+                        display : ['-','Led', 'Retina']
+                    };
                     if(col === 'date_added' || col === 'time_added') return;
                     const vers = col.toUpperCase();
                     const spanVer = (vers === 'VERSION') ? '' : '<span>*</span>';
-                    if(vers === 'MODEL' || vers === 'VERSION' || vers === 'COLOR' ){
-                        inpField = `
-                            <div class="form-group col-md-6">
-                                <label for="">${col.toUpperCase()} ${spanVer}</label>
-                                <select type="text" class="form-control" id="" name="${col}">
-                                    <option>iPhone SE</option>
-                                    <option>iPhone 5</option>
-                                    <option>iPhone 6</option>
-                                </select>
-                            </div>`;
+                    switch(target){
+                        case 'phones':
+                            productObj.model = ['se','5','6','7','8','x','11','12','13','14'];
+                            productObj.version = ['-','1','2','c','r','s','s-plus', 's-max','pro','pro-max','mini','plus'];
+                            productObj.color = ['black','white','red','blue','pink','green','gold','silver','space gray'];
+                            break;
+                        case 'ipad':
+                            productObj.model = ['ipad'];
+                            productObj.version = ['-','air','mini','pro'];
+                            productObj.color = ['black','white','red','blue','pink','green','gold','silver','space gray'];
+                            break;
+                        case 'macbook':
+                            productObj.model = ['macbook'];
+                            productObj.version = ['air','pro'];
+                            productObj.color = ['black','white','red','blue','pink','green','gold','silver','space gray'];
+                            break;
+                        case 'series':
+                            productObj.model = ['series'];
+                            productObj.version = ['1','2','3','4','5','6','7','se','ultra'];
+                            productObj.color = ['black','white','red','blue','pink','green','gold','silver','space gray'];
+                            break;
+                        case 'airpod':
+                            productObj.model = ['airpod'];
+                            productObj.version = ['1','2','3','pro','3-pro','2-pro'];
+                            productObj.color = ['black','white'];
+                            break;
+                        case 'homepod':
+                            productObj.model = ['homepod'];
+                            productObj.version = ['1','2'];
+                            productObj.color = ['black','white'];
+                        default:
+                            break;
+                    }
+                    let whatAct;
+                    if(vers === 'MODEL' || vers === 'VERSION' || vers === 'COLOR' || vers === 'YEAR' || vers === 'RAM' || vers === 'STORAGE' || vers === 'PROCESSOR' || vers === 'TOUCHBAR' || vers === 'DISPLAY'){
+                        const smallId = vers.toLowerCase();
+                        const versData = (productObj[smallId]) ? productObj[smallId] : '';
+                        let optionRow = '';
+                        versData.forEach(res => {
+                            optionRow += `<option value='${(res==='-')?'':res}'>${res.length <= 1 ? res : res.split('-').join(' ').toUpperCase()}</option>`;
+                        }) 
+                        whatAct = `<select type="text" class="form-control select-det" id="" name="${col}">${optionRow}</select>`;
                     }
                     else{
-                        inpField = `
+                        whatAct = `<input type="text" class="form-control" id="" name="${col}">`;
+                    }
+                    inpField = `
                             <div class="form-group col-md-6">
                                 <label for="">${col.toUpperCase()} ${spanVer}</label>
-                                <input type="text" class="form-control" id="" name="${col}">
+                                ${whatAct}
                             </div>`;
-                    }
                     addFormContainer.insertAdjacentHTML('beforeend', inpField)
                 })
-            })
+                return res(document.querySelectorAll('.select-det'))
+            }).then((res) => res.forEach(sel=>$(sel).select2()))
         }
-        fetchFormCol(); 
+        fetchFormCol()
     })
+
+
 
 
     document.querySelector('.add-form').addEventListener('click', (e) => {
