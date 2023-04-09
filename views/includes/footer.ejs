@@ -61,6 +61,7 @@
                             productObj.model = ['series'];
                             productObj.version = ['1','2','3','4','5','6','7','se','ultra'];
                             productObj.color = ['black','white','red','blue','pink','green','gold','silver','space gray'];
+                            productObj.screen = ['40mm', '44mm'];
                             break;
                         case 'airpod':
                             productObj.model = ['airpod'];
@@ -75,10 +76,10 @@
                             break;
                     }
                     let whatAct;
-                    if(vers === 'MODEL' || vers === 'VERSION' || vers === 'COLOR' || vers === 'YEAR' || vers === 'RAM' || vers === 'STORAGE' || vers === 'PROCESSOR' || vers === 'TOUCHBAR' || vers === 'DISPLAY'){
+                    if(vers === 'MODEL' || vers === 'VERSION' || vers === 'SCREEN' || vers === 'COLOR' || vers === 'YEAR' || vers === 'RAM' || vers === 'STORAGE' || vers === 'PROCESSOR' || vers === 'TOUCHBAR' || vers === 'DISPLAY'){
                         const smallId = vers.toLowerCase();
                         const versData = (productObj[smallId]) ? productObj[smallId] : '';
-                        let optionRow = '';
+                        let optionRow = `<option value=''>Select ${vers}</option>`;
                         versData.forEach(res => {
                             optionRow += `<option value='${(res==='-')?'':res}'>${res.length <= 1 ? res : res.split('-').join(' ').toUpperCase()}</option>`;
                         }) 
