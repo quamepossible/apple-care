@@ -25,8 +25,8 @@ Let's get started on how to run this project.
 <li>Download and install MongoDB on your system. You can either run <b>MongoDB</b> as a service or Manually.</li>
 <li>Start the <b>MongoDB</b> server, but make sure you have created a folder to store your Database files.</li>
 <li>Go back to your code editor (VS Code) and open the terminal, type <b>node server.js</b> and hit enter.</li>
-<li>You should see a message with the text "Server started on port 3000"</li>
-<li>Go to any web browser on your machine, type localhost:3000 then hit Enter.</li>
+<li>You should see a message with the text "Server started on port 3000" in your console / terminal.</li>
+<li>Go to any web browser on your machine, type localhost:3000 and hit Enter.</li>
  <li>You should now see the home page of the system</li>
 </ol>
 
