@@ -78,12 +78,13 @@
                     let whatAct;
                     if(vers === 'MODEL' || vers === 'VERSION' || vers === 'SCREEN' || vers === 'COLOR' || vers === 'YEAR' || vers === 'RAM' || vers === 'STORAGE' || vers === 'PROCESSOR' || vers === 'TOUCHBAR' || vers === 'DISPLAY'){
                         const smallId = vers.toLowerCase();
+                        const id = vers === 'MODEL' ? 'model' : '';
                         const versData = (productObj[smallId]) ? productObj[smallId] : '';
                         let optionRow = `<option value=''>Select ${vers}</option>`;
                         versData.forEach(res => {
                             optionRow += `<option value='${(res==='-')?'':res}'>${res.length <= 1 ? res : res.split('-').join(' ').toUpperCase()}</option>`;
                         }) 
-                        whatAct = `<select type="text" class="form-control select-det" id="" name="${col}">${optionRow}</select>`;
+                        whatAct = `<select type="text" class="form-control select-det" id="${id}" name="${col}">${optionRow}</select>`;
                     }
                     else{
                         whatAct = `<input type="text" class="form-control" id="" name="${col}">`;
@@ -96,7 +97,10 @@
                     addFormContainer.insertAdjacentHTML('beforeend', inpField)
                 })
                 return res(document.querySelectorAll('.select-det'))
-            }).then((res) => res.forEach(sel=>$(sel).select2()))
+            }).then((res) => res.forEach(sel=>{
+                const tag = (sel.id === 'model') ? false : true;
+                $(sel).select2({tags:tag})
+            }))
         }
         fetchFormCol()
     })
