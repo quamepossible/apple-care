@@ -35,14 +35,22 @@ const transactFunc = async (toDate) => {
 }
 
 const holdSold = document.querySelector('.hold-sold');
+const cashAmt = document.querySelector('.cash-amt');
+const momoAmt = document.querySelector('.momo-amt');
 const fetchSold = async (toDate) => {
   const getData = await fetch(`http://localhost:3000/sold/${toDate}`);
   const dataRes = await getData.json();
+  let payMethods = [];
   console.log(dataRes);
-  if(dataRes?.data === 'none') return;
+  if(dataRes?.data === 'none'){
+    cashAmt.innerHTML = '';
+    momoAmt.innerHTML = '';
+    payMethods = [];
+    pageCharts(payMethods);
+    return;
+  }
   const mapResData = new Map(Object.entries(dataRes));
   console.log(mapResData);
-  const payMethods = [];
   mapResData.forEach((v,k) => {
     if(k === 'cash' || k === 'momo'){
       payMethods.push(v);
@@ -67,8 +75,8 @@ const fetchSold = async (toDate) => {
       </li>`;
     holdSold.insertAdjacentHTML('beforeend', list);
   })
-  document.querySelector('.cash-amt').innerHTML = payMethods[0];
-  document.querySelector('.momo-amt').innerHTML = payMethods[1];
+  cashAmt.innerHTML = payMethods[0];
+  momoAmt.innerHTML = payMethods[1];
   pageCharts(payMethods);
 }
 

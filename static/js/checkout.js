@@ -58,6 +58,12 @@ const editDataFunc = () => {
     })
 }
 
+document.querySelectorAll('.btn-out').forEach(outBtn => {
+    outBtn.addEventListener('click', () => {
+        document.querySelector('.checkout-form').querySelectorAll('input').forEach(input=>input.value='')
+    })
+})
+
 const checkoutForm = () => {
     const paymentType = document.querySelector('.payment');
     paymentType.addEventListener('change', function(){

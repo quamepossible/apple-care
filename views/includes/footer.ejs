@@ -102,8 +102,6 @@
     })
 
 
-
-
     document.querySelector('.add-form').addEventListener('click', (e) => {
         e.preventDefault();
         if(!e.target.closest('.btn')) return;
@@ -121,10 +119,5 @@
             doValidation('.add-form', `http://localhost:3000/insert/${target}`, 'POST');
         }
     })
-
-
-
-
-
 
 </script>
