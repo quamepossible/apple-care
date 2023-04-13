@@ -174,10 +174,10 @@ app.patch('/edit', async (req, res) => {
     ething.reduce(async (previous, value) => {
         await previous;
         const val = await value.findOneAndUpdate({_id:id}, updatedData, {new:true});
-        return new Promise((resolve) => {
+        return new Promise(res => {
             let x = '';
             if(val) x = val;
-            resolve(x)
+            res(x)
         });
     }, Promise.resolve()).then(() => {
         res.send('edited')

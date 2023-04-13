@@ -95,7 +95,8 @@ body{
 
 .dev-cont-body{
     width: 80%;
-    height: auto;
+    /* height: auto; */
+    height: 100vh;
     margin:auto;
     margin-top: 50px;
     /* background-color: rgb(255, 0, 0); */
