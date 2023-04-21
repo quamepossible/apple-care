@@ -26,10 +26,11 @@ const modalFunction = () => {
                         const vers = k.toUpperCase();
                         const spanVer = (vers === 'VERSION' || vers === 'BH' || vers === 'COLOR') ? '' : '<span>*</span>';
                         const inpType = (vers === 'PRICE') ? 'number' : 'text';
+                        const min = (vers === 'PRICE') ? `min='1'` : '';
                         const inps = `
                                     <div class="form-group col-md-6">
                                         <label for="">${k.toUpperCase()} ${spanVer}</label>
-                                        <input type="${inpType}" class="form-control" id="" name="${k}" value="${v}">
+                                        <input type="${inpType}" ${min}  class="form-control" id="" name="${k}" value="${v}">
                                     </div>`;
                         formContainer.insertAdjacentHTML('beforeend', inps);
                     })
@@ -62,18 +63,6 @@ const editDataFunc = () => {
 document.querySelectorAll('.btn-out').forEach(outBtn => {
     outBtn.addEventListener('click', () => {
         document.querySelector('.checkout-form').querySelectorAll('input').forEach(input=>input.value='')
-    })
-})
-
-document.querySelectorAll('.btn-edit').forEach(editBtn => {
-    // console.log(editBtn);
-    editBtn.addEventListener('click', () => {
-        document.querySelector('.edit-form').querySelectorAll('input').forEach(input => {
-            console.log(input)
-            // if(input.type === 'number'){
-            //     input.setAttribute('min', '1')
-            // }
-        })
     })
 })
 

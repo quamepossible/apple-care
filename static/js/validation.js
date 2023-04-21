@@ -1,5 +1,6 @@
 export const doValidation = (whichForm, url, theMethod) => {
     const holErr = [];
+    let priceErr = 0;
     const mainForm = document.querySelector(whichForm);
     const formData = new FormData(mainForm);
     const formKeyVal = [...formData];
@@ -7,10 +8,19 @@ export const doValidation = (whichForm, url, theMethod) => {
     console.log(mapData);
     mapData.forEach((v,k)=>{
         if(k === 'version' || k === 'bh' || k === 'color') return;
+        (k === 'price') && (+v < 1) && (priceErr+=1);
         (v.length === 0) && holErr.push(k)
     });
     console.log("Error length: " + holErr.length);
     if(holErr.length === 0){
+        if(priceErr > 0){
+            Swal.fire({
+                icon: 'error',
+                // title: 'Empty Fields',
+                text: `Price must be greater than 0`,
+            })
+            return;
+        }
         // no empty data 
         const data = {};
         for(const [key, value] of formData) data[key] = value.toLowerCase();

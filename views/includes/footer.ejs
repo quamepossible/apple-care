@@ -87,7 +87,9 @@
                         whatAct = `<select type="text" class="form-control select-det" id="${id}" name="${col}">${optionRow}</select>`;
                     }
                     else{
-                        whatAct = `<input type="text" class="form-control" id="" name="${col}">`;
+                        const inpType = (vers === 'PRICE') ? 'number' : 'text';
+                        const min = (vers === 'PRICE') ? `min='1'` : '';
+                        whatAct = `<input type="${inpType}" ${min} class="form-control" id="" name="${col}">`;
                     }
                     inpField = `
                             <div class="form-group col-md-6">
@@ -120,6 +122,9 @@
         if(clickAction.action === 'add'){
             let target = document.querySelector('.prd-name').innerHTML.toLowerCase();
             target = target.trim();
+            // document.querySelector('.add-form').addEventListener('submit', function(e){
+            //     e.preventDefault();
+            // })
             doValidation('.add-form', `http://localhost:3000/insert/${target}`, 'POST');
         }
     })
