@@ -4,7 +4,11 @@ export const doValidation = (whichForm, url, theMethod) => {
     const formData = new FormData(mainForm);
     const formKeyVal = [...formData];
     const mapData = new Map(formKeyVal);
-    mapData.forEach((v,k)=>(k !== 'version') && (v.length === 0) && holErr.push(k));
+    console.log(mapData);
+    mapData.forEach((v,k)=>{
+        if(k === 'version' || k === 'bh' || k === 'color') return;
+        (v.length === 0) && holErr.push(k)
+    });
     console.log("Error length: " + holErr.length);
     if(holErr.length === 0){
         // no empty data 

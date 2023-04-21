@@ -92,7 +92,10 @@ app.post('/insert/:target', (req, res) => {
     const validData = req.body;
     const getSize = new Map(Object.entries(validData));
     const err = [];
-    getSize.forEach((v, k) => (k !== 'version') && (v.length === 0) && err.push(k))
+    getSize.forEach((v, k) => {
+        if(k === 'version' || k === 'bh' || k === 'color') return;
+        (v.length === 0) && err.push(k)
+    })
     // push to database using target 
     if(getSize.size === 0 || err.length > 0){
         res.send('Empty Data')

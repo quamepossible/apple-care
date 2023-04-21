@@ -19,7 +19,6 @@ const searchParent = document.querySelector('.search-row');
 // add keyup event, so that we'll do ajax request per data in input field
 document.querySelector('.search-inp').addEventListener('keyup', async function(e){
     if(e.code === '') return;
-    console.log(e);
     if(this.value.length === 0){
         $('.no-res').css('display', 'none');
         searchParent.innerHTML = '';

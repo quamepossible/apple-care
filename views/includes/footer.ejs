@@ -40,7 +40,7 @@
                     };
                     if(col === 'date_added' || col === 'time_added') return;
                     const vers = col.toUpperCase();
-                    const spanVer = (vers === 'VERSION') ? '' : '<span>*</span>';
+                    const spanVer = (vers === 'VERSION' || vers === 'BH' || vers === 'COLOR') ? '' : '<span>*</span>';
                     switch(target){
                         case 'phones':
                             productObj.model = ['se','5','6','7','8','x','11','12','13','14'];
