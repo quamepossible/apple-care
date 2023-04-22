@@ -112,8 +112,7 @@ app.post('/insert/:target', async (req, res) => {
         }
         else{
             // product type found
-            const foundPrd = prodRes[0];
-            const {quantity} = foundPrd;
+            const {quantity} = prodRes[0];
             newQty = (+newQty) + quantity;
             await Accessories.findOneAndUpdate(query, {quantity:newQty});
         }
@@ -265,31 +264,78 @@ app.get('/accounts', (req, res) => {
     res.render('sales/accounts')
 })
 
-app.post('/checkout', (req, res) => {
+app.post('/checkout', async (req, res) => {
     const accessData = req.body;
     const allAccessories = [];
-    Object.keys(accessData).forEach(model => {
+    const prdErr = [];
+    // console.log(Object.keys(accessData));
+    Object.keys(accessData).forEach(async model => {
         let [quant, price, note, payment_method, customer_details, date, ...payRate] = accessData[model];
-        let method_ratio = {};
-        payRate.forEach(rate => {
-            for(let [k,v] of Object.entries(rate)){
-                method_ratio[k] = v;
+
+        const whatPrd = model.toLowerCase();
+        console.log(whatPrd);
+        let combo = [];
+        switch (whatPrd) {
+            case 'type c full set (2 pins)':
+                combo = ['type c cord', 'type c head (2-pins)'];
+                break;
+            case 'type c full set (3 pins)':
+                combo = ['type c cord', 'type c head (3-pins)'];
+                break;
+            case 'usb full set (2 pins)':
+                combo = ['usb cord', 'usb head (2-pins)'];
+                break;
+            case 'usb full set (3 pins)':
+                combo = ['usb cord', 'usb head (3-pins)'];
+                break;
+            default:
+                break;
+        }
+        // console.log(combo);
+        if(combo.length === 2){
+            // product is a set
+            combo.forEach(async section => {
+                const itemRes = await Accessories.find({product_type: section});
+                console.log(section + ' => ' + itemRes);
+                if(itemRes.length === 0 || itemRes[0].quantity === 0){
+                    console.log(`${whatPrd} out of Stock`);
+                }
+                // ((itemRes.length === 0 || itemRes[0].quantity === 0)) && prdErr.push(`${section} out of Stock`);
+            });
+        }
+
+        else{
+            // single product
+            const findPrd = await Accessories.find({product_type : whatPrd});
+            if(findPrd.length === 0 || findPrd[0].quantity === 0){
+                console.log(`${whatPrd} out of Stock`);
+                // prdErr.push(`${whatPrd} out of Stock`)
             }
-        })
-        customer_details = customer_details.toLowerCase();
-        note = note.toLowerCase();
-        const [check_date, check_time] = date.split('T');
-        const amount = +price;
-        const quantity = +quant;
-        const total_paid = +quantity * amount;
-        const productData = {model, quantity, amount, note, payment_method, method_ratio, customer_details, total_paid, check_time, check_date};
-        allAccessories.push(productData);
+        }
+
+
+
+        // let method_ratio = {};
+        // payRate.forEach(rate => {
+        //     for(let [k,v] of Object.entries(rate)){
+        //         method_ratio[k] = v;
+        //     }
+        // })
+        // customer_details = customer_details.toLowerCase();
+        // note = note.toLowerCase();
+        // const [check_date, check_time] = date.split('T');
+        // const amount = +price;
+        // const quantity = +quant;
+        // const total_paid = +quantity * amount;
+        // const productData = {model, quantity, amount, note, payment_method, method_ratio, customer_details, total_paid, check_time, check_date};
+        // allAccessories.push(productData);
     })
-    CheckedOut.insertMany(allAccessories).then(() => {
-        res.send('sold')
-    }).catch(err => {
-        res.send('unable')
-    })
+    // console.log(prdErr);
+    // CheckedOut.insertMany(allAccessories).then(() => {
+    //     res.send('sold')
+    // }).catch(err => {
+    //     res.send('unable')
+    // })
     
 })
 
