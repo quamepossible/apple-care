@@ -51,6 +51,11 @@ const podSchema = mongoose.Schema({
     price: String
 })
 
+const accessSchema = mongoose.Schema({
+    product_type: String,
+    quantity: Number,
+})
+
 
 const checkoutSchema = mongoose.Schema({
     ...otherProductSchema.obj,
@@ -80,6 +85,7 @@ const Phones = mongoose.model('phones', phoneSchema);
 const Macbooks = mongoose.model('macbooks', otherProductSchema);
 const Ipads = mongoose.model('ipads', otherProductSchema);
 const Series = mongoose.model('series', seriesSchema);
-const AirPods = mongoose.model('airpods', podSchema)
+const AirPods = mongoose.model('airpods', podSchema);
+const Accessories = mongoose.model('accessory', accessSchema)
 const CheckedOut = mongoose.model('checkedout', checkoutSchema);
-module.exports = {Phones, Macbooks, Ipads, Series, AirPods, CheckedOut};
+module.exports = {Phones, Macbooks, Ipads, Series, AirPods, Accessories, CheckedOut};
