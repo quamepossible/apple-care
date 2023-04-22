@@ -18,6 +18,7 @@
         if(!e.target.closest('.hol-spans-main')) return;
         const spanPar = e.target.closest('.hol-spans-main');
         const target = spanPar.querySelector('.categ-phones').dataset.target;
+        console.log(target);
         document.querySelector('.overlay-content').style.display = 'none';
         document.querySelector('.data-content').style.display = 'block';
         document.querySelector('.hol-close-cont').style.display = 'none';
@@ -72,28 +73,32 @@
                             productObj.model = ['homepod'];
                             productObj.version = ['1','2'];
                             productObj.color = ['black','white'];
+                            break;
+                        case 'accessories':
+                            productObj.product_type = ['Type C head (2-pins)','Type C head (3-pins)','Type C cord','USB head (2-pins)','USB head (3-pins)','USB cord','Earpiece Brush','Earpiece Pin','Battery','Cover','3-in-1 Dock','Protector','Screen'];
+                            break;
                         default:
                             break;
                     }
                     let whatAct;
-                    if(vers === 'MODEL' || vers === 'VERSION' || vers === 'SCREEN' || vers === 'COLOR' || vers === 'YEAR' || vers === 'RAM' || vers === 'STORAGE' || vers === 'PROCESSOR' || vers === 'TOUCHBAR' || vers === 'DISPLAY'){
+                    if(vers === 'MODEL' || vers === 'VERSION' || vers === 'SCREEN' || vers === 'COLOR' || vers === 'YEAR' || vers === 'RAM' || vers === 'STORAGE' || vers === 'PROCESSOR' || vers === 'TOUCHBAR' || vers === 'DISPLAY' || vers === 'PRODUCT_TYPE'){
                         const smallId = vers.toLowerCase();
                         const id = vers === 'MODEL' ? 'model' : '';
                         const versData = (productObj[smallId]) ? productObj[smallId] : '';
-                        let optionRow = `<option value=''>Select ${vers}</option>`;
+                        let optionRow = `<option value=''>Select ${vers.replace('_',' ')}</option>`;
                         versData.forEach(res => {
                             optionRow += `<option value='${(res==='-')?'':res}'>${res.length <= 1 ? res : res.split('-').join(' ').toUpperCase()}</option>`;
                         }) 
                         whatAct = `<select type="text" class="form-control select-det" id="${id}" name="${col}">${optionRow}</select>`;
                     }
                     else{
-                        const inpType = (vers === 'PRICE') ? 'number' : 'text';
-                        const min = (vers === 'PRICE') ? `min='1'` : '';
+                        const inpType = (vers === 'PRICE' || vers === 'QUANTITY') ? 'number' : 'text';
+                        const min = (vers === 'PRICE' || vers === 'QUANTITY') ? `min='1'` : '';
                         whatAct = `<input type="${inpType}" ${min} class="form-control" id="" name="${col}">`;
                     }
                     inpField = `
                             <div class="form-group col-md-6">
-                                <label for="">${col.toUpperCase()} ${spanVer}</label>
+                                <label for="">${col.replace('_', ' ').toUpperCase()} ${spanVer}</label>
                                 ${whatAct}
                             </div>`;
                     addFormContainer.insertAdjacentHTML('beforeend', inpField)

@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const ObjectId = require('mongodb').ObjectId;
 mngConnect = mongoose.connect('mongodb://127.0.0.1:27017/appleCareDB');
 
-const {Phones, Macbooks, Ipads, Series, AirPods, CheckedOut} = require('./db/db.js');
+const {Phones, Macbooks, Ipads, Series, AirPods, Accessories, CheckedOut} = require('./db/db.js');
 const {anyObj} = require('./db/fetch.js');
 const app = express();
 
@@ -87,7 +87,7 @@ app.get('/product/:sku', async (req, res) => {
     }
 })
 
-app.post('/insert/:target', (req, res) => {
+app.post('/insert/:target', async (req, res) => {
     const {target} = req.params;
     const validData = req.body;
     const getSize = new Map(Object.entries(validData));
@@ -102,6 +102,24 @@ app.post('/insert/:target', (req, res) => {
         return;
     }
     let theDate = new Date().toISOString();
+    if(target === 'accessories'){
+        let {product_type, quantity:newQty} = validData;
+        const query = {product_type: product_type};
+        const prodRes = await Accessories.find(query);
+        if(prodRes.length === 0){
+            // no product type found
+            Accessories(validData).save();
+        }
+        else{
+            // product type found
+            const foundPrd = prodRes[0];
+            const {quantity} = foundPrd;
+            newQty = (+newQty) + quantity;
+            await Accessories.findOneAndUpdate(query, {quantity:newQty});
+        }
+        res.send('saved');
+        return;
+    }
     [validData.date_added, validData.time_added] = theDate.split('T');
     switch (target){
         case 'phones':
@@ -163,6 +181,9 @@ app.get('/sections/:type', async (req, res) => {
             break;
         case 'airpod':
             schVal = Object.keys(AirPods.schema.obj);
+            break;
+        case 'accessories':
+            schVal = Object.keys(Accessories.schema.obj);
             break;
         default:
             schVal = [];

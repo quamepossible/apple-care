@@ -6,9 +6,11 @@ export const doValidation = (whichForm, url, theMethod) => {
     const formKeyVal = [...formData];
     const mapData = new Map(formKeyVal);
     console.log(mapData);
+    let whatField = '';
     mapData.forEach((v,k)=>{
         if(k === 'version' || k === 'bh' || k === 'color') return;
-        (k === 'price') && (+v < 1) && (priceErr+=1);
+        ((k === 'price') || (k === 'quantity')) && (+v < 1) && (priceErr+=1);
+        whatField = (k === 'price') ? 'Price':'Quantity';
         (v.length === 0) && holErr.push(k)
     });
     console.log("Error length: " + holErr.length);
@@ -17,7 +19,7 @@ export const doValidation = (whichForm, url, theMethod) => {
             Swal.fire({
                 icon: 'error',
                 // title: 'Empty Fields',
-                text: `Price must be greater than 0`,
+                text: `${whatField} must be greater than 0`,
             })
             return;
         }
