@@ -269,7 +269,8 @@ app.post('/checkout', async (req, res) => {
     const allAccessories = [];
     const prdErr = [];
     // console.log(Object.keys(accessData));
-    Object.keys(accessData).forEach(async model => {
+    const doWhat = Object.keys(accessData).reduce(async (previous, model) => {
+        await previous;
         let [quant, price, note, payment_method, customer_details, date, ...payRate] = accessData[model];
 
         const whatPrd = model.toLowerCase();
@@ -292,44 +293,52 @@ app.post('/checkout', async (req, res) => {
                 break;
         }
         // console.log(combo);
+        const initErr = [];
         if(combo.length === 2){
             // product is a set
-            combo.forEach(async section => {
+            const theErr = combo.reduce(async (prev, section) => {
+                await prev;
                 const itemRes = await Accessories.find({product_type: section});
-                console.log(section + ' => ' + itemRes);
                 if(itemRes.length === 0 || itemRes[0].quantity === 0){
-                    console.log(`${whatPrd} out of Stock`);
+                    initErr.push(`${section} out of Stock`);
+                    return new Promise(res => res(initErr));
                 }
-                // ((itemRes.length === 0 || itemRes[0].quantity === 0)) && prdErr.push(`${section} out of Stock`);
-            });
+            }, Promise.resolve());
+            const indErr = await theErr;
+            prdErr.push(indErr);
         }
 
         else{
             // single product
-            const findPrd = await Accessories.find({product_type : whatPrd});
-            if(findPrd.length === 0 || findPrd[0].quantity === 0){
-                console.log(`${whatPrd} out of Stock`);
-                // prdErr.push(`${whatPrd} out of Stock`)
+            const itemRes = await Accessories.find({product_type : whatPrd});
+            if(itemRes.length === 0 || itemRes[0].quantity === 0){
+                initErr.push(`${whatPrd} out of Stock`);
+                prdErr.push(initErr);
             }
         }
+        
+        return new Promise(res => res(prdErr));
+    }, Promise.resolve());
+    doWhat.then(res => console.log(res))
 
 
 
-        // let method_ratio = {};
-        // payRate.forEach(rate => {
-        //     for(let [k,v] of Object.entries(rate)){
-        //         method_ratio[k] = v;
-        //     }
-        // })
-        // customer_details = customer_details.toLowerCase();
-        // note = note.toLowerCase();
-        // const [check_date, check_time] = date.split('T');
-        // const amount = +price;
-        // const quantity = +quant;
-        // const total_paid = +quantity * amount;
-        // const productData = {model, quantity, amount, note, payment_method, method_ratio, customer_details, total_paid, check_time, check_date};
-        // allAccessories.push(productData);
-    })
+    // let method_ratio = {};
+    // payRate.forEach(rate => {
+    //     for(let [k,v] of Object.entries(rate)){
+    //         method_ratio[k] = v;
+    //     }
+    // })
+    // customer_details = customer_details.toLowerCase();
+    // note = note.toLowerCase();
+    // const [check_date, check_time] = date.split('T');
+    // const amount = +price;
+    // const quantity = +quant;
+    // const total_paid = +quantity * amount;
+    // const productData = {model, quantity, amount, note, payment_method, method_ratio, customer_details, total_paid, check_time, check_date};
+    // allAccessories.push(productData);
+    // 
+    // 
     // console.log(prdErr);
     // CheckedOut.insertMany(allAccessories).then(() => {
     //     res.send('sold')
