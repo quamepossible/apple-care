@@ -278,22 +278,23 @@ app.post('/checkout', async (req, res) => {
         let combo = [];
         switch (whatPrd) {
             case 'type c full set (2 pins)':
-                combo = ['type c cord', 'type c head (2-pins)'];
+                combo = ['type c cord', 'type c head (2 pins)'];
                 break;
             case 'type c full set (3 pins)':
-                combo = ['type c cord', 'type c head (3-pins)'];
+                combo = ['type c cord', 'type c head (3 pins)'];
                 break;
             case 'usb full set (2 pins)':
-                combo = ['usb cord', 'usb head (2-pins)'];
+                combo = ['usb cord', 'usb head (2 pins)'];
                 break;
             case 'usb full set (3 pins)':
-                combo = ['usb cord', 'usb head (3-pins)'];
+                combo = ['usb cord', 'usb head (3 pins)'];
                 break;
             default:
                 break;
         }
         // console.log(combo);
         const initErr = [];
+        const mapLessErr = new Map();
         if(combo.length === 2){
             // product is a set
             const theErr = combo.reduce(async (prev, section) => {
@@ -301,11 +302,23 @@ app.post('/checkout', async (req, res) => {
                 const itemRes = await Accessories.find({product_type: section});
                 if(itemRes.length === 0 || itemRes[0].quantity === 0){
                     initErr.push(`${section} out of Stock`);
-                    return new Promise(res => res(initErr));
                 }
+                else{
+                    const foundItemQty = itemRes[0].quantity;
+                    const belowValue = foundItemQty - +quant;
+                    if(belowValue < 0){ //ordering qty is more than stock qty
+                        mapLessErr.set(section, (belowValue / (-1)));
+                        initErr.push(mapLessErr);
+                    }
+                    else{ //subtract ordering qty from stock qty in db
+                        console.log('This => ' + section);
+                        await Accessories.findOneAndUpdate({product_type: section}, {quantity: belowValue});
+                    }
+                }
+                return new Promise(res => res(initErr));
             }, Promise.resolve());
             const indErr = await theErr;
-            prdErr.push(indErr);
+            (indErr.length > 0) && prdErr.push(indErr);
         }
 
         else{
@@ -313,13 +326,21 @@ app.post('/checkout', async (req, res) => {
             const itemRes = await Accessories.find({product_type : whatPrd});
             if(itemRes.length === 0 || itemRes[0].quantity === 0){
                 initErr.push(`${whatPrd} out of Stock`);
-                prdErr.push(initErr);
             }
+            else{
+                const foundItemQty = itemRes[0].quantity;
+                const belowValue = foundItemQty - +quant;
+                if(belowValue < 0){ //ordering qty is more than stock qty
+                    mapLessErr.set(whatPrd, (belowValue / (-1)));
+                    initErr.push(mapLessErr);
+                };
+            }
+            (initErr.length > 0) && prdErr.push(initErr);
         }
-        
+
         return new Promise(res => res(prdErr));
     }, Promise.resolve());
-    doWhat.then(res => console.log(res))
+    doWhat.then(res => console.log(res));
 
 
 
