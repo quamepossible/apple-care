@@ -103,6 +103,7 @@ app.post('/insert/:target', async (req, res) => {
     }
     let theDate = new Date().toISOString();
     if(target === 'accessories'){
+        validData.temp_quantity = validData.quantity;
         let {product_type, quantity:newQty} = validData;
         const query = {product_type: product_type};
         const prodRes = await Accessories.find(query);
@@ -114,7 +115,7 @@ app.post('/insert/:target', async (req, res) => {
             // product type found
             const {quantity} = prodRes[0];
             newQty = (+newQty) + quantity;
-            await Accessories.findOneAndUpdate(query, {quantity:newQty});
+            await Accessories.findOneAndUpdate(query, {quantity:newQty, temp_quantity:newQty});
         }
         res.send('saved');
         return;
@@ -268,13 +269,14 @@ app.post('/checkout', async (req, res) => {
     const accessData = req.body;
     const allAccessories = [];
     const prdErr = [];
+    const everyItem = [];
     // console.log(Object.keys(accessData));
     const doWhat = Object.keys(accessData).reduce(async (previous, model) => {
         await previous;
         let [quant, price, note, payment_method, customer_details, date, ...payRate] = accessData[model];
 
         const whatPrd = model.toLowerCase();
-        console.log(whatPrd);
+        // console.log(whatPrd);
         let combo = [];
         switch (whatPrd) {
             case 'type c full set (2 pins)':
@@ -300,19 +302,19 @@ app.post('/checkout', async (req, res) => {
             const theErr = combo.reduce(async (prev, section) => {
                 await prev;
                 const itemRes = await Accessories.find({product_type: section});
-                if(itemRes.length === 0 || itemRes[0].quantity === 0){
-                    initErr.push(`${section} out of Stock`);
+                if(itemRes.length === 0 || itemRes[0].temp_quantity === 0){
+                    initErr.push(`${section}`);
                 }
                 else{
-                    const foundItemQty = itemRes[0].quantity;
+                    const foundItemQty = itemRes[0].temp_quantity;
                     const belowValue = foundItemQty - +quant;
                     if(belowValue < 0){ //ordering qty is more than stock qty
                         mapLessErr.set(section, (belowValue / (-1)));
                         initErr.push(mapLessErr);
                     }
                     else{ //subtract ordering qty from stock qty in db
-                        console.log('This => ' + section);
-                        await Accessories.findOneAndUpdate({product_type: section}, {quantity: belowValue});
+                        everyItem.push(section);
+                        await Accessories.findOneAndUpdate({product_type: section}, {temp_quantity: belowValue});
                     }
                 }
                 return new Promise(res => res(initErr));
@@ -324,23 +326,55 @@ app.post('/checkout', async (req, res) => {
         else{
             // single product
             const itemRes = await Accessories.find({product_type : whatPrd});
-            if(itemRes.length === 0 || itemRes[0].quantity === 0){
-                initErr.push(`${whatPrd} out of Stock`);
+            if(itemRes.length === 0 || itemRes[0].temp_quantity === 0){
+                initErr.push(`${whatPrd}`);
             }
             else{
-                const foundItemQty = itemRes[0].quantity;
+                const foundItemQty = itemRes[0].temp_quantity;
                 const belowValue = foundItemQty - +quant;
                 if(belowValue < 0){ //ordering qty is more than stock qty
                     mapLessErr.set(whatPrd, (belowValue / (-1)));
                     initErr.push(mapLessErr);
-                };
+                }
+                else{ //subtract ordering qty from stock qty in db
+                    everyItem.push(whatPrd);
+                    await Accessories.findOneAndUpdate({product_type: whatPrd}, {temp_quantity: belowValue});
+                }
             }
             (initErr.length > 0) && prdErr.push(initErr);
         }
-
-        return new Promise(res => res(prdErr));
+        // console.log(everyItem);
+        return new Promise(res => res([prdErr, everyItem]));
     }, Promise.resolve());
-    doWhat.then(res => console.log(res));
+    let prdFinRes = await doWhat;
+    const [outStock, prdSold] = prdFinRes;
+    let uniqPrdSold = new Set(prdSold);
+    uniqPrdSold = [...uniqPrdSold];
+    console.log(outStock);
+    console.log('------------------------');
+    console.log(uniqPrdSold);
+    // prdFinRes = prdFinRes.flat(2);
+    // console.log(prdFinRes);
+    if(outStock.length === 0){ // all products qty was available
+        //set products original qty to temp_qty
+        uniqPrdSold.forEach(async (prdType) => {
+            const eachPrdData = await Accessories.find({product_type: prdType});
+            const {temp_quantity} = eachPrdData[0];
+            // update original qty to temp_qty
+            await Accessories.findOneAndUpdate({product_type: prdType},{quantity: temp_quantity});
+        })
+    }
+    else{ // some products are out of stock
+        // set temp_qty to original qty
+        uniqPrdSold.forEach(async (prdType) => {
+            const eachPrdData = await Accessories.find({product_type: prdType});
+            const {quantity} = eachPrdData[0];
+            // update temp_qty to original qty
+            await Accessories.findOneAndUpdate({product_type: prdType},{temp_quantity: quantity}, {new:true});
+        })
+    }
+    // console.log("Out of Stock ", outStock);
+    // console.log(prdFinRes);
 
 
 

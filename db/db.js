@@ -54,6 +54,7 @@ const podSchema = mongoose.Schema({
 const accessSchema = mongoose.Schema({
     product_type: String,
     quantity: Number,
+    temp_quantity: Number,
 })
 
 
