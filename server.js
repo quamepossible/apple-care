@@ -270,10 +270,11 @@ app.post('/checkout', async (req, res) => {
     const allAccessories = [];
     const prdErr = [];
     const everyItem = [];
+    const tempChanged = [];
     // console.log(Object.keys(accessData));
     const doWhat = Object.keys(accessData).reduce(async (previous, model) => {
         await previous;
-        let [quant, price, note, payment_method, customer_details, date, ...payRate] = accessData[model];
+        let [quant] = accessData[model];
 
         const whatPrd = model.toLowerCase();
         // console.log(whatPrd);
@@ -302,7 +303,7 @@ app.post('/checkout', async (req, res) => {
             const theErr = combo.reduce(async (prev, section) => {
                 await prev;
                 const itemRes = await Accessories.find({product_type: section});
-                if(itemRes.length === 0 || itemRes[0].temp_quantity === 0){
+                if(itemRes.length === 0){ // || itemRes[0].temp_quantity === 0 
                     initErr.push(`${section}`);
                 }
                 else{
@@ -311,6 +312,8 @@ app.post('/checkout', async (req, res) => {
                     if(belowValue < 0){ //ordering qty is more than stock qty
                         mapLessErr.set(section, (belowValue / (-1)));
                         initErr.push(mapLessErr);
+                        await Accessories.findOneAndUpdate({product_type: section}, {temp_quantity: 0});
+                        tempChanged.push(section);
                     }
                     else{ //subtract ordering qty from stock qty in db
                         everyItem.push(section);
@@ -322,11 +325,12 @@ app.post('/checkout', async (req, res) => {
             const indErr = await theErr;
             (indErr.length > 0) && prdErr.push(indErr);
         }
+        
 
         else{
             // single product
             const itemRes = await Accessories.find({product_type : whatPrd});
-            if(itemRes.length === 0 || itemRes[0].temp_quantity === 0){
+            if(itemRes.length === 0){ // || itemRes[0].temp_quantity === 0 
                 initErr.push(`${whatPrd}`);
             }
             else{
@@ -335,6 +339,8 @@ app.post('/checkout', async (req, res) => {
                 if(belowValue < 0){ //ordering qty is more than stock qty
                     mapLessErr.set(whatPrd, (belowValue / (-1)));
                     initErr.push(mapLessErr);
+                    await Accessories.findOneAndUpdate({product_type: whatPrd}, {temp_quantity: 0});
+                    tempChanged.push(whatPrd);
                 }
                 else{ //subtract ordering qty from stock qty in db
                     everyItem.push(whatPrd);
@@ -343,63 +349,76 @@ app.post('/checkout', async (req, res) => {
             }
             (initErr.length > 0) && prdErr.push(initErr);
         }
-        // console.log(everyItem);
-        return new Promise(res => res([prdErr, everyItem]));
+        return new Promise(res => res([prdErr, everyItem, tempChanged]));
     }, Promise.resolve());
     let prdFinRes = await doWhat;
-    const [outStock, prdSold] = prdFinRes;
+    const [outStock, prdSold, justTemp] = prdFinRes;
     let uniqPrdSold = new Set(prdSold);
     uniqPrdSold = [...uniqPrdSold];
+    let changeAllTemp = [...uniqPrdSold, ...justTemp];
+    changeAllTemp = [...new Set(changeAllTemp)]
+    console.log(changeAllTemp);
     console.log(outStock);
-    console.log('------------------------');
-    console.log(uniqPrdSold);
+    // console.log('------------------------');
+    // console.log(uniqPrdSold);
     // prdFinRes = prdFinRes.flat(2);
     // console.log(prdFinRes);
     if(outStock.length === 0){ // all products qty was available
         //set products original qty to temp_qty
-        uniqPrdSold.forEach(async (prdType) => {
+        let updateCount = 0;
+        const doneOperation = uniqPrdSold.reduce(async (prv, prdType) => {
+            await prv;
             const eachPrdData = await Accessories.find({product_type: prdType});
             const {temp_quantity} = eachPrdData[0];
             // update original qty to temp_qty
-            await Accessories.findOneAndUpdate({product_type: prdType},{quantity: temp_quantity});
-        })
+            const updateRes = await Accessories.findOneAndUpdate({product_type: prdType},{quantity: temp_quantity}, {new:true});
+            (updateRes) && updateCount++;
+            return new Promise(res => res(updateCount));
+        }, Promise.resolve());
+        const finOperation = await doneOperation;
+        if(finOperation === uniqPrdSold.length){ // finished updating sold products in db
+            // save data in checkout db
+            Object.keys(accessData).forEach(model => {
+                let [quant, price, note, payment_method, customer_details, date, ...payRate] = accessData[model];
+                let method_ratio = {};
+                payRate.forEach(rate => {
+                    for(let [k,v] of Object.entries(rate)){
+                        method_ratio[k] = v;
+                    }
+                })
+                customer_details = customer_details.toLowerCase();
+                note = note.toLowerCase();
+                const [check_date, check_time] = date.split('T');
+                const amount = +price;
+                const quantity = +quant;
+                const total_paid = +quantity * amount;
+                const productData = {model, quantity, amount, note, payment_method, method_ratio, customer_details, total_paid, check_time, check_date};
+                allAccessories.push(productData);
+            })
+            CheckedOut.insertMany(allAccessories).then(() => {
+                console.log('Sold Successfully');
+                // res.send('sold')
+            }).catch(err => {
+                // res.send('unable')
+            })
+        }
+        else{ //couldn't update all sold products
+            // 
+
+        }
     }
     else{ // some products are out of stock
         // set temp_qty to original qty
-        uniqPrdSold.forEach(async (prdType) => {
+        changeAllTemp.forEach(async (prdType) => {
             const eachPrdData = await Accessories.find({product_type: prdType});
             const {quantity} = eachPrdData[0];
             // update temp_qty to original qty
             await Accessories.findOneAndUpdate({product_type: prdType},{temp_quantity: quantity}, {new:true});
         })
+        console.log(`Couldn't sell accessories`);
     }
     // console.log("Out of Stock ", outStock);
     // console.log(prdFinRes);
-
-
-
-    // let method_ratio = {};
-    // payRate.forEach(rate => {
-    //     for(let [k,v] of Object.entries(rate)){
-    //         method_ratio[k] = v;
-    //     }
-    // })
-    // customer_details = customer_details.toLowerCase();
-    // note = note.toLowerCase();
-    // const [check_date, check_time] = date.split('T');
-    // const amount = +price;
-    // const quantity = +quant;
-    // const total_paid = +quantity * amount;
-    // const productData = {model, quantity, amount, note, payment_method, method_ratio, customer_details, total_paid, check_time, check_date};
-    // allAccessories.push(productData);
-    // 
-    // 
-    // console.log(prdErr);
-    // CheckedOut.insertMany(allAccessories).then(() => {
-    //     res.send('sold')
-    // }).catch(err => {
-    //     res.send('unable')
-    // })
     
 })
 
