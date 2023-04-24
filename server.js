@@ -271,14 +271,19 @@ app.post('/checkout', async (req, res) => {
     const prdErr = [];
     const everyItem = [];
     const tempChanged = [];
-    // console.log(Object.keys(accessData));
+
+    // 1.Loop through all the products we want to checkout
     const doWhat = Object.keys(accessData).reduce(async (previous, model) => {
         await previous;
         let [quant] = accessData[model];
 
         const whatPrd = model.toLowerCase();
-        // console.log(whatPrd);
+        // 'whatPrd' is the current item in the loop 
         let combo = [];
+
+        // check if the item is a Full Set item 
+            // thus: two different items combined makes up this item
+            // eg: Type C full set (2 pins) = Type C cord + Type C head (2 pins)
         switch (whatPrd) {
             case 'type c full set (2 pins)':
                 combo = ['type c cord', 'type c head (2 pins)'];
@@ -295,74 +300,116 @@ app.post('/checkout', async (req, res) => {
             default:
                 break;
         }
-        // console.log(combo);
         const initErr = [];
         const mapLessErr = new Map();
-        if(combo.length === 2){
+        const checkAvailPrd = async (checkRes, prdType) => {
+            if(checkRes.length === 0){ // this means one or both of the individual items is/are not in stock
+            
+                // so take note of this item
+                initErr.push(`${prdType}`); 
+            }
+            else{ 
+                const foundItemQty = checkRes[0].temp_quantity; //this is the quantity of individual item we have in stock
+                const belowValue = foundItemQty - +quant; //we're subtracting the quantity the client is buying from the quantity we have in stock
+                if(belowValue < 0){ //ordering qty is more than stock qty
+                    mapLessErr.set(prdType, (belowValue / (-1))); //insert the quantity needed to complete the checkout in an array
+                    
+                    // so take note of this item
+                    initErr.push(mapLessErr);
+
+                    // set the temp_quantity of this item to '0', 
+                        /* so that if another loop contains this same item, we let the loop
+                            knows a previous item was made up of more than the quantity 
+                            we have in stock for this item
+                        */
+                        /* This will also help us to know the total quantity of this item we need in stock
+                            to complete the whole purchase in the cart
+                        */
+                    await Accessories.findOneAndUpdate({product_type: prdType}, {temp_quantity: 0});
+                    
+                    // after changing the temp_quantity to '0', we need to 
+                    // take note of this item (by inserting it in an array)
+                    // so that we can reset the temp_quantity back to the 
+                    // original quantity of this item after an unsuccessful checkout
+                    tempChanged.push(prdType);
+                }
+                else{ //subtract ordering qty from stock qty in db
+                    // this implies, we have enough of this item in stock
+                    // so take note of this item
+                    everyItem.push(prdType);
+
+                    // and hence, set the temp_quantity of this item to (stock qty - ordered qty)
+                    await Accessories.findOneAndUpdate({product_type: prdType}, {temp_quantity: belowValue});
+                }
+            }
+            return initErr;
+        }
+
+        if(combo.length === 2){ // this means item is a full set
             // product is a set
             const theErr = combo.reduce(async (prev, section) => {
                 await prev;
+
+                /* Check in Accessories database to see if we have 
+                    the individual items that make up this full set item*/
+
+                // Eg: If we're checking out Type C full set (2 pins)
+                    // We need to check if we have 'Type C cord' and 'Type C head (2 pins)' in stock
                 const itemRes = await Accessories.find({product_type: section});
-                if(itemRes.length === 0){ // || itemRes[0].temp_quantity === 0 
-                    initErr.push(`${section}`);
-                }
-                else{
-                    const foundItemQty = itemRes[0].temp_quantity;
-                    const belowValue = foundItemQty - +quant;
-                    if(belowValue < 0){ //ordering qty is more than stock qty
-                        mapLessErr.set(section, (belowValue / (-1)));
-                        initErr.push(mapLessErr);
-                        await Accessories.findOneAndUpdate({product_type: section}, {temp_quantity: 0});
-                        tempChanged.push(section);
-                    }
-                    else{ //subtract ordering qty from stock qty in db
-                        everyItem.push(section);
-                        await Accessories.findOneAndUpdate({product_type: section}, {temp_quantity: belowValue});
-                    }
-                }
-                return new Promise(res => res(initErr));
+               
+                // 'section' is the individual item 
+                // 'itemRes' is the results of whether the item is in stock or not
+                const returnErr = checkAvailPrd(itemRes, section); 
+                
+                //the results of this is an array containing items 
+                // (a) we don't have in stock 
+                // (b) is not enough in stock
+                return new Promise(res => res(returnErr));
             }, Promise.resolve());
-            const indErr = await theErr;
+            const indErr = await theErr; // if the result of this is an empty array, it means we have enough of this item in stock
+            
+            // else we don't have enough of this item in stock so take note of this item
             (indErr.length > 0) && prdErr.push(indErr);
         }
-        
-
         else{
             // single product
+            // We are checking out just a single product
+
+            // check to see if this item is in stock 
             const itemRes = await Accessories.find({product_type : whatPrd});
-            if(itemRes.length === 0){ // || itemRes[0].temp_quantity === 0 
-                initErr.push(`${whatPrd}`);
-            }
-            else{
-                const foundItemQty = itemRes[0].temp_quantity;
-                const belowValue = foundItemQty - +quant;
-                if(belowValue < 0){ //ordering qty is more than stock qty
-                    mapLessErr.set(whatPrd, (belowValue / (-1)));
-                    initErr.push(mapLessErr);
-                    await Accessories.findOneAndUpdate({product_type: whatPrd}, {temp_quantity: 0});
-                    tempChanged.push(whatPrd);
-                }
-                else{ //subtract ordering qty from stock qty in db
-                    everyItem.push(whatPrd);
-                    await Accessories.findOneAndUpdate({product_type: whatPrd}, {temp_quantity: belowValue});
-                }
-            }
-            (initErr.length > 0) && prdErr.push(initErr);
+           
+            // 'whatPrd' is the item 
+            // 'itemRes' is the results of whether the item is in stock or not
+            const returnErr = checkAvailPrd(itemRes, whatPrd); // if the result of this is an empty array, it means we have enough of this item in stock
+            
+            // else we don't have enough of this item in stock so take note of this item
+            (returnErr.length > 0) && prdErr.push(returnErr);
         }
+
+        // Wait till we have looped through all Full Set and Single items
+        // and return results of every Array.
+        // The Arrays stores items that are
+            // (a) 'prdErr' : Items that are out of Stock or not enough in stock
+            // (b) 'everyItem' : Items that are enough in stock
+            // (c) 'tempChanged' : Items that their temp_quantity must be changed from '0' to their 'original quantity'
+                    // because their quantity was not enough to checkout the quantity we needed
         return new Promise(res => res([prdErr, everyItem, tempChanged]));
     }, Promise.resolve());
-    let prdFinRes = await doWhat;
+    let prdFinRes = await doWhat; // this is an array containing an array of results from 'prdErr', 'everyItem' and 'tempChanged'
+
+    // We destructured result and assigned each to a new variables
     const [outStock, prdSold, justTemp] = prdFinRes;
-    let uniqPrdSold = new Set(prdSold);
-    uniqPrdSold = [...uniqPrdSold];
-    let changeAllTemp = [...uniqPrdSold, ...justTemp];
-    changeAllTemp = [...new Set(changeAllTemp)]
-    console.log(changeAllTemp);
-    console.log(outStock);
-    // console.log('------------------------');
-    // console.log(uniqPrdSold);
-    // prdFinRes = prdFinRes.flat(2);
-    // console.log(prdFinRes);
+
+    // Remove duplicate items from the products we have in stock
+    // Eg: if we were able to checkout both a Type C Full Set (2 pins) and Type C Head (2 pins)
+    // We'd have an array like ['type c cord', 'type c head (2 pins)', 'type c head (2 pins)']
+        // so we just remove any duplicate items from the array
+    let uniqPrdSold = [...new Set(prdSold)];
+
+    // 
+    let changeAllTemp = [...justTemp];
+    changeAllTemp = [...new Set(changeAllTemp)];
+
     if(outStock.length === 0){ // all products qty was available
         //set products original qty to temp_qty
         let updateCount = 0;
@@ -412,13 +459,13 @@ app.post('/checkout', async (req, res) => {
         changeAllTemp.forEach(async (prdType) => {
             const eachPrdData = await Accessories.find({product_type: prdType});
             const {quantity} = eachPrdData[0];
+            console.log(eachPrdData[0]);
             // update temp_qty to original qty
-            await Accessories.findOneAndUpdate({product_type: prdType},{temp_quantity: quantity}, {new:true});
+            const resetTemp = await Accessories.findOneAndUpdate({product_type: prdType},{temp_quantity: quantity}, {new:true});
+            console.log(resetTemp);
         })
         console.log(`Couldn't sell accessories`);
     }
-    // console.log("Out of Stock ", outStock);
-    // console.log(prdFinRes);
     
 })
 
