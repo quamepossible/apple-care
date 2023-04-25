@@ -306,7 +306,7 @@ app.post('/checkout', async (req, res) => {
             if(checkRes.length === 0){ // this means one or both of the individual items is/are not in stock
             
                 // so take note of this item
-                initErr.push(`${prdType}`); 
+                initErr.push(prdType); 
             }
             else{ 
                 const foundItemQty = checkRes[0].temp_quantity; //this is the quantity of individual item we have in stock
@@ -316,6 +316,7 @@ app.post('/checkout', async (req, res) => {
                     
                     // so take note of this item
                     initErr.push(mapLessErr);
+                    (foundItemQty === 0) && initErr.push(prdType)
 
                     // set the temp_quantity of this item to '0', 
                         /* so that if another loop contains this same item, we let the loop
@@ -342,6 +343,7 @@ app.post('/checkout', async (req, res) => {
                     await Accessories.findOneAndUpdate({product_type: prdType}, {temp_quantity: belowValue});
                 }
             }
+            // console.log(initErr);
             return initErr;
         }
 
@@ -359,7 +361,7 @@ app.post('/checkout', async (req, res) => {
                
                 // 'section' is the individual item 
                 // 'itemRes' is the results of whether the item is in stock or not
-                const returnErr = checkAvailPrd(itemRes, section); 
+                let returnErr = await checkAvailPrd(itemRes, section);
                 
                 //the results of this is an array containing items 
                 // (a) we don't have in stock 
@@ -380,7 +382,7 @@ app.post('/checkout', async (req, res) => {
            
             // 'whatPrd' is the item 
             // 'itemRes' is the results of whether the item is in stock or not
-            const returnErr = checkAvailPrd(itemRes, whatPrd); // if the result of this is an empty array, it means we have enough of this item in stock
+            const returnErr = await checkAvailPrd(itemRes, whatPrd); // if the result of this is an empty array, it means we have enough of this item in stock
             
             // else we don't have enough of this item in stock so take note of this item
             (returnErr.length > 0) && prdErr.push(returnErr);
@@ -407,7 +409,7 @@ app.post('/checkout', async (req, res) => {
     let uniqPrdSold = [...new Set(prdSold)];
 
     // 
-    let changeAllTemp = [...justTemp];
+    let changeAllTemp = [...justTemp, ...uniqPrdSold];
     changeAllTemp = [...new Set(changeAllTemp)];
 
     if(outStock.length === 0){ // all products qty was available
@@ -444,27 +446,80 @@ app.post('/checkout', async (req, res) => {
             })
             CheckedOut.insertMany(allAccessories).then(() => {
                 console.log('Sold Successfully');
-                // res.send('sold')
+                res.send('sold')
             }).catch(err => {
                 // res.send('unable')
             })
         }
         else{ //couldn't update all sold products
-            // 
+            // highly unlikely this section will execute
 
         }
     }
     else{ // some products are out of stock
         // set temp_qty to original qty
-        changeAllTemp.forEach(async (prdType) => {
-            const eachPrdData = await Accessories.find({product_type: prdType});
-            const {quantity} = eachPrdData[0];
-            console.log(eachPrdData[0]);
-            // update temp_qty to original qty
-            const resetTemp = await Accessories.findOneAndUpdate({product_type: prdType},{temp_quantity: quantity}, {new:true});
-            console.log(resetTemp);
+
+        // console.log(outStock);
+        const outStockAndDuplics = [...new Set(outStock)];
+        const justSingleOutStocks = [];
+        outStockAndDuplics.forEach(outStock => {
+            const singleSet = new Set(outStock);
+            justSingleOutStocks.push([...singleSet]);
         })
-        console.log(`Couldn't sell accessories`);
+        console.log(justSingleOutStocks);
+        const holdAllPrdErr = justSingleOutStocks.flat(2);
+        // console.log(holdAllPrdErr);
+        const insufErr = [];
+        let outStockErr = [];
+        holdAllPrdErr.forEach(el=>{
+            (typeof el === 'object') ? insufErr.push(el) : outStockErr.push(el);
+        });
+        // console.log(insufErr);
+        // console.log(outStockErr);
+
+
+        // loop through insufficient items and sum their quantity needed
+        const insuffQty = {};
+        insufErr.forEach(mapRes => {
+            mapRes.forEach((v,k) => {
+                insuffQty[k] = (insuffQty[k]) ? (insuffQty[k] += v) : v;
+            })
+        })
+        // console.log(insuffQty);
+
+        // remove duplicates from out of stock items array
+        outStockErr = new Set(outStockErr);
+        const finalOutStockPrds = [...outStockErr];
+        console.log(finalOutStockPrds);
+
+        finalOutStockPrds.forEach(item => {
+            if(insuffQty[item]) return;
+            insuffQty[item] = 0;
+        })
+        console.log(insuffQty);
+        console.log(changeAllTemp.length);
+
+        if(changeAllTemp.length > 0){
+            let updateCount = 0;
+            const resetTempQty = changeAllTemp.reduce(async (prv, prdType) => {
+                await prv;
+                const eachPrdData = await Accessories.find({product_type: prdType});
+                const {quantity} = eachPrdData[0];
+                // update temp_qty to original qty
+                const resetTemp = await Accessories.findOneAndUpdate({product_type: prdType},{temp_quantity: quantity}, {new:true});
+                (resetTemp) && updateCount++;
+                return new Promise(res => res(updateCount));
+            }, Promise.resolve());
+            const finOperation = await resetTempQty;
+            if(finOperation === changeAllTemp.length){ // updated temp_quantity successfully
+                console.log(`Couldn't sell accessories`);
+                res.send(insuffQty);
+            }
+        }
+        else{ // all products we checked-out has not ever been added to stock
+            console.log(`Couldn't sell accessories`);
+            res.send(insuffQty);
+        }
     }
     
 })

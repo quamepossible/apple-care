@@ -21,6 +21,32 @@
     <title><%= title %></title>
 </head>
 <body>
+    <section id="error-block">
+        <span class="close-err-block center"><ion-icon class="err-ico center" name="close-outline"></ion-icon></span>
+        <div class="err-box center">
+            <p class="err-head">Couldn't check-out items 🛒</p>
+            <p class="err-logs">Error Logs 📝</p>
+            <div class="hol-logs">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="td-one">#</th>
+                            <th class="td-two">Item</th>
+                            <th class="td-three">Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody class="log-mess">
+                        <!-- <tr>
+                            <td>1.</td>
+                            <td>Phone Cover</td>
+                            <td>17 needed to complete checkout</td>
+                        </tr> -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    
     <div class="checkout-overlay">
         <div class="checkout-content center row">
             <div class="items-left">

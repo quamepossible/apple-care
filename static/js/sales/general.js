@@ -308,6 +308,27 @@ const submitCart = () => {
                             text: `Couldn't sell product(s), try Again 😢`,
                         })
                     }
+                    if(typeof res === 'object'){
+                        const conResToArray = new Map(Object.entries(res));
+                        const holErrorRows = document.querySelector('.log-mess');
+                        let count = 1;
+                        conResToArray.forEach((v,k)=>{
+                            const resText = (v === 0) ? `You've never added this item to Stock` : `<span style='font-size:30px'><b>${v}</b></span> more needed to complete checkout`
+                            const errData = `
+                                    <tr>
+                                    <td>${count}.</td>
+                                    <td><b>${k.toUpperCase()}</b></td>
+                                    <td>${resText}</td
+                            `
+                            count++;
+                            holErrorRows.insertAdjacentHTML('beforeend', errData);
+                        })
+                        $('#error-block').css('display', 'block');
+                        document.querySelector('.close-err-block').addEventListener('click',()=>{
+                            holErrorRows.innerHTML = '';
+                            $('#error-block').css('display', 'none');
+                        })
+                    }
                 }
             })
         }
