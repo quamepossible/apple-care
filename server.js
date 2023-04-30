@@ -144,7 +144,7 @@ app.post('/insert/:target', async (req, res) => {
     schVal.then(() =>{
         res.send('saved')
     });
-})
+});
 
 
 app.get('/data/:id', async (req, res) => {
