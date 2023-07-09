@@ -35,7 +35,7 @@ app.get('/sections', (req, res) => {
 // this route is where i've listed only all iphone models
 app.get('/products/:type', (req, res) => {
     const {type} = req.params;
-    res.render('stocks/products', {type})
+    res.render('stocks/products', {type});
 })
 
 
@@ -637,7 +637,7 @@ app.get('/fetch/:searchItem', async (req, res) => {
 
 
 app.get('*', (req, res) => {
-    res.redirect('/')
+    res.redirect('/');
 })
 
 app.listen(3000, () => {
