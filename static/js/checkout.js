@@ -16,7 +16,7 @@ const modalFunction = () => {
             console.log(itemID);
             try{
                 const fetchData = async () => {
-                    const getData = await fetch(`http://localhost:3000/data/${itemID}`);
+                    const getData = await fetch(`/data/${itemID}`);
                     if(!getData) throw new Error('Something went wrong');
                     const data = await getData.json();
                     const mapData = new Map(Object.entries(data));
@@ -56,7 +56,7 @@ const modalFunction = () => {
 const editDataFunc = () => {
     document.querySelector('.edit-form').addEventListener('submit', function(e){
         e.preventDefault();
-        doValidation('.edit-form', 'http://localhost:3000/edit', 'PATCH');
+        doValidation('.edit-form', '/edit', 'PATCH');
     })
 }
 
@@ -128,7 +128,7 @@ const checkoutForm = () => {
             console.log(formData);
             // push data
             $.ajax({
-                url: 'http://localhost:3000/sell',
+                url: '/sell',
                 method: 'POST',
                 data : formData,
                 success: (data) => {

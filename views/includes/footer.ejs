@@ -26,7 +26,7 @@
         const addFormContainer = document.querySelector('.add-form-row');
         const fetchFormCol = () => {
             new Promise( async (res) => {
-                const fetchCol = await fetch(`http://localhost:3000/sections/${target}`);
+                const fetchCol = await fetch(`/sections/${target}`);
                 const theCols = await fetchCol.json(); 
                 theCols.forEach(col => {
                     let inpField;
@@ -130,7 +130,7 @@
             // document.querySelector('.add-form').addEventListener('submit', function(e){
             //     e.preventDefault();
             // })
-            doValidation('.add-form', `http://localhost:3000/insert/${target}`, 'POST');
+            doValidation('.add-form', `/insert/${target}`, 'POST');
         }
     })
 

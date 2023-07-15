@@ -9,6 +9,7 @@ mngConnect = mongoose.connect('mongodb://127.0.0.1:27017/appleCareDB');
 const {Phones, Macbooks, Ipads, Series, AirPods, Accessories, CheckedOut} = require('./db/db.js');
 const {anyObj} = require('./db/fetch.js');
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 // set views
 app.set('view engine', 'ejs');
@@ -56,8 +57,14 @@ app.get('/devices/:type', async (req, res) => {
             let eachDocVersion = new Set(getDocVersions);
             eachDocVersion = [...eachDocVersion];
 
+        // check if endpoint request
+        if(req.query?.type) {
+            res.send({eachDocVersion, type});
+            return;
+        };
+
         // 3. send both version [s, s-plus, xs-max, pro, pro-max, etc.] and type [ipad, macbook, series, ipod,...etc.] to render page
-        res.render('stocks/devices', {eachDocVersion, type})
+        res.render('stocks/devices', {eachDocVersion, type});
     }
     catch(err) {
         console.log(err.message);
@@ -78,8 +85,12 @@ app.get('/product/:sku', async (req, res) => {
     try{
         virtualSelectedProduct = await anyObj(query, virtualSelectedProduct, 'view');
         if(!virtualSelectedProduct) throw Error (`Couldn't find data`);
+
+        // create endpoint
+        if(req.query?.endpoint){
+            res.send(virtualSelectedProduct);
+        }
         // 3. render page
-        // res.send(virtualSelectedProduct)
         res.render('stocks/checkout', {virtualSelectedProduct})
     }
     catch(err) {
@@ -640,6 +651,6 @@ app.get('*', (req, res) => {
     res.redirect('/');
 })
 
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
+app.listen(PORT, () => {
+    console.log('Server started on port ' + PORT);
 })

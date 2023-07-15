@@ -289,7 +289,7 @@ const submitCart = () => {
             Object.keys(data).forEach(k => data[k].push(new Date().toISOString()));
             console.log(data);
             $.ajax({
-                url: 'http://localhost:3000/checkout',
+                url: '/checkout',
                 method: 'POST',
                 data: data,
                 success: (res) => {

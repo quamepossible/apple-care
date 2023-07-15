@@ -29,7 +29,7 @@ document.querySelector('.search-inp').addEventListener('keyup', async function(e
     if(searchBy.value.length === 0) return;
     const searchWhat = searchBy.value;
     const queryString = this.value.toLowerCase();
-    const fetchRes = await fetch(`http://localhost:3000/fetch/${searchWhat}?query=${queryString}`);
+    const fetchRes = await fetch(`/fetch/${searchWhat}?query=${queryString}`);
     const resData = await fetchRes.json();
     console.log(resData.length);
     if(resData.length === 0)$('.no-res').css('display', 'block');

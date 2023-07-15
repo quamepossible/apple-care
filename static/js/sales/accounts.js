@@ -25,7 +25,7 @@ const pageCharts = (payMeths) => {
 }
 
 const transactFunc = async (toDate) => {
-  const getTotalAmt = await fetch(`http://localhost:3000/sold/${toDate}?act=jt`);
+  const getTotalAmt = await fetch(`/sold/${toDate}?act=jt`);
   const resTotalAmt = await getTotalAmt.json();
   const viewAmt = resTotalAmt?.totalAmount ? resTotalAmt.totalAmount : '-';
   document.querySelector('.main-amt').innerHTML = viewAmt;
@@ -38,7 +38,7 @@ const holdSold = document.querySelector('.hold-sold');
 const cashAmt = document.querySelector('.cash-amt');
 const momoAmt = document.querySelector('.momo-amt');
 const fetchSold = async (toDate) => {
-  const getData = await fetch(`http://localhost:3000/sold/${toDate}`);
+  const getData = await fetch(`/sold/${toDate}`);
   const dataRes = await getData.json();
   let payMethods = [];
   console.log(dataRes);
