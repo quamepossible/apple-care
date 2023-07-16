@@ -4,7 +4,7 @@ const methodOverride = require('method-override');
 const path = require('path');
 const mongoose = require('mongoose');
 const ObjectId = require('mongodb').ObjectId;
-mngConnect = mongoose.connect('mongodb://127.0.0.1:27017/appleCareDB');
+mngConnect = mongoose.connect('mongodb+srv://young-k:xXHOXLSUCZ37CElb@cluster0.swt0arz.mongodb.net/appleCareDB');
 
 const {Phones, Macbooks, Ipads, Series, AirPods, Accessories, CheckedOut} = require('./db/db.js');
 const {anyObj} = require('./db/fetch.js');
