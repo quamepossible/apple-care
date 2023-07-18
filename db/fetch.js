@@ -1,40 +1,50 @@
-const mongoose = require('mongoose');
-mngConnect = mongoose.connect('mongodb+srv://young-k:xXHOXLSUCZ37CElb@cluster0.swt0arz.mongodb.net/appleCareDB');
+const mongoose = require("mongoose");
 
 const anyObj = async function (query, virtualSelectedProduct, action) {
-    return new Promise ((res, _) => { 
-        mngConnect.then(async function(){
-            // connect mongoose to database using default mongo driver
-            const db = mongoose.connection.db;
+  return new Promise((res, _) => {
+    mongoose
+      .connect(
+        "mongodb+srv://young-k:xXHOXLSUCZ37CElb@cluster0.swt0arz.mongodb.net/appleCareDB?retryWrites=true&w=majority"
+      )
+      .then(async function () {
+        // connect mongoose to database using default mongo driver
+        const db = mongoose.connection.db;
 
-            console.log(db.collection);
-            // get list of all collections
-        //     const allCollections = await db.listCollections().toArray();
+        // get list of all collections
+        const allCollections = await db.listCollections().toArray();
+        // console.log(allCollections);
 
-        //     // now, loop through all
-        //     allCollections.reduce(async function(prev, collection){
-        //         await prev;
-        //         // we'll  get each collection name from here
-        //         // const collectionSize = await db.collection(collection.name).countDocuments(query);
-        //         if(action !== 'search' && collection.name === 'checkedout') return; // we don't want to loop through this collection
+        // now, loop through all
+        for (const collection of allCollections) {
+          // we'll  get each collection name from here
+          if (action !== "search" && collection.name === "checkedout") continue;
 
-        //         if(action === 'remove'){
-        //             await db.collection(collection.name).deleteOne(query).then((resp) => {
-        //                 if(resp.deletedCount === 1) virtualSelectedProduct.push('sold');
-        //             });
-        //         }
+          if (action === "remove") {
+            db.collection(collection.name)
+              .deleteOne(query)
+              .then((resp) => {
+                if (resp.deletedCount === 1)
+                  virtualSelectedProduct.push("sold");
+              });
+          }
 
-        //         if(action === 'view' || action === 'search'){
-        //             const individualCollection = db.collection(collection.name).find(query);
-        //             await individualCollection.forEach(doc => {
-        //                 virtualSelectedProduct.push(doc);
-        //             })
-        //         } 
-        //         return new Promise(resolve => {
-        //             resolve(virtualSelectedProduct);
-        //         })
-        //     }, Promise.resolve()).then(e => res(e));
-        })
-    })
-}
-module.exports = {anyObj};
+          if (action === "view" || action === "search") {
+            const individualCollection = db
+              .collection(collection.name)
+              .find(query);
+            await individualCollection.forEach((doc) => {
+              virtualSelectedProduct.push(doc);
+            });
+          }
+        }
+        console.log("This side is not running");
+        console.log(virtualSelectedProduct);
+
+        res(virtualSelectedProduct);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  });
+};
+module.exports = { anyObj };

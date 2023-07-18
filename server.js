@@ -2,9 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const methodOverride = require('method-override');
 const path = require('path');
-const mongoose = require('mongoose');
 const ObjectId = require('mongodb').ObjectId;
-mngConnect = mongoose.connect('mongodb+srv://young-k:xXHOXLSUCZ37CElb@cluster0.swt0arz.mongodb.net/appleCareDB');
 
 const {Phones, Macbooks, Ipads, Series, AirPods, Accessories, CheckedOut} = require('./db/db.js');
 const {anyObj} = require('./db/fetch.js');
@@ -49,7 +47,7 @@ app.get('/devices/:type', async (req, res) => {
     // 1. get all Data of data[type], where type could be [iphone, ipad, macbook, series, homepod,...etc.]     
     try{
         virtualSelectedProduct = await anyObj({model:type}, virtualSelectedProduct, 'view');
-        if(!virtualSelectedProduct) throw Error (`Couldn't find data`);
+        if(!virtualSelectedProduct) throw Error (`Couldn't find data Device`);
         // 2. After getting relevant Data, return only the version of the products
             // the versions could be [s, s-plus, xs-max, pro, pro, s-plus, pro-max, etc.] 
             // ...and hence remove duplicates from the versions list        
@@ -68,6 +66,7 @@ app.get('/devices/:type', async (req, res) => {
     }
     catch(err) {
         console.log(err.message);
+        res.send('Error fetching request')
     }      
 })
 
