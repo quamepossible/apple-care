@@ -7,7 +7,7 @@ const ObjectId = require('mongodb').ObjectId;
 const {Phones, Macbooks, Ipads, Series, AirPods, Accessories, CheckedOut} = require('./db/db.js');
 const {anyObj} = require('./db/fetch.js');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3003;
 
 // set views
 app.set('view engine', 'ejs');
@@ -605,7 +605,7 @@ app.get('/sold/:date', async (req, res) => {
 })
 
 app.get('/search', (req, res) => {
-    res.render('sales/search')
+    res.render('sales/search');
 })
 
 

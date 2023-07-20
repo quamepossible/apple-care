@@ -37,9 +37,6 @@ const anyObj = async function (query, virtualSelectedProduct, action) {
             });
           }
         }
-        console.log("This side is not running");
-        console.log(virtualSelectedProduct);
-
         res(virtualSelectedProduct);
       })
       .catch((err) => {
