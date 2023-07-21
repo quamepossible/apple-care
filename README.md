@@ -20,7 +20,11 @@ Let's get started on how to run this project.
 <ol>
 <li>Clone this repository using the command line, or download the zip file and open the project folder in your code editor.</li>
 <li>Navigate to the projects root folder from your system's command line, or VS code's terminal.</li>
-<li>Run <b>npm install</b> to download all dependencies for this project.</li>
+<li>Run 
+ ```
+ <b>npm install</b>
+ ```
+ to download all dependencies for this project.</li>
 </ol>
 <h4>Step 2</h4>
 <ol>
