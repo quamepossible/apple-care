@@ -64,7 +64,7 @@ const modalFunction = () => {
 const editDataFunc = () => {
   document.querySelector(".edit-form").addEventListener("submit", function (e) {
     e.preventDefault();
-    doValidation(".edit-form", "/edit", "PATCH");
+    doValidation(".edit-form", "/edit", "PATCH", "EDIT");
   });
 };
 

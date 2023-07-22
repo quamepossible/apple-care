@@ -146,7 +146,7 @@ app.post("/insert/:target", async (req, res) => {
         temp_quantity: newQty,
       });
     }
-    res.send("saved");
+    res.send("added");
     return;
   }
   [validData.date_added, validData.time_added] = theDate.split("T");
@@ -171,7 +171,7 @@ app.post("/insert/:target", async (req, res) => {
       break;
   }
   schVal.then(() => {
-    res.send("saved");
+    res.send("added");
   });
 });
 

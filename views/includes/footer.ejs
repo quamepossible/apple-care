@@ -127,10 +127,7 @@
         if(clickAction.action === 'add'){
             let target = document.querySelector('.prd-name').innerHTML.toLowerCase();
             target = target.trim();
-            // document.querySelector('.add-form').addEventListener('submit', function(e){
-            //     e.preventDefault();
-            // })
-            doValidation('.add-form', `/insert/${target}`, 'POST');
+            doValidation('.add-form', `/insert/${target}`, 'POST', 'ADD');
         }
     })
 
