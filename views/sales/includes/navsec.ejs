@@ -109,29 +109,24 @@
                         </div>
                     </div>
 
-                    <% const navArray = [['SALES', '/accounts', 'stats-chart-outline'], ['PHONES', '/products/phones', 'phone-portrait-outline'], ['PRODUCTS', '/sections', 'options-outline'], ['Look Up', '/search', 'search-outline']] %>
+                    <% const navArray = [['SALES', '/accounts', 'stats-chart-outline'], ['PHONES', '/products/phones', 'phone-portrait-outline'], ['PRODUCTS', '/sections', 'options-outline'], ['ACCESSORIES', '', 'cart-outline'], ['Look Up', '/search', 'search-outline']] %>
                     <div class="nav-cont">
                         <ul>
                             <% navArray.forEach(nav => { %>
-                                <li class="row">
+                                <% let link = nav[0] === 'ACCESSORIES' ? 'javascript:void' : nav[1] %>
+                                <% let classes = nav[0] === 'ACCESSORIES' %>
+                                <li class="<%= classes ? "row checkout-btn" : "row" %>">
                                     <span class="li-ico">
                                         <ion-icon name="<%= nav[2] %>" class="tv-ico center"></ion-icon>
                                     </span>
-                                    <a href=<%= nav[1] %> class="li-text">
+                                    <a  href=<%= link %> class="li-text">
                                        <span class="text center"><%= nav[0] %></span> 
                                     </a>
                                 </li>
                             <%}) %>
-                            <li class="row">
-                                <span class="li-ico">
-                                    <ion-icon name="cart-outline" class="tv-ico center"></ion-icon>
-                                </span>
-                                <span class="li-text">
-                                   <span class="text center">ACCESSORIES</span> 
-                                </span>
-                            </li>
                         </ul>
                     </div>
+                    
 
                     <div class="left-nav-footer">
 

@@ -31,7 +31,6 @@ const transactFunc = async (toDate) => {
   document.querySelector('.main-amt').innerHTML = viewAmt;
   document.querySelector('.left-head-amt').innerHTML = viewAmt;
   console.log(viewAmt);
-
 }
 
 const holdSold = document.querySelector('.hold-sold');

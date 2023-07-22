@@ -10,6 +10,8 @@ const anyObj = async function (query, virtualSelectedProduct, action) {
         // connect mongoose to database using default mongo driver
         const db = mongoose.connection.db;
 
+        if(!db) return;
+
         // get list of all collections
         const allCollections = await db.listCollections().toArray();
         // console.log(allCollections);
@@ -20,11 +22,14 @@ const anyObj = async function (query, virtualSelectedProduct, action) {
           if (action !== "search" && collection.name === "checkedout") continue;
 
           if (action === "remove") {
-            db.collection(collection.name)
+            await db.collection(collection.name)
               .deleteOne(query)
               .then((resp) => {
-                if (resp.deletedCount === 1)
+                console.log(resp.deletedCount);
+                if (resp.deletedCount === 1) {
                   virtualSelectedProduct.push("sold");
+                  res(virtualSelectedProduct)
+                }
               });
           }
 
