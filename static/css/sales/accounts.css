@@ -2,9 +2,6 @@
     width: 95%;
     height: auto;
     margin: auto;
-    /* margin-top: 20px; */
-    /* padding-bottom: 20px; */
-    /* background-color: yellow; */
 }
 
 /* TODAY SECTION */
@@ -13,19 +10,15 @@
     height: auto;
     margin: auto;
     font-family: 'IBM Plex Sans', sans-serif;
-    /* background-color: blue; */
 }
 
 .today-amt{
     width: 400px;
     height: auto;
-    /* margin: auto; */
-    /* background-color: pink; */
 }
 
 .today-ico{
     font-size: 40px;
-    /* background-color: red; */
     display: inline-block;
     width: 40%;
     margin-left: 20px;
@@ -35,14 +28,12 @@
 .period-form{
     width: 50%;
     display: inline-block;
-    /* background-color: red; */
     position: relative;
 }
 
 .hol-reset{
     width: 200px;
     position: relative;
-    /* background-color: blue; */
 }
 
 .period-form input, .period-form .reset{
@@ -73,7 +64,6 @@
 }
 
 .reset span{
-    /* background-color: blue; */
     padding: 12px;
     border-radius: 50%;
     display: inline-block;
@@ -92,14 +82,12 @@
 .full-amt{
     font-size: 45px;
     font-weight: 500;
-    /* background-color: blue; */
     margin-top: -15px;
     padding-left: 50px;
     font-family: 'Aldrich', sans-serif;
 }
 
 .main-amt{
-    /* font-family: 'Aldrich', sans-serif; */
     font-weight: bold;
 }
 
@@ -108,13 +96,11 @@
     font-weight: 600;
     display: block;
     color:#7e8299;
-    /* background-color: white; */
     margin-top: -10px;
     padding-left: 20px;
 }
 
 .today-amt .hol-tags{
-    /* background-color: yellow; */
     margin-top: -30px;
 }
 
@@ -133,7 +119,6 @@
     width: 400px;
     height: 100%;
     margin: 0 auto;
-    /* background-color: yellow; */
 }
 
 .tran-type{
@@ -142,7 +127,6 @@
     background-color: white;
     padding: 40px 0;
     border-right: 2px solid var(--gray);
-    /* padding-left: 20px; */
     border-radius: 12px;
     overflow-x: auto;
     text-align: center;
@@ -161,7 +145,6 @@
 }
 
 .tran-type p{
-    /* background: green; */
     font-size: 30px;
     font-weight: bold;
 }
@@ -179,7 +162,6 @@
     height: auto;
     margin: 30px auto;
     overflow: hidden;
-    /* background-color: blue; */
 }
 
 .left-chart{
@@ -188,7 +170,6 @@
     height: 400px;
     border-radius: 5px;
     overflow: hidden;
-    /* background-color: red; */
 }
 
 .left-head{
@@ -202,12 +183,10 @@
 .left-head .top-left, .top-right{
     display: inline-block;
     margin: 10px 40px;
-    /* background-color: green; */
 }
 
 .top-right{
     float: right;
-    /* background-color: green; */
 }
 
 .left-head-amt{
@@ -216,7 +195,6 @@
     padding: 5px 10px;
     border-radius: 40px;
     margin: 0 5px;
-    /* margin-left: 10px; */
     background-color: #3d88f8;
     font-family: 'Aldrich', sans-serif;
     border: 3px solid var(--gray)
@@ -234,7 +212,6 @@
 
 
 .prds-sold ul{
-    /* background-color: yellow; */
     width: 100%;
     margin: auto;
     list-style: none;
@@ -243,21 +220,17 @@
 .prds-sold ul li{
     height: 60px;
     border-bottom: 2px solid var(--gray);
-    /* padding-bottom: 10px;
-    margin-bottom: 10px; */
     font-family: 'Open Sans', sans-serif;
     font-size: 13px;
     color: #5e6e82;
     font-weight: bold;
     position: relative;
-    /* background-color: green; */
 }
 
 .prds-sold ul li .hol-prd-img{
     width: 80px;
     height: 100%;
     position: relative;
-    /* background-color: blue; */
     display: inline-block;
     padding-top: 5px;
     margin-right: 30px;
@@ -266,7 +239,6 @@
 .prds-sold ul li .hol-prd-img div{
     position: absolute ;
     display: inline;
-    /* background-color: red; */
     width: 50px;
     height: 50px;
     background-position: center;
@@ -288,11 +260,8 @@
 }
 
 .all-spans{
-    /* background-color: red; */
     display: inline-block;
     float: right;
-    /* left: 80%; */
-    /* width: 250px; */
     margin-right: 30px;
     margin-top: 20px;
 }
@@ -310,7 +279,6 @@
 
 .span-qty{
     display: inline-block;
-    /* width: 40%; */
     height: 5px;
     background-color: #2c7be5;
     position: absolute;
@@ -321,8 +289,6 @@
     width: 300px;
     height: 400px;
     margin-left: 20px;
-    /* background-color: green; */
-    /* background-color: rgb(194, 194, 194); */
 }
 
 
@@ -330,6 +296,5 @@
     width: 200px;
     height: 400px;
     margin: auto;
-    /* background-color: red; */
 }
 /* PAST SECTION */

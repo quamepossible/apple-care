@@ -113,13 +113,6 @@ body{
 
 .hol-tags button{
     display: inline-block;
-    /* background-color: black;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 20px;
-    margin: auto;
-    margin-right: 5px;
-    margin-bottom: 10px; */
     white-space: nowrap;
     cursor: pointer;
 }
@@ -312,12 +305,9 @@ tr .mid{
 
 .receipt{
     width: 60%;
-    /* height: auto; */
     background-color: rgb(0, 126, 184);
     margin: auto;
     border-radius: 15px;
-    /* display: none; */
-    /* overflow: hidden; */
 }
 
 .total{

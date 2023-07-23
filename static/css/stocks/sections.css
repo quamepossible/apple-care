@@ -45,7 +45,7 @@ a:hover{
 
 .span-1-of-3{
     background-color: rgb(42, 42, 42);
-    width: 70%;
+    width: 1100px;
     height: 80px;
     margin: auto;
     position: sticky;
@@ -55,7 +55,7 @@ a:hover{
 }
 
 .span-2-of-3{
-    width: 70%;
+    width: 1100px;
     margin: auto;
     margin-top: 50px;
     background-color: rgba(0, 0, 0, 0.305);
@@ -83,21 +83,17 @@ a:hover{
 
 .sub-secs .span-sec{
     width: 90%;
-    /* background-color: blue; */
     text-align: center;
 }
 
 .ico{
-    /* background-color: red; */
     position: relative;
     padding-left: 3px;
-    /* top: 3px; */
 }
 
 .span-head{
     width: 100%;
     height: 80px;
-    /* background-color: red; */
     position: relative;
 }
 
@@ -105,26 +101,22 @@ a:hover{
     width: 80%;
     height: auto;
     margin: auto;
-    /* background-color: green; */
 }
 
 .head-of-1{
     width: 80%;
-    /* background-color: yellow; */
     margin: auto;
 }
 
 .head-of-2{
     width: 20%;
     margin: auto;
-    /* background-color: blue; */
 }
 
 
 .span-head form{
     width: 80%;
     height: auto;
-    /* background-color: blue; */
 }
 
 .span-head form input{
@@ -151,25 +143,19 @@ a:hover{
 }
 
 .notif span{
-    /* background-color: red; */
     font-size: 40px;
 }
-
-
 
 
 .span-body{
     width: 90%;
     height: auto;
-    /* background-color: yellow; */
     margin: auto;
-    /* margin-top: 30px; */
 }
 
 .span-body .hol-2-of-2{
     width: 33.33%;
     height: 300px;
-    /* background-color: blue; */
     margin-bottom: 40px;
 }
 

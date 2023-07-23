@@ -37,10 +37,10 @@ const modalFunction = () => {
             const inpType = vers === "PRICE" ? "number" : "text";
             const min = vers === "PRICE" ? `min='1'` : "";
             const inps = `
-                                    <div class="form-group col-md-6">
-                                        <label for="">${k.toUpperCase()} ${spanVer}</label>
-                                        <input type="${inpType}" ${min}  class="form-control" id="" name="${k}" value="${v}">
-                                    </div>`;
+                          <div class="form-group col-md-6">
+                              <label for="">${k.toUpperCase()} ${spanVer}</label>
+                              <input type="${inpType}" ${min}  class="form-control" id="" name="${k}" value="${v}">
+                          </div>`;
             formContainer.insertAdjacentHTML("beforeend", inps);
           });
           const holdID = `<input type="text" style="display:none" value=${mainID} name="id" class="editID">`;

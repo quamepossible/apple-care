@@ -22,11 +22,9 @@ body{
 }
 
 #prod-container{
-    width: 80%;
+    max-width: 1100px;
     height: auto;
     margin: 0 auto;
-    /* background-color: yellow; */
-    /* overflow: auto; */
 }
 
 .center{
@@ -59,57 +57,30 @@ body{
     position: sticky;
     top: 0;
     z-index: 5;
-    /* background-color: pink; */
 }
 
 .head-items{
     width: 470px;
-    /* background-color: yellow; */
 }
 
 .hol-items{
     width: 400px;
     left: 55%;
-    /* background-color: red; */
+    text-align: center;
 }
 
-.add-btn{
-    padding: 10px 20px;
-}
-
-.hol-items form{
-    display: inline-block;
-    margin-left: 40px;
-    /* background-color: red; */
-}
-
-.hol-items form input{
-    width: 400px;
-    padding: 10px;
-    border-radius: 40px;
-    outline: none !important;
-    border: 5px solid white;
-    transition: 0.3s;
-}
-
-.hol-items form input:focus{
-    border: 5px solid red;
-}
 
 .cont-body{
     width: 90%;
     height: auto;
     margin:auto;
     margin-top: 50px;
-    /* background-color: rgb(255, 0, 0); */
 }
 
 .hol-cir-spans{
     width: 33.33%;
     height: 300px;
     margin-bottom: 35px;
-    /* overflow: hidden; */
-    /* background-color: blue; */
 }
 
 .circ-spans{
@@ -120,7 +91,6 @@ body{
     margin: auto;
     background-color: rgba(44, 44, 44, 0.904);
     background-position: center;
-    /* background-size: cover; */
     background-size: contain;
     background-repeat: no-repeat;
     cursor: pointer;
