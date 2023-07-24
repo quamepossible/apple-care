@@ -1,5 +1,7 @@
 # Apple-care
 
+NB: This is just a demo version of the POS system. It may not contain full features of the original System.
+
 <a href="https://apple-care.onrender.com/">Click here to view LIVE version</a>
 
 This project is a Point Of Sale system (POS) and inventory tracker for an Apple products (iPhones, iPads, Macbooks, etc.) dealership.<br>
