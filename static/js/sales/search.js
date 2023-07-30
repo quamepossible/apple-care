@@ -83,7 +83,7 @@ document.querySelector('.search-inp').addEventListener('keyup', async function(e
         const eachData = `
         <div class="hol-search">
             <div class="search-1-of-3">
-                <p class="item-head"style="background-color:${itemHead}">
+                <p class="item-head" style="background-color:${itemHead}">
                     <span class="item-name">${fullDeviceName}</span>&nbsp;
                     <span class="item-status" style="background-color:${bg}">${availability}</span>
                 </p>

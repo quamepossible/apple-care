@@ -1,4 +1,5 @@
 node_modules/
 dum/
+.env
 dum.js
 package-lock.json

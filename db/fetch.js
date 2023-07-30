@@ -4,8 +4,8 @@ const anyObj = async function (query, virtualSelectedProduct, action) {
   return new Promise((res, _) => {
     mongoose
       .connect(
-        "mongodb+srv://young-k:xXHOXLSUCZ37CElb@cluster0.swt0arz.mongodb.net/appleCareDB?retryWrites=true&w=majority"
-      )
+        `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.swt0arz.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
+        )
       .then(async function () {
         // connect mongoose to database using default mongo driver
         const db = mongoose.connection.db;

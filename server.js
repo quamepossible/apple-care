@@ -3,10 +3,11 @@ const cors = require("cors");
 const methodOverride = require("method-override");
 const path = require("path");
 const ObjectId = require("mongodb").ObjectId;
+require('dotenv').config();
 
 const mongoose = require("mongoose");
 mongoose.connect(
-  "mongodb+srv://young-k:xXHOXLSUCZ37CElb@cluster0.swt0arz.mongodb.net/appleCareDB?retryWrites=true&w=majority"
+  `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.swt0arz.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
 );
 
 const {
@@ -19,7 +20,6 @@ const {
   CheckedOut,
 } = require("./db/db.js");
 const { anyObj } = require("./db/fetch.js");
-const { clearLine } = require("readline");
 const app = express();
 const PORT = process.env.PORT || 3003;
 
