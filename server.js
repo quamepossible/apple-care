@@ -360,7 +360,7 @@ app.post("/checkout", async (req, res) => {
                             knows a previous item was made up of more than the quantity 
                             we have in stock for this item
                         */
-          /* This will also help us to know the total quantity of this item we need in stock
+          /* This will also help us know the total quantity of this item we need in stock
                             to complete the whole purchase in the cart
                         */
           await Accessories.findOneAndUpdate(
@@ -687,7 +687,6 @@ app.get("/fetch/:searchItem", async (req, res) => {
   let query = {};
   switch (searchItem) {
     case "imei":
-      // query = {imei: {$regex: `/${queryString}/`}};
       query = { imei: queryString };
       break;
     case "serial":
