@@ -7,8 +7,20 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
+            - name: login to docker
+              uses: docker/login-action@v3
+              with:
+                username: ${{ secrets.DOCKERHUB_USERNAME }}
+                password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+            - name: set image version tag
+              run: TAG_VERSION=$(date +%s) >> $GITHUB_ENV
+                
             - name: build docker image for app
-              run: docker build --file Dockerfile -t apple-care:$(date +%s)
+              run: docker build --file Dockerfile -t youngestkay/apple-care:${TAG_VERSION}
+
+            - name: push image to docker hub repo
+              run: docker push youngestkay/apple-care:${TAG_VERSION}
 
 
 
