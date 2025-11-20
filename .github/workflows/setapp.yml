@@ -1,0 +1,15 @@
+name: APPLICATION SETUP
+on: 
+    push:
+        branches: ["dev"]
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: build docker image for app
+              run: docker build --file Dockerfile -t apple-care:$(date +%s)
+
+
+
+
