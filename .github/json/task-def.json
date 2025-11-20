@@ -15,7 +15,24 @@
             "name": "apple-care-nonprod",
             "portMappings": [],
             "systemControls": [],
-            "volumesFrom": []
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "MONGO_USER",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-x9yERu"
+
+                },
+                {
+                    "name": "MONGO_PASS",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-x9yERu"
+
+                },
+                {
+                    "name": "DB_NAME",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-x9yERu"
+
+                }
+            ]
         }
     ],
     "cpu": "1024",
@@ -46,24 +63,5 @@
     "status": "ACTIVE",
     "taskDefinitionArn": "arn:aws:ecs:us-east-2:418554770849:task-definition/github-container-tasks:1",
     "volumes": [],
-    "tags": [],
-    "secrets": [
-        {
-            "name": "MONGO_USER",
-            "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-x9yERu"
-
-        },
-        {
-            "name": "MONGO_PASS",
-            "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-x9yERu"
-
-        },
-        {
-            "name": "DB_NAME",
-            "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-x9yERu"
-
-        }
-    ]
-
-
+    "tags": []
 }
