@@ -15,7 +15,7 @@ jobs:
                 password: ${{ secrets.DOCKERHUB_TOKEN }}
 
             - name: set image version tag
-              run: TAG_VERSION=$(date +%s) >> $GITHUB_ENV
+              run: echo "TAG_VERSION=$(date +%s)" >> $GITHUB_ENV
 
             - name: verify tag
               run: echo "YOUr tag is $TAG_VERSION"
