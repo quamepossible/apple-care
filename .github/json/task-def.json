@@ -1,0 +1,69 @@
+{
+    "compatibilities": [
+        "EC2",
+        "MANAGED_INSTANCES",
+        "FARGATE"
+    ],
+    "containerDefinitions": [
+        {
+            "cpu": 0,
+            "environment": [],
+            "environmentFiles": [],
+            "essential": true,
+            "image": "youngestkay/apple-care:1763673084",
+            "mountPoints": [],
+            "name": "apple-care-nonprod",
+            "portMappings": [],
+            "systemControls": [],
+            "volumesFrom": []
+        }
+    ],
+    "cpu": "1024",
+    "enableFaultInjection": false,
+    "executionRoleArn": "arn:aws:iam::418554770849:role/ecsTaskExecutionRole",
+    "family": "github-container-tasks",
+    "memory": "3072",
+    "networkMode": "awsvpc",
+    "placementConstraints": [],
+    "registeredAt": "2025-11-20T21:35:47.002Z",
+    "registeredBy": "arn:aws:iam::418554770849:root",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "revision": 1,
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "status": "ACTIVE",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:418554770849:task-definition/github-container-tasks:1",
+    "volumes": [],
+    "tags": [],
+    "secrets": [
+        {
+            "name": "MONGO_USER",
+            "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-x9yERu"
+
+        },
+        {
+            "name": "MONGO_PASS",
+            "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-x9yERu"
+
+        },
+        {
+            "name": "DB_NAME",
+            "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-x9yERu"
+
+        }
+    ]
+
+
+}

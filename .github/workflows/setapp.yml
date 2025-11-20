@@ -13,6 +13,13 @@ jobs:
               with:
                 username: ${{ secrets.DOCKERHUB_USERNAME }}
                 password: ${{ secrets.DOCKERHUB_TOKEN }}
+            
+            - name: set up aws
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+                aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                aws-region: us-east-2
 
             - name: set image version tag
               run: echo "TAG_VERSION=$(date +%s)" >> $GITHUB_ENV
@@ -25,6 +32,21 @@ jobs:
 
             - name: push image to docker hub repo
               run: docker push youngestkay/apple-care:${TAG_VERSION}
+
+            - name: Render task definition
+              id: task-def
+              uses: aws-actions/amazon-ecs-render-task-definition@v1
+              with:
+                task-definition: ../json/task-def.json
+                image: youngestkay/apple-care:${TAG_VERSION}
+
+            - name: Deploy to ECS
+              uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+              with:
+                task-definition: ${{ steps.task-def.outputs.task-definition }}
+                service: github-container-tasks-service-4cj2ihs0
+                cluster: apple-care-cluster
+                wait-for-service-stability: true
 
 
 

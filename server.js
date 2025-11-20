@@ -21,7 +21,7 @@ const {
 } = require("./db/db.js");
 const { anyObj } = require("./db/fetch.js");
 const app = express();
-const PORT = process.env.PORT || 3003;
+const PORT = 3009;
 
 // set views
 app.set("view engine", "ejs");
