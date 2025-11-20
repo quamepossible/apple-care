@@ -37,7 +37,8 @@ jobs:
               id: task-def
               uses: aws-actions/amazon-ecs-render-task-definition@v1
               with:
-                task-definition: ../json/task-def.json
+                task-definition: .github/json/task-def.json
+                container-name: apple-care-container
                 image: youngestkay/apple-care:${TAG_VERSION}
 
             - name: Deploy to ECS
