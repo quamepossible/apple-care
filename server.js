@@ -6,7 +6,7 @@ const ObjectId = require("mongodb").ObjectId;
 require('dotenv').config();
 
 const mongoose = require("mongoose");
-const mongo_user = encodeURIComponent(process.env.mongo_user)
+const mongo_user = encodeURIComponent(process.env.MONGO_USER)
 console.log("Username length:", mongo_user.length);
 console.log("Username characters:", JSON.stringify(mongo_user));
 console.log("Password length:", process.env.MONGO_PASS.length);

@@ -14,17 +14,17 @@
             "secrets": [
                 {
                     "name": "MONGO_USER",
-                    "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-x9yERu"
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-user-name-f0x3d6"
 
                 },
                 {
                     "name": "MONGO_PASS",
-                    "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-x9yERu"
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-password-kdoP2t"
 
                 },
                 {
                     "name": "DB_NAME",
-                    "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-x9yERu"
+                    "valueFrom": "arn:aws:secretsmanager:us-east-2:418554770849:secret:nonprod/apple-care-database-name-kiV78t"
 
                 }
             ]
