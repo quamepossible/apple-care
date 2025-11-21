@@ -6,7 +6,12 @@ const ObjectId = require("mongodb").ObjectId;
 require('dotenv').config();
 
 const mongoose = require("mongoose");
-const mongo_user = encodeURIComponent(process.env.MONGO_USER)
+const mongo_user = encodeURIComponent(process.env.mongo_user)
+console.log("Username length:", mongo_user.length);
+console.log("Username characters:", JSON.stringify(mongo_user));
+console.log("Password length:", process.env.MONGO_PASS.length);
+console.log("Password characters:", JSON.stringify(process.env.MONGO_PASS));
+
 mongoose.connect(
   `mongodb+srv://${mongo_user}:${process.env.MONGO_PASS}@cluster0.swt0arz.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
 );
