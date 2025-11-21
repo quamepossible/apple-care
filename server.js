@@ -6,8 +6,9 @@ const ObjectId = require("mongodb").ObjectId;
 require('dotenv').config();
 
 const mongoose = require("mongoose");
+const mongo_user = encodeURIComponent(process.env.MONGO_USER)
 mongoose.connect(
-  `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.swt0arz.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
+  `mongodb+srv://${mongo_user}:${process.env.MONGO_PASS}@cluster0.swt0arz.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
 );
 
 const {

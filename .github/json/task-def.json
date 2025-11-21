@@ -7,7 +7,7 @@
             "essential": true,
             "image": "youngestkay/apple-care:1763673084",
             "mountPoints": [],
-            "name": "apple-care-nonprod",
+            "name": "non-prod-apple-care-container",
             "portMappings": [],
             "systemControls": [],
             "volumesFrom": [],
@@ -32,7 +32,7 @@
     ],
     "cpu": "1024",
     "executionRoleArn": "arn:aws:iam::418554770849:role/ecsTaskExecutionRole",
-    "family": "github-container-tasks",
+    "family": "new-task-good",
     "memory": "3072",
     "networkMode": "awsvpc",
     "requiresCompatibilities": [

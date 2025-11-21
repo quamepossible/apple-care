@@ -38,14 +38,14 @@ jobs:
               uses: aws-actions/amazon-ecs-render-task-definition@v1
               with:
                 task-definition: .github/json/task-def.json
-                container-name: apple-care-nonprod
+                container-name: non-prod-apple-care-container
                 image: youngestkay/apple-care:${{ env.TAG_VERSION }}
 
             - name: Deploy to ECS
               uses: aws-actions/amazon-ecs-deploy-task-definition@v1
               with:
                 task-definition: ${{ steps.task-def.outputs.task-definition }}
-                service: github-container-tasks-service-4cj2ihs0
+                service: github-container-tasks-service-rrpw07vl
                 cluster: apple-care-cluster
                 wait-for-service-stability: true
 
